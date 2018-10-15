@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Bangers');
+@import url('https://rsms.me/inter/inter-ui.css');
+
+html {
+    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    textRendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}

@@ -1,0 +1,13 @@
+logs/*.log
+compiled-css
+node_modules/*
+node_modules_TMP/
+.env
+build/*
+yarn-error.log
+.next/
+.idea/
+.vscode/
+.DS_Store
+.editorconfig
+.DS_Store
