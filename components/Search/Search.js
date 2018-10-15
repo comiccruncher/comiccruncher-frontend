@@ -6,8 +6,6 @@ import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import Link from 'next/link';
 import Router from 'next/router';
 
-const key = process.env.CC_AUTH_KEY;
-
 const searchUrl = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
