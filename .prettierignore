@@ -1,1 +1,4 @@
 package.json
+.storybook
+.next
+node_modules
