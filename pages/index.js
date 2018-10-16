@@ -26,12 +26,7 @@ class Home extends React.Component {
           <title>Comic Cruncher!!!</title>
         </Head>
         <HeaderSection>
-          <Flex
-            justifyContent="center"
-            alignItems="center"
-            alignContent="center"
-            style={{ height: '100%' }}
-          >
+          <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
             <Box alignSelf="center">
               <Logo content="Comic Cruncher">Comic Cruncher</Logo>
             </Box>
@@ -56,9 +51,7 @@ class Home extends React.Component {
 }
 
 Home.getInitialProps = async ({ req }) => {
-  const res = await axios.get(
-    'https://api.comiccruncher.com/stats?key=batmansmellsbadly'
-  );
+  const res = await axios.get('https://api.comiccruncher.com/stats?key=batmansmellsbadly');
   return res.data;
 };
 

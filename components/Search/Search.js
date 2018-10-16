@@ -5,6 +5,8 @@ import AutosuggestHighlightMatch from 'autosuggest-highlight/match';
 import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import Link from 'next/link';
 import Router from 'next/router';
+import styled from 'react-emotion';
+import { DebounceInput } from 'react-debounce-input';
 
 const searchUrl = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
 
@@ -17,6 +19,11 @@ const getSuggestionValue = (suggestion) => {
   return `${suggestion.name}`;
 };
 
+const SearchResult = styled('div')`
+  display: flex;
+  align-items: center;
+`;
+
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +32,7 @@ class Search extends React.Component {
       value: '',
       suggestions: [],
       error: '',
+      isLoading: false,
     };
   }
 
@@ -35,6 +43,7 @@ class Search extends React.Component {
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({ isLoading: true });
     const escapedValue = escapeRegexCharacters(value.trim());
     if (escapedValue === '') {
       return [];
@@ -46,7 +55,6 @@ class Search extends React.Component {
         this.setState({ suggestions: response.data.data });
       })
       .catch((error) => {
-        console.log(error);
         this.setState({ error: error });
       });
   };
@@ -55,14 +63,6 @@ class Search extends React.Component {
     this.setState({
       suggestions: [],
     });
-  };
-
-  isCharacterInSuggestions = (slug) => {
-    console.log(this.state.suggestions);
-    const suggestions = this.state.suggestions.filter(
-      (suggestion) => suggestion.slug === slug
-    );
-    return suggestions.length === 0 ? false : true;
   };
 
   renderSuggestion = (suggestion, { query }) => {
@@ -82,20 +82,19 @@ class Search extends React.Component {
       <span className={'suggestion-content ' + suggestion.slug}>
         <span className="name">
           <Link href={`/characters/${encodeURIComponent(suggestion.slug)}`}>
-            <a>
-              {suggestion.name}
-              {suggestion.other_name ? ` (${suggestion.other_name})` : ''}
-            </a>
+            <SearchResult>
+              <img src={suggestion.vendor_image} alt={suggestion.name} width={50} height={50} />
+              <p>
+                {suggestion.name} {suggestion.other_name ? ` (${suggestion.other_name})` : ''}
+              </p>
+            </SearchResult>
           </Link>
         </span>
       </span>
     );
   };
 
-  onSuggestedSelected = (
-    event,
-    { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }
-  ) => {
+  onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     Router.push('/characters/' + encodeURIComponent(suggestion.slug));
   };
 
@@ -110,6 +109,9 @@ class Search extends React.Component {
       value,
       onChange: this.onChange,
     };
+    const renderSearchInput = (inputProps) => (
+      <DebounceInput minLength={1} debounceTimeout={500} autoFocus {...inputProps} />
+    );
     return (
       <Autosuggest
         suggestions={suggestions}
@@ -121,6 +123,7 @@ class Search extends React.Component {
         focusInputOnSuggestionClick={false}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionSelected={this.onSuggestedSelected}
+        renderInputComponent={renderSearchInput}
       />
     );
   }

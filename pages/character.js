@@ -19,10 +19,7 @@ const getDataSets = (appearances) => {
     return {
       label: appearance.category,
       data: appearance.aggregates.map(aggregateCountMap),
-      backgroundColor:
-        appearance.category === 'main'
-          ? 'rgb(54, 162, 235)'
-          : 'rgb(255, 159, 64)',
+      backgroundColor: appearance.category === 'main' ? 'rgb(54, 162, 235)' : 'rgb(255, 159, 64)',
     };
   });
 };
@@ -37,15 +34,9 @@ class Character extends React.Component {
 
   componentDidMount() {
     const appearances = this.props.data.appearances;
-    const mainCounts = appearances[0]
-      ? appearances[0].aggregates.map(aggregateCountMap).reduce(prevNextReduce)
-      : 0;
-    const altCounts = appearances[1]
-      ? appearances[1].aggregates.map(aggregateCountMap).reduce(prevNextReduce)
-      : 0;
-    const years = appearances[0]
-      ? [appearances[0].aggregates.map((aggregate) => aggregate.year)][0]
-      : [];
+    const mainCounts = appearances[0] ? appearances[0].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
+    const altCounts = appearances[1] ? appearances[1].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
+    const years = appearances[0] ? [appearances[0].aggregates.map((aggregate) => aggregate.year)][0] : [];
     const datasets = getDataSets(appearances);
     this.setState({
       years: years,
@@ -72,14 +63,8 @@ class Character extends React.Component {
           <title>{c.name}</title>
         </Head>
         <Flex flexWrap="wrap" style={{ height: '520px', overflow: 'hidden' }}>
-          <Box
-            flex="1 0 auto"
-            width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}
-          >
-            <img
-              src={c.vendor_image}
-              style={{ minWidth: '100%', minHeight: '100%' }}
-            />
+          <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}>
+            <img src={c.vendor_image} style={{ minWidth: '100%', minHeight: '100%' }} />
           </Box>
           <Box
             flex="1 0 auto"
@@ -87,12 +72,7 @@ class Character extends React.Component {
             p={32}
             style={{ backgroundColor: UI.Background.Red, textAlign: 'center' }}
           >
-            <Flex
-              justifyContent="center"
-              alignItems="center"
-              alignContent="center"
-              style={{ height: '100%' }}
-            >
+            <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
               <Box alignSelf="center">
                 <Title.Large>{title}</Title.Large>
                 <Title.Byline>{otherName}</Title.Byline>
@@ -107,11 +87,7 @@ class Character extends React.Component {
               <CountUp end={appearanceCount} /> total
             </Section.Byline>
 
-            <AppearanceChart
-              title={'Appearances'}
-              years={this.state.years}
-              datasets={this.state.datasets}
-            />
+            <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
           </Box>
         </Flex>
         <Flex flexWrap="wrap" py={40}>
@@ -160,9 +136,7 @@ Character.propTypes = {
 
 Character.getInitialProps = async ({ req }) => {
   const res = await axios.get(
-    `https://api.comiccruncher.com/characters/${encodeURIComponent(
-      req.params.slug
-    )}?key=batmansmellsbadly`
+    `https://api.comiccruncher.com/characters/${encodeURIComponent(req.params.slug)}?key=batmansmellsbadly`
   );
   return res.data;
 };

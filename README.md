@@ -1,6 +1,8 @@
-# Appearances Web
+# Comic Cruncher Web
 
-This repository uses the next.js frameowrk to server-side render the pages.
+Comic Cruncher Web is a NodeJS + React app that serves the frontend for [comiccruncher.com](https://comiccruncher.com). (Check out the Golang backend application at [github.com/aimeelaplant/comiccruncher](https://github.com/aimeelaplant/comiccruncher)).
+
+This repository uses the next.js framework to server-side render the pages.
 
 The `components` folder houses all the React components, and the `pages` folder houses all the HTTP frontend.
 
