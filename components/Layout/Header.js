@@ -11,8 +11,8 @@ const mainNav = {
   borderColor: UI.Border.Dark,
   backgroundColor: UI.Background.Yellow,
   position: 'absolute',
-  top: Spacing.Small,
-  left: Spacing.Small,
+  top: Spacing.Large,
+  left: Spacing.Large
 };
 
 const linkStyle = {
@@ -21,7 +21,7 @@ const linkStyle = {
   fontFamily: UIFontStack,
   fontWeight: Type.Weight.Bold,
   padding: Spacing.Small,
-  display: 'inline-block',
+  display: 'inline-block'
 };
 
 const Header = () => (

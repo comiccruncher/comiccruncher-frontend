@@ -6,6 +6,7 @@ import CountUp from 'react-countup';
 import { Box, Flex } from '@rebass/grid/emotion';
 import AppearanceChart from '../components/Character/AppearanceChart';
 import Layout from '../components/Layout/Layout';
+import Spacing from '../components/shared/styles/spacing';
 import { UI } from '../components/shared/styles/colors';
 import Dimensions from '../components/shared/styles/dimensions';
 import Type, { Title, Section, Text } from '../components/shared/styles/type';
@@ -100,21 +101,7 @@ class Character extends React.Component {
           </Box>
         </Flex>
         <Flex flexWrap="wrap" py={40}>
-          <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={10}>
-            <Section.Title>Bio</Section.Title>
-            <Text.Default>{bio}</Text.Default>
-          </Box>
-          <Box flex="1 1 auto" width={[1, 1 / 2, 1 / 3]} px={10}>
-            <Text.Default>
-              {this.state.isEnabled ? 'true' : 'false'}
-            </Text.Default>
-            <Button onClick={this.onClick} type="primary">
-              Click Me and watch the above text change
-            </Button>
-          </Box>
-        </Flex>
-        <Flex flexWrap="wrap" py={40}>
-          <Box flex="1 1 auto" width={1} px={10}>
+          <Box flex="1 1 auto" width={1} px={24}>
             <Section.Title>Appearances</Section.Title>
             <Section.Byline>
               <CountUp end={appearanceCount} /> total
@@ -125,6 +112,12 @@ class Character extends React.Component {
               years={this.state.years}
               datasets={this.state.datasets}
             />
+          </Box>
+        </Flex>
+        <Flex flexWrap="wrap" py={40}>
+          <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={24}>
+            <Section.Title>Bio</Section.Title>
+            <Text.Default>{bio}</Text.Default>
           </Box>
         </Flex>
       </Layout>

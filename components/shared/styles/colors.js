@@ -2,14 +2,14 @@ export const Palette = {
   // Colors
   Red: {
     Default: '#D00000',
-    Light: '#E55555',
+    Light: '#E55555'
   },
   Blue: {
     Default: '#1A71FF',
-    Light: '#1984E7',
+    Light: '#1984E7'
   },
   Yellow: {
-    Default: '#F2EE1B',
+    Default: '#F2EE1B'
   },
 
   // Neutrals
@@ -17,18 +17,18 @@ export const Palette = {
     Dark: '#121017',
     Default: '#272830',
     Light: '#828282',
-    Pale: '#EEEEEE',
+    Pale: '#EEEEEE'
   },
   White: {
-    Default: '#FFFFFF',
-  },
+    Default: '#FFFFFF'
+  }
 };
 
 export const UI = {
   Border: {
     Dark: Palette.Gray.Dark,
     Default: Palette.Gray.Default,
-    White: Palette.White.Default,
+    White: Palette.White.Default
   },
   Text: {
     Dark: Palette.Gray.Dark,
@@ -37,7 +37,7 @@ export const UI = {
     Pale: Palette.Gray.Pale,
     Yellow: Palette.Yellow.Default,
     Blue: Palette.Blue.Light,
-    White: Palette.White.Default,
+    White: Palette.White.Default
   },
   Background: {
     Red: Palette.Red.Default,
@@ -46,12 +46,13 @@ export const UI = {
     White: Palette.White.Default,
     Dark: Palette.Gray.Dark,
     Yellow: Palette.Yellow.Default,
-  },
+    Gray: Palette.Gray.Pale
+  }
 };
 
 const Brands = {
   Marvel: '#FF0000',
-  DC: '#0282f9',
+  DC: '#0282f9'
 };
 
 const Colors = {};
