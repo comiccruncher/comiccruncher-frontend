@@ -52,7 +52,6 @@ class CharactersList extends React.Component {
           {characters.map((character, i) => {
             return (
               <Box px={2} py={2} width={1 / 4} key={character.slug}>
-                <span onClick={handler}>Test Me</span>
                 <CharacterCard {...character} />
               </Box>
             );
