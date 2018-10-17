@@ -1,5 +1,4 @@
 import React from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
 import request from 'superagent';
 import { Flex, Box } from '@rebass/grid/emotion';
 import { CharacterCard } from './CharacterCard';
