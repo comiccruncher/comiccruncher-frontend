@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import request from 'superagent';
 import Head from 'next/head';
 import CountUp from 'react-countup';
 import { Box, Flex } from '@rebass/grid/emotion';
@@ -140,10 +140,10 @@ Character.propTypes = {
 };
 
 Character.getInitialProps = async ({ req }) => {
-  const res = await axios.get(
+  const res = await request.get(
     `https://api.comiccruncher.com/characters/${encodeURIComponent(req.params.slug)}?key=batmansmellsbadly`
   );
-  return res.data;
+  return res.body;
 };
 
 export default Character;

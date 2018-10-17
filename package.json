@@ -1,5 +1,5 @@
 {
-    "name": "comic-cruncher-web",
+    "name": "comiccruncher-web",
     "version": "0.1.0",
     "private": true,
     "engines": {
@@ -17,7 +17,6 @@
         "@babel/runtime": "^7.1.2",
         "@rebass/grid": "^6.0.0-4",
         "autosuggest-highlight": "^3.1.1",
-        "axios": "^0.18.0",
         "chart.js": "^2.7.2",
         "countup.js": "^1.9.3",
         "emotion": "^9.2.12",
@@ -31,7 +30,9 @@
         "react-countup": "^4.0.0-alpha.6",
         "react-debounce-input": "^3.2.0",
         "react-dom": "^16.5.2",
-        "react-emotion": "^9.2.10"
+        "react-emotion": "^9.2.10",
+        "react-modal": "^3.6.1",
+        "superagent": "^3.8.3"
     },
     "devDependencies": {
         "@babel/core": "^7.1.2",
