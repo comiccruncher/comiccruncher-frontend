@@ -1,15 +1,37 @@
 import React from 'react';
+import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import { DisplayName } from './DisplayName';
 import Image from '@rebass/grid/emotion';
 import Link from 'next/link';
+import { DisplayName } from './DisplayName';
+import { UI } from '../shared/styles/colors';
+import Spacing from '../shared/styles/spacing';
+
+const Character = styled.div(
+  {
+    backgroundRepeat: 'none',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    width: Spacing.xxLarge * 5,
+    height: Spacing.xxLarge * 6.25,
+    '& DisplayName *': {
+      color: UI.Text.White,
+      backgroundColor: UI.Background.Red,
+    }
+  },
+  props => ({
+    // Need to figure out how to get background images to work with props
+    backgroundImage: `url('${props.vendor_image}')`
+  })
+);
 
 export const CharacterCard = (props) => (
   <div>
-    <h4>
-      <DisplayName {...props} />
-    </h4>
-    <Link href={`/characters/${encodeURIComponent(props.slug)}`}>To Page</Link>
+    <Link href={`/characters/${encodeURIComponent(props.slug)}`}>
+      <Character>
+        <DisplayName {...props} />
+      </Character>
+    </Link>
   </div>
 );
 

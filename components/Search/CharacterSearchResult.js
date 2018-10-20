@@ -1,11 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from 'react-emotion';
+import { Box, Flex } from '@rebass/grid/emotion';
 import { DisplayName } from '../Character/DisplayName';
+import Spacing from '../shared/styles/spacing';
 
 const SearchResult = styled('div')`
   display: flex;
   align-items: center;
+  text-align: left;
 `;
 
 export const CharacterSearchResult = (props) => (
@@ -14,10 +17,8 @@ export const CharacterSearchResult = (props) => (
       <span className="name">
         <Link href={`/characters/${encodeURIComponent(props.slug)}`}>
           <SearchResult>
-            <img src={props.vendor_image} alt={props.name} width={50} height={50} />
-            <p>
-              <DisplayName {...props} />
-            </p>
+            <img src={props.vendor_image} alt={props.name} width={50} height={50} pr={16}/>
+            <DisplayName {...props} />
           </SearchResult>
         </Link>
       </span>

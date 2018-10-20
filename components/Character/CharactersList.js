@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'react-emotion';
 import request from 'superagent';
 import { Flex, Box } from '@rebass/grid/emotion';
 import { CharacterCard } from './CharacterCard';
