@@ -86,8 +86,8 @@ class Character extends React.Component {
             <Section.Title>Appearances</Section.Title>
             <Section.Byline>
               <CountUp end={appearanceCount} /> total
+              {/* TODO: change appearanceCount when someone clicks on main/alt label */}
             </Section.Byline>
-
             <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
           </Box>
         </Flex>
