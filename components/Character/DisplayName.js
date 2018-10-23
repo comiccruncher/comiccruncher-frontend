@@ -8,7 +8,7 @@ import Type, { Title, Section, Text } from '../shared/styles/type';
 
 // Shows the display name of the character.
 export const DisplayName = (props) => (
-  <div>
+  <div className="DisplayName">
     <Text.Default bold>{props.name}</Text.Default>
     <Text.Default>{props.other_name}</Text.Default>
   </div>
