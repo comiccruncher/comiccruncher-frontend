@@ -7,7 +7,7 @@ import { Box, Flex } from '@rebass/grid/emotion';
 import AppearanceChart from '../components/Character/AppearanceChart';
 import Layout from '../components/Layout/Layout';
 import Spacing from '../components/shared/styles/spacing';
-import { UI } from '../components/shared/styles/colors';
+import { UI, Brands } from '../components/shared/styles/colors';
 import Dimensions from '../components/shared/styles/dimensions';
 import Type, { Title, Section, Text } from '../components/shared/styles/type';
 import Button from '../components/shared/components/Button';
@@ -51,7 +51,7 @@ class Character extends React.Component {
 
   render() {
     const c = this.props.data;
-    const otherName = c.other_name ? `(${c.other_name})` : '';
+    const otherName = c.other_name ? `${c.other_name}` : '';
     const title = `${c.name}`;
     const appearanceCount = this.state.totalAppearanceCount;
     // clean markup
@@ -64,13 +64,14 @@ class Character extends React.Component {
         </Head>
         <Flex flexWrap="wrap" style={{ height: '520px', overflow: 'hidden' }}>
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}>
-            <img src={c.vendor_image} style={{ minWidth: '100%', minHeight: '100%' }} />
+            <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>
           <Box
             flex="1 0 auto"
             width={[1, `${Dimensions.GoldenRatio.Large}`, 2 / 3]}
             p={32}
-            style={{ backgroundColor: UI.Background.Red, textAlign: 'center' }}
+            // Need to figure out how to access props properly
+            style={{ backgroundColor: `${props => c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}`, textAlign: 'center' }}
           >
             <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
               <Box alignSelf="center">

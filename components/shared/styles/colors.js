@@ -50,7 +50,7 @@ export const UI = {
   }
 };
 
-const Brands = {
+export const Brands = {
   Marvel: '#FF0000',
   DC: '#0282f9'
 };
