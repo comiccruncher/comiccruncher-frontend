@@ -22,7 +22,7 @@ const Character = styled.div(
       left: 0,
       width: '80%',
       padding: Spacing.Small,
-      '&:after': {
+      '&::after': {
         content: `' '`,
         width: '100%',
         height: '100%',
@@ -47,6 +47,7 @@ const Character = styled.div(
       transition: '0.3s ease-in-out'
     },
     '&:hover': {
+      cursor: 'pointer',
       '& img': {
         transform: 'scale(1.1)'
       }

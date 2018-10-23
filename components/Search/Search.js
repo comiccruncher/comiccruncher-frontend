@@ -6,6 +6,7 @@ import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 import { CharacterSearchResult } from './CharacterSearchResult';
+import { SearchBar } from './SearchStyles';
 
 const searchUrl = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
 
@@ -92,7 +93,7 @@ class Search extends React.Component {
     };
     // TODO: Why is the debounce input so freakin slow?!!?!
     const renderSearchInput = (inputProps) => (
-      <DebounceInput minLength={1} debounceTimeout={200} autoFocus {...inputProps} />
+      <DebounceInput minLength={1} debounceTimeout={200} autoFocus {...inputProps} className={SearchBar} />
     );
     return (
       <Autosuggest

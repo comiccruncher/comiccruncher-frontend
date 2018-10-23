@@ -58,12 +58,14 @@ class CharactersList extends React.Component {
             );
           })}
         </Flex>
-        <Flex>
-          {this.state.hasMoreItems && (
-            <Button type="primary" onClick={this.loadData}>
-              Load More
-            </Button>
-          )}
+        <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
+          <Box alignSelf="center">
+            {this.state.hasMoreItems && (
+              <Button type="primary" onClick={this.loadData} style={{textAlign: 'center'}}>
+                Load More
+              </Button>
+            )}
+          </Box>
         </Flex>
       </div>
     );

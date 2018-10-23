@@ -22,7 +22,7 @@ class Home extends React.Component {
           <title>Comic Cruncher!!!</title>
         </Head>
         <HeaderSection>
-          <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
+          <Flex flexDirection="column" justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
             <Box alignSelf="center">
               <Logo content="Comic Cruncher">Comic Cruncher</Logo>
               <Search />
