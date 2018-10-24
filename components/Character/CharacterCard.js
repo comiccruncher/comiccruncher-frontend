@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import PropTypes from 'prop-types';
-import Image from '@rebass/grid/emotion';
-import Link from 'next/link';
+import { CharacterProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
@@ -73,23 +71,11 @@ const Character = styled.div(
 
 export const CharacterCard = (props) => (
   <div>
-    <Link href={`/characters/${encodeURIComponent(props.slug)}`}>
-      <Character {...props}>
-        <img src={props.vendor_image} alt={props.name} title={props.name} />
-        <DisplayName {...props} />
-      </Character>
-    </Link>
+    <Character {...props}>
+      <img src={props.vendor_image} alt={props.name} title={props.name} />
+      <DisplayName {...props} />
+    </Character>
   </div>
 );
 
-CharacterCard.propTypes = {
-  publisher: PropTypes.shape({
-    name: PropTypes.string,
-    slug: PropTypes.string,
-  }),
-  name: PropTypes.string,
-  other_name: PropTypes.string,
-  slug: PropTypes.string,
-  image: PropTypes.string,
-  vendor_image: PropTypes.string,
-};
+CharacterCard.propTypes = CharacterProps;

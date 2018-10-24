@@ -1,4 +1,6 @@
 import React from 'react';
+import request from 'superagent';
+import { withRouter } from 'next/router';
 import { Box, Flex } from '@rebass/grid/emotion';
 import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
@@ -8,11 +10,11 @@ import Search from '../components/Search/Search';
 import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
-import request from 'superagent';
+import { CharacterProps } from '../components/Character/Types';
 
 class Home extends React.Component {
   render() {
-    const s = this.props.data;
+    const s = this.props.stats.data;
     return (
       <Layout>
         {/* How to render a title ...
@@ -41,7 +43,7 @@ class Home extends React.Component {
         <p>
           From {s.min_year} to {s.max_year}
         </p>
-        <CharactersList />
+        <CharactersList characters={this.props.characters}/>
       </Layout>
     );
   }
@@ -49,21 +51,34 @@ class Home extends React.Component {
 
 Home.getInitialProps = async ({ req }) => {
   const res = await request.get('https://api.comiccruncher.com/stats?key=batmansmellsbadly');
-  return res.body;
+  const res2 = await request.get('https://api.comiccruncher.com/characters?key=batmansmellsbadly');
+  return {
+    stats: res.body,
+    characters: res2.body,
+  };
 };
 
 Home.propTypes = {
-  meta: PropTypes.shape({
-    status_code: PropTypes.number,
-    error: PropTypes.string,
+  stats: PropTypes.shape({
+    meta: PropTypes.shape({
+      status_code: PropTypes.number,
+      error: PropTypes.string,
+    }),
+    data: PropTypes.shape({
+      total_characters: PropTypes.number,
+      total_appearances: PropTypes.number,
+      min_year: PropTypes.number,
+      max_year: PropTypes.number,
+      total_issues: PropTypes.number,
+    }),
   }),
-  data: PropTypes.shape({
-    total_characters: PropTypes.number,
-    total_appearances: PropTypes.number,
-    min_year: PropTypes.number,
-    max_year: PropTypes.number,
-    total_issues: PropTypes.number,
+  characters: PropTypes.shape({
+    meta: PropTypes.shape({
+      status_code: PropTypes.number,
+      error: PropTypes.string,
+    }),
+    data: PropTypes.arrayOf(CharacterProps),
   }),
 };
 
-export default Home;
+export default withRouter(Home);

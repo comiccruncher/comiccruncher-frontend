@@ -93,6 +93,7 @@ const searchCss = `.react-autosuggest__container {
 
 .react-autosuggest__suggestion--focused .highlight {
   color: #120000;
+}
 }`;
 
 const Layout = (props) => (
