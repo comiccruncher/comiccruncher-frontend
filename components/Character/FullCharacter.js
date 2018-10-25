@@ -1,6 +1,6 @@
 import React from 'react';
 import CountUp from 'react-countup';
-import { Box, Flex } from '@rebass/grid/emotion';
+import { Box, Flex } from 'rebass/emotion';
 import AppearanceChart from './AppearanceChart';
 import { UI, Brands } from '../shared/styles/colors';
 import Dimensions from '../shared/styles/dimensions';
@@ -56,7 +56,7 @@ class FullCharacter extends React.Component {
     const bio = c.vendor_description.replace(regex, '');
     return (
       <div>
-        <Flex flexWrap="wrap" style={{ height: '520px', overflow: 'hidden' }}>
+        <Flex flexWrap="wrap" style={{ height: '520px', overflow: 'hidden' }} bg={UI.Background.Red}>
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}>
             <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>

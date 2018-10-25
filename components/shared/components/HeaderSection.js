@@ -1,5 +1,5 @@
 import styled from 'react-emotion';
-import { Box, Flex } from '@rebass/grid/emotion';
+import { Box, Flex } from 'rebass/emotion';
 import { UI } from '../styles/colors';
 import Dimensions from '../styles/dimensions';
 import Spacing from '../styles/spacing';

@@ -7,8 +7,10 @@ import Spacing from '../shared/styles/spacing';
 
 const Character = styled.div(
   {
+    /*
     width: Spacing.xxLarge * 5,
     height: Spacing.xxLarge * 6.25,
+    */
     overflow: 'hidden',
     position: 'relative',
     '& .DisplayName': {
@@ -70,12 +72,12 @@ const Character = styled.div(
 );
 
 export const CharacterCard = (props) => (
-  <div>
+  <React.Fragment>
     <Character {...props}>
       <img src={props.vendor_image} alt={props.name} title={props.name} />
       <DisplayName {...props} />
     </Character>
-  </div>
+  </React.Fragment>
 );
 
 CharacterCard.propTypes = CharacterProps;

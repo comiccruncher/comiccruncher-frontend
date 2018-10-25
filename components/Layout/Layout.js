@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
+import styled from 'react-emotion';
 import Header from './Header';
+import Navigation from './Navigation';
 import { injectGlobal } from 'emotion';
 import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
@@ -94,10 +96,10 @@ const searchCss = `.react-autosuggest__container {
 .react-autosuggest__suggestion--focused .highlight {
   color: #120000;
 }
-}`;
+`;
 
 const Layout = (props) => (
-  <div>
+  <React.Fragment>
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -105,9 +107,9 @@ const Layout = (props) => (
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
       <style type="text/css">{searchCss}</style>
     </Head>
-    <Header />
+    <Navigation />
     {props.children}
-  </div>
+  </React.Fragment>
 );
 
 export default Layout;

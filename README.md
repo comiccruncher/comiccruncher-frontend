@@ -25,7 +25,7 @@ Creates a new build, optimized for production. Does **not** start a dev server o
 
 ## CSS
 
-To use the grid system `@rebass/grid` with emotion, import the module like this: `import { Flex, Box } from '@rebass/grid/emotion'`
+To use the grid system `rebass` with emotion, import the module like this: `import { Flex, Box } from 'rebass/emotion'`
 
 ## Storybook
 [📚 Storybook](https://storybook.js.org/)

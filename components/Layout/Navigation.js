@@ -28,6 +28,19 @@ const linkStyle = {
   backgroundColor: UI.Background.Yellow,
 };
 
-const Header = (props) => <Flex bg={props.bg || UI.Background.Red}>{props.children}</Flex>;
+const Navigation = (props) => (
+  <Flex bg={props.bg || UI.Background.Red} pb={20}>
+    <Box width={[1 / 2, 1 / 2, 1 / 2]}>
+      <div style={mainNav}>
+        <Link href="/">
+          <a style={linkStyle}>Home</a>
+        </Link>
+        <Link href="/about">
+          <a style={linkStyle}>About</a>
+        </Link>
+      </div>
+    </Box>
+  </Flex>
+);
 
-export default Header;
+export default Navigation;

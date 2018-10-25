@@ -970,12 +970,6 @@
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.1.tgz#f3a81587ad8d0ef33cdad6f3b4310774fcc1053e"
 
-"@rebass/grid@^6.0.0-4":
-  version "6.0.0-4"
-  resolved "https://registry.yarnpkg.com/@rebass/grid/-/grid-6.0.0-4.tgz#95bb4367ddfd0d955e256fcd46ea26adb02411eb"
-  dependencies:
-    styled-system "^3.1.6"
-
 "@storybook/addon-actions@3.4.10", "@storybook/addon-actions@^3.4.10":
   version "3.4.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.4.10.tgz#b90ca8ccbad925dcbb4af02d2d24cc2c60bcec3f"
@@ -7025,6 +7019,12 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
+rebass@^3.0.0-9:
+  version "3.0.0-9"
+  resolved "https://registry.yarnpkg.com/rebass/-/rebass-3.0.0-9.tgz#86da0b51c4c509270a57746464a4aac0c5a168ac"
+  dependencies:
+    styled-system "^3.1.4"
+
 recast@^0.15.0:
   version "0.15.5"
   resolved "https://registry.yarnpkg.com/recast/-/recast-0.15.5.tgz#6871177ee26720be80d7624e4283d5c855a5cb0b"
@@ -7838,10 +7838,11 @@ styled-jsx@3.0.3-canary.0:
     stylis "3.5.3"
     stylis-rule-sheet "0.0.10"
 
-styled-system@^3.1.6:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-3.1.6.tgz#286448a62932b1f7ed98075d1a520afd52da97d1"
+styled-system@^3.1.4:
+  version "3.1.11"
+  resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-3.1.11.tgz#a91a38cf7a0f0e625b897a04fdd506a359a3629f"
   dependencies:
+    "@babel/runtime" "^7.1.2"
     prop-types "^15.6.2"
 
 stylis-rule-sheet@0.0.10, stylis-rule-sheet@^0.0.10:

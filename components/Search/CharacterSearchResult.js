@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from 'react-emotion';
-import { Box, Flex } from '@rebass/grid/emotion';
+import { Box, Flex } from 'rebass/emotion';
 import { DisplayName } from '../Character/DisplayName';
 import Spacing from '../shared/styles/spacing';
 

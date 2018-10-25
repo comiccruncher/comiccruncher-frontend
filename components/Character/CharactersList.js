@@ -2,14 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
 import request from 'superagent';
-import { Flex, Box } from '@rebass/grid/emotion';
+import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
 import Modal from 'react-modal';
 import { CharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
-
-Modal.setAppElement('#__next');
 
 class CharactersList extends React.Component {
   constructor(props) {
@@ -27,6 +25,13 @@ class CharactersList extends React.Component {
   componentDidMount() {
     this.listenOnRouteChangeComplete();
   }
+
+  getParent = (element) => {
+    const document = typeof document === 'undefined' ? '' : document;
+    if (document) {
+      return document.querySelector(element);
+    }
+  };
 
   /**
    * Loads data for the next page.
@@ -122,15 +127,16 @@ class CharactersList extends React.Component {
     const currentModal = this.state.currentModal;
     return (
       <div>
-        <Flex flexWrap="wrap" mx={-2}>
+        <Flex flexWrap="wrap" alignItems="center" alignContent="center">
           {characters.map((character, i) => {
             return (
-              <Box px={2} py={2} width={1 / 4} key={character.slug}>
+              <Box px={2} py={2} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
                 <Modal
                   id={character.slug}
                   onRequestClose={this.handleModalCloseRequest}
                   isOpen={currentModal === character.slug}
                   shouldCloseOnOverlayClick={true}
+                  parentSelector={() => document.querySelector('#__next')}
                 >
                   {/* TODO: load appearances in go app */}
                   <FullCharacter {...character} />
@@ -145,7 +151,7 @@ class CharactersList extends React.Component {
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
             {this.state.hasMoreItems && (
-              <Button type="primary" onClick={this.loadData} style={{textAlign: 'center'}}>
+              <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
                 Load More
               </Button>
             )}
@@ -178,5 +184,7 @@ CharactersList.propTypes = {
     data: PropTypes.arrayOf(CharacterProps),
   }),
 };
+
+Modal.setAppElement('#__next');
 
 export default withRouter(CharactersList);

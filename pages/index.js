@@ -1,7 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import { withRouter } from 'next/router';
-import { Box, Flex } from '@rebass/grid/emotion';
+import { Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
 import Layout from '../components/Layout/Layout';
@@ -11,6 +11,7 @@ import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
 import { CharacterProps } from '../components/Character/Types';
+import Header from '../components/Layout/Header';
 
 class Home extends React.Component {
   render() {
@@ -23,14 +24,14 @@ class Home extends React.Component {
         <Head>
           <title>Comic Cruncher!!!</title>
         </Head>
-        <HeaderSection>
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
-            <Box alignSelf="center">
+        <Header>
+          <Box width={[1]}>
+            <HeaderSection>
               <Logo content="Comic Cruncher">Comic Cruncher</Logo>
               <Search />
-            </Box>
-          </Flex>
-        </HeaderSection>
+            </HeaderSection>
+          </Box>
+        </Header>
         <p>
           Total Characters: <CountUp end={s.total_characters} />
         </p>
@@ -43,7 +44,7 @@ class Home extends React.Component {
         <p>
           From {s.min_year} to {s.max_year}
         </p>
-        <CharactersList characters={this.props.characters}/>
+        <CharactersList characters={this.props.characters} />
       </Layout>
     );
   }
