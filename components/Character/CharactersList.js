@@ -132,6 +132,8 @@ class CharactersList extends React.Component {
             return (
               <Box px={2} py={2} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
                 <Modal
+                  className="Modal"
+                  overlayClassName="Overlay"
                   id={character.slug}
                   onRequestClose={this.handleModalCloseRequest}
                   isOpen={currentModal === character.slug}
@@ -139,7 +141,9 @@ class CharactersList extends React.Component {
                   parentSelector={() => document.querySelector('#__next')}
                 >
                   {/* TODO: load appearances in go app */}
-                  <FullCharacter {...character} />
+                  <Box width={1152} bg="white">
+                    <FullCharacter {...character} />
+                  </Box>
                 </Modal>
                 <a href={`/characters/${character.slug}`} onClick={this.toggleModal(character.slug)}>
                   <CharacterCard {...character} />

@@ -10,7 +10,9 @@ import { UI } from '../shared/styles/colors';
 injectGlobal`
   * { margin:0; padding:0; box-sizing:border-box; }
   html { background-color: ${UI.Background.Gray}; }
-  body { max-width: 1024px; margin: 0 auto; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.08); background-color: ${UI.Background.White};}
+  body { max-width: 1024px; margin: 0 auto; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.08); background-color: ${
+    UI.Background.White
+  };}
 `;
 
 const searchCss = `.react-autosuggest__container {
@@ -96,6 +98,31 @@ const searchCss = `.react-autosuggest__container {
 .react-autosuggest__suggestion--focused .highlight {
   color: #120000;
 }
+
+.Modal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border:0;
+  outline:0;
+  padding: 50px;
+}
+
+.Overlay {
+  position: fixed;
+  background: rgba(0,0,0,.7);
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+
 `;
 
 const Layout = (props) => (
