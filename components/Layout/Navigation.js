@@ -8,11 +8,12 @@ import Type, { UIFontStack, BangersFontStack } from '../shared/styles/type';
 import { constants } from 'zlib';
 
 const mainNav = {
-  /*position: 'absolute',
-  top: Spacing.Large,
-  left: Spacing.Large,*/
-  'margin-left': Spacing.Large,
-  'margin-top': Spacing.Large,
+  position: 'absolute',
+  top: Spacing.Small,
+  left: Spacing.Small,
+  borderWidth: 2,
+  borderStyle: 'solid',
+  borderColor: UI.Border.Dark,
 };
 
 const linkStyle = {
@@ -22,14 +23,11 @@ const linkStyle = {
   fontWeight: Type.Weight.Bold,
   padding: Spacing.Small,
   display: 'inline-block',
-  borderWidth: 2,
-  borderStyle: 'solid',
-  borderColor: UI.Border.Dark,
   backgroundColor: UI.Background.Yellow,
 };
 
 const Navigation = (props) => (
-  <Flex bg={props.bg || UI.Background.Red} pb={20}>
+  <Flex>
     <Box width={[1 / 2, 1 / 2, 1 / 2]}>
       <div style={mainNav}>
         <Link href="/">

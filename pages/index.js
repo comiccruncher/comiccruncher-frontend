@@ -1,7 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import { withRouter } from 'next/router';
-import { Box } from 'rebass/emotion';
+import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
 import Layout from '../components/Layout/Layout';
@@ -24,14 +24,14 @@ class Home extends React.Component {
         <Head>
           <title>Comic Cruncher!!!</title>
         </Head>
-        <Header>
-          <Box width={[1]}>
-            <HeaderSection>
+        <HeaderSection>
+          <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
+            <Box alignSelf="center">
               <Logo content="Comic Cruncher">Comic Cruncher</Logo>
               <Search />
-            </HeaderSection>
-          </Box>
-        </Header>
+            </Box>
+          </Flex>
+        </HeaderSection>
         <p>
           Total Characters: <CountUp end={s.total_characters} />
         </p>

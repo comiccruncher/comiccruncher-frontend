@@ -7,10 +7,8 @@ import Spacing from '../shared/styles/spacing';
 
 const Character = styled.div(
   {
-    /*
     width: Spacing.xxLarge * 5,
     height: Spacing.xxLarge * 6.25,
-    */
     overflow: 'hidden',
     position: 'relative',
     '& .DisplayName': {

@@ -9,7 +9,6 @@ const HeaderSection = styled('div')({
   backgroundColor: UI.Background.Red,
   height: '520px',
   textAlign: 'center',
-  padding: Spacing.Small,
 });
 
 export default HeaderSection;

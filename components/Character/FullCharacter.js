@@ -56,7 +56,7 @@ class FullCharacter extends React.Component {
     const bio = c.vendor_description.replace(regex, '');
     return (
       <div>
-        <Flex flexWrap="wrap" style={{ 'min-height': '520px', overflow: 'hidden' }} bg={UI.Background.Red}>
+        <Flex flexWrap="wrap" style={{ 'min-height': '520px', overflow: 'hidden' }}>
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}>
             <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>
@@ -64,8 +64,10 @@ class FullCharacter extends React.Component {
             flex="1 0 auto"
             width={[1, `${Dimensions.GoldenRatio.Large}`, 2 / 3]}
             p={32}
+            bg={UI.Background.Red}
             // Need to figure out how to access props properly
-            style={{ backgroundColor: `${props => c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}`, textAlign: 'center' }}
+            // bg={props => c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}
+            style={{ textAlign: 'center' }}
           >
             <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
               <Box alignSelf="center">
