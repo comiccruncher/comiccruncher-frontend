@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="196.2046301094815" width="44.704630109477876">
+  <defs>
+    <path id="path-0" opacity="1" d="M22.352315054738938,2.352315054740572 L22.352315054738938,193.8523150547406 "/>
+    <path id="path-1" opacity="1" d="M2.3523150547389378,2.352315054740572 L2.3523150547389378,93.85231505474057 "/>
+    <path id="path-2" opacity="1" d="M42.35231505473894,2.352315054740572 L42.35231505473894,133.8523150547406 "/>
+  </defs>
+  <g opacity="1">
+    <g opacity="1">
+      <use xlink:href="#path-0" fill-opacity="0" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"/>
+    </g>
+    <g opacity="1">
+      <use xlink:href="#path-1" fill-opacity="0" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"/>
+    </g>
+    <g opacity="1">
+      <use xlink:href="#path-2" fill-opacity="0" stroke="rgb(0,0,0)" stroke-opacity="1" stroke-width="1"/>
+    </g>
+  </g>
+</svg>
