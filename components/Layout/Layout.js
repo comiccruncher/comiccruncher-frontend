@@ -7,12 +7,29 @@ import { injectGlobal } from 'emotion';
 import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
 
+const Halftone = '/static/assets/Halftone.png';
+
 injectGlobal`
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { background-color: ${UI.Background.Gray}; }
-  body { max-width: 1024px; margin: 0 auto; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.08); background-color: ${
-    UI.Background.White
-  };}
+  * {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+  html {
+    background-color: ${UI.Background.Gray};
+  }
+  body {
+    max-width: 1024px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    background-color: ${UI.Background.White};
+    background-image: url('${Halftone}');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: center;
+    background-position-y: calc(100% + 400px);
+  }
 `;
 
 const searchCss = `.react-autosuggest__container {

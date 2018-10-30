@@ -12,6 +12,7 @@ import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
 import { CharacterProps } from '../components/Character/Types';
 import Header from '../components/Layout/Header';
+import Footer from '../components/Layout/Footer';
 
 class Home extends React.Component {
   render() {
@@ -45,6 +46,7 @@ class Home extends React.Component {
           From {s.min_year} to {s.max_year}
         </p>
         <CharactersList characters={this.props.characters} />
+        <Footer />
       </Layout>
     );
   }
