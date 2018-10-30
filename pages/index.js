@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
 import Layout from '../components/Layout/Layout';
 import Logo from '../components/shared/components/Logo';
+import StatBlock from '../components/shared/components/StatBlock';
 import Search from '../components/Search/Search';
 import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
@@ -13,6 +14,8 @@ import CharactersList from '../components/Character/CharactersList';
 import { CharacterProps } from '../components/Character/Types';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
+import Type, { Title, Text } from '../components/shared/styles/type';
+import { UI } from '../components/shared/styles/colors';
 
 class Home extends React.Component {
   render() {
@@ -33,18 +36,24 @@ class Home extends React.Component {
             </Box>
           </Flex>
         </HeaderSection>
-        <p>
-          Total Characters: <CountUp end={s.total_characters} />
-        </p>
-        <p>
-          Total Appearances: <CountUp end={s.total_appearances} />
-        </p>
-        <p>
-          Total Issues: <CountUp end={s.total_issues} />
-        </p>
-        <p>
-          From {s.min_year} to {s.max_year}
-        </p>
+        <Flex justifyContent="center" alignItems="center" alignContent="center" bg={UI.Background.Red}>
+          <StatBlock>
+            <Title.Red><CountUp end={s.total_characters} /></Title.Red>
+            <Text.Default bold>total characters</Text.Default>
+          </StatBlock>
+          <StatBlock>
+            <Title.Red><CountUp end={s.total_appearances} /></Title.Red>
+            <Text.Default bold>total appearances</Text.Default>
+          </StatBlock>
+          <StatBlock>
+            <Title.Red><CountUp end={s.total_issues} /></Title.Red>
+            <Text.Default bold>total issues</Text.Default>
+          </StatBlock>
+          <StatBlock>
+            <Title.Red><CountUp end={s.min_year} /></Title.Red>
+            <Text.Default bold>and on</Text.Default>
+          </StatBlock>
+        </Flex>
         <CharactersList characters={this.props.characters} />
         <Footer />
       </Layout>

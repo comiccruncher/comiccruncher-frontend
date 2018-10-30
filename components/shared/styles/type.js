@@ -42,6 +42,16 @@ const YellowTitle = styled.div({
   marginBottom: Spacing.Large,
 });
 
+const RedTitle = styled.div({
+  color: UI.Text.Red,
+  fontFamily: BangersFontStack,
+  fontSize: Size.XLarge,
+  letterSpacing: 5,
+  fontWeight: Weight.Normal,
+  textShadow: `${TextShadow}`,
+  marginBottom: Spacing.Small,
+});
+
 const SubTitle = styled.div({
   color: UI.Text.White,
   fontFamily: UIFontStack,
@@ -97,6 +107,7 @@ const Title = {};
 Type.Title = Title;
 Title.Large = YellowTitle;
 Title.Byline = SubTitle;
+Title.Red = RedTitle;
 
 // Section
 const Section = {};

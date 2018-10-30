@@ -79,9 +79,9 @@ class FullCharacter extends React.Component {
         </Flex>
         <Flex flexWrap="wrap" py={40}>
           <Box flex="1 1 auto" width={1} px={24}>
-            <Section.Title>Appearances</Section.Title>
+            <Section.Title>Appearances per year</Section.Title>
             <Section.Byline>
-              <CountUp end={appearanceCount} /> total
+              <CountUp end={appearanceCount} /> lifetime total
               {/* TODO: change appearanceCount when someone clicks on main/alt label */}
             </Section.Byline>
             {appearanceCount && (

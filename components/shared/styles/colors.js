@@ -36,6 +36,7 @@ export const UI = {
     Light: Palette.Gray.Light,
     Pale: Palette.Gray.Pale,
     Yellow: Palette.Yellow.Default,
+    Red: Palette.Red.Default,
     Blue: Palette.Blue.Light,
     White: Palette.White.Default
   },
