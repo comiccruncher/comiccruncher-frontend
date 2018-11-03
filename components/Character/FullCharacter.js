@@ -4,7 +4,7 @@ import { Box, Flex } from 'rebass/emotion';
 import AppearanceChart from './AppearanceChart';
 import { UI, Brands } from '../shared/styles/colors';
 import Dimensions from '../shared/styles/dimensions';
-import { Title, Section, Text } from '../shared/styles/type';
+import { Title, Section, Text, TextDefault } from '../shared/styles/type';
 import { FullCharacterProps } from './Types';
 
 const aggregateCountMap = (aggregate) => aggregate.count;
@@ -55,8 +55,8 @@ class FullCharacter extends React.Component {
     const regex = /(<([^>]+)>)/gi;
     const bio = c.vendor_description.replace(regex, '');
     return (
-      <div>
-        <Flex flexWrap="wrap" style={{ 'min-height': '520px', overflow: 'hidden' }}>
+      <React.Fragment>
+        <Flex flexWrap="wrap" style={{ minHeight: '520px', overflow: 'hidden' }}>
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}>
             <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>
@@ -64,24 +64,30 @@ class FullCharacter extends React.Component {
             flex="1 0 auto"
             width={[1, `${Dimensions.GoldenRatio.Large}`, 2 / 3]}
             p={32}
-            bg={UI.Background.Red}
-            // Need to figure out how to access props properly
-            // bg={props => c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}
+            bg={c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}
             style={{ textAlign: 'center' }}
           >
             <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
               <Box alignSelf="center">
-                <Title.Large>{title}</Title.Large>
-                <Title.Byline>{otherName}</Title.Byline>
+                <Title.Large>
+                  <h1>{title}</h1>
+                </Title.Large>
+                <Title.Byline>
+                  <h2>{otherName}</h2>
+                </Title.Byline>
               </Box>
             </Flex>
           </Box>
         </Flex>
         <Flex flexWrap="wrap" py={40}>
           <Box flex="1 1 auto" width={1} px={24}>
-            <Section.Title>Appearances per year</Section.Title>
+            <Section.Title>
+              <h3>Appearances per year</h3>
+            </Section.Title>
             <Section.Byline>
-              <CountUp end={appearanceCount} /> lifetime total
+              <p>
+                <CountUp end={appearanceCount} /> lifetime total
+              </p>
               {/* TODO: change appearanceCount when someone clicks on main/alt label */}
             </Section.Byline>
             {appearanceCount && (
@@ -89,13 +95,19 @@ class FullCharacter extends React.Component {
             )}
           </Box>
         </Flex>
-        <Flex flexWrap="wrap" py={40}>
-          <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={24}>
-            <Section.Title>Bio</Section.Title>
-            <Text.Default>{bio}</Text.Default>
-          </Box>
-        </Flex>
-      </div>
+        {bio && (
+          <Flex flexWrap="wrap" py={40}>
+            <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={24}>
+              <Section.Title>
+                <h3>Bio</h3>
+              </Section.Title>
+              <Text.Default>
+                <p>{bio}</p>
+              </Text.Default>
+            </Box>
+          </Flex>
+        )}
+      </React.Fragment>
     );
   }
 }
