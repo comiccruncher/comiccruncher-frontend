@@ -36,6 +36,15 @@ const Navigation = (props) => (
         <Link href="/about">
           <a style={linkStyle}>About</a>
         </Link>
+        <Link href="/trending">
+          <a style={linkStyle}>Trending</a>
+        </Link>
+        <Link href="/publishers/marvel">
+          <a style={linkStyle}>Marvel</a>
+        </Link>
+        <Link href="/publishers/dc">
+          <a style={linkStyle}>DC</a>
+        </Link>
       </div>
     </Box>
   </Flex>

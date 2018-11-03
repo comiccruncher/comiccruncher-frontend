@@ -48,9 +48,9 @@ class CharactersList extends React.Component {
         this.setState((prevState) => ({
           data: prevState.data.concat(body.data),
         }));
-        if (body.meta.pagination.next_page) {
-          const nextHref = 'https://api.comiccruncher.com' + body.meta.pagination.next_page.link;
-          this.setState({ nextHref: nextHref });
+        const nextPage = body.meta.pagination.next_page;
+        if (nextPage) {
+          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage.link });
         } else {
           this.setState({ hasMoreItems: false, nextHref: null });
         }
@@ -76,7 +76,7 @@ class CharactersList extends React.Component {
    */
   handleModalCloseRequest = () => {
     this.closeModal();
-    Router.push('/');
+    Router.push(this.props.referer);
   };
 
   /**
@@ -93,7 +93,7 @@ class CharactersList extends React.Component {
    */
   showCharacter = (slug) => {
     slug = encodeURIComponent(slug);
-    Router.push(`/?character=${slug}`, `/characters/${slug}`);
+    Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
     if (this.state.currentModal) {
       this.handleModalCloseRequest();
       return;
@@ -109,8 +109,9 @@ class CharactersList extends React.Component {
    */
   listenOnRouteChangeComplete = () => {
     Router.onRouteChangeComplete = (route) => {
+      console.log(route);
       if (this.state.wasModalOpened) {
-        if (route === '/') {
+        if (route === this.props.referer) {
           this.closeModal();
           return;
         }
@@ -173,6 +174,7 @@ const pageProps = PropTypes.shape({
 CharactersList.propTypes = {
   onDismissModal: PropTypes.func,
   onShowCharacter: PropTypes.func,
+  referer: PropTypes.string,
   characters: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,
@@ -190,4 +192,5 @@ CharactersList.propTypes = {
 
 Modal.setAppElement('#__next');
 
+// TODO: Fix modal for marvel and dc route!!!
 export default withRouter(CharactersList);

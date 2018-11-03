@@ -11,7 +11,7 @@ import Search from '../components/Search/Search';
 import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
-import { CharacterProps } from '../components/Character/Types';
+import { RankedCharacterProps } from '../components/Character/Types';
 import Footer from '../components/Layout/Footer';
 import { Title, Text } from '../components/shared/styles/type';
 import { UI } from '../components/shared/styles/colors';
@@ -53,7 +53,7 @@ class Home extends React.Component {
             <Text.Default bold>and on</Text.Default>
           </StatBlock>
         </Flex>
-        <CharactersList characters={this.props.characters} />
+        <CharactersList characters={this.props.characters} referer="/" />
         <Footer />
       </Layout>
     );
@@ -88,7 +88,7 @@ Home.propTypes = {
       status_code: PropTypes.number,
       error: PropTypes.string,
     }),
-    data: PropTypes.arrayOf(CharacterProps),
+    data: PropTypes.arrayOf(RankedCharacterProps),
   }),
 };
 
