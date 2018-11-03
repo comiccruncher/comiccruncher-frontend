@@ -6,7 +6,7 @@ import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
 import Modal from 'react-modal';
-import { CharacterProps } from './Types';
+import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 
 class CharactersList extends React.Component {
@@ -140,7 +140,6 @@ class CharactersList extends React.Component {
                   shouldCloseOnOverlayClick={true}
                   parentSelector={() => document.querySelector('#__next')}
                 >
-                  {/* TODO: load appearances in go app */}
                   <Box width={1152} bg="white">
                     <FullCharacter {...character} />
                   </Box>
@@ -185,7 +184,7 @@ CharactersList.propTypes = {
         next_page: pageProps,
       }),
     }),
-    data: PropTypes.arrayOf(CharacterProps),
+    data: PropTypes.arrayOf(RankedCharacterProps),
   }),
 };
 

@@ -12,9 +12,8 @@ import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
 import { CharacterProps } from '../components/Character/Types';
-import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
-import Type, { Title, Text } from '../components/shared/styles/type';
+import { Title, Text } from '../components/shared/styles/type';
 import { UI } from '../components/shared/styles/colors';
 
 class Home extends React.Component {
