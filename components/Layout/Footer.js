@@ -31,7 +31,9 @@ const Footer = (props) => (
     <FooterContainer>
       <ul>
         <li>
-          <Link href={`/`}>Comic Cruncher</Link>
+          <Link href={`/`}>
+            <a>Comic Cruncher</a>
+          </Link>
         </li>
         <li>
           <Link href={`https://twitter.com/aimeelaplant`}>
