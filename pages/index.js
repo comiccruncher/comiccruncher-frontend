@@ -11,10 +11,9 @@ import Search from '../components/Search/Search';
 import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
-import { CharacterProps } from '../components/Character/Types';
-import Header from '../components/Layout/Header';
+import { RankedCharacterProps } from '../components/Character/Types';
 import Footer from '../components/Layout/Footer';
-import Type, { Title, Text } from '../components/shared/styles/type';
+import { Title, Text } from '../components/shared/styles/type';
 import { UI } from '../components/shared/styles/colors';
 import Spacing from '../components/shared/styles/spacing';
 
@@ -63,7 +62,7 @@ class Home extends React.Component {
               <Text.Default bold>and on</Text.Default>
             </Box>
         </Flex>
-        <CharactersList characters={this.props.characters} />
+        <CharactersList characters={this.props.characters} referer="/" />
         <Footer />
       </Layout>
     );
@@ -98,7 +97,7 @@ Home.propTypes = {
       status_code: PropTypes.number,
       error: PropTypes.string,
     }),
-    data: PropTypes.arrayOf(CharacterProps),
+    data: PropTypes.arrayOf(RankedCharacterProps),
   }),
 };
 

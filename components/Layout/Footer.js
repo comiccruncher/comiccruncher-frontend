@@ -1,23 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
-import styled, { css } from 'react-emotion';
-import { Box, Flex } from 'rebass/emotion';
+import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
-import Type, { UIFontStack, Weight } from '../shared/styles/type';
-
-const Halftone = '/static/assets/Halftone.png';
+import { UIFontStack, Weight } from '../shared/styles/type';
 
 const FooterContainer = styled('div')({
   textAlign: 'center',
   padding: Spacing.xLarge,
-  'ul': {
+  ul: {
     listStyle: 'none',
   },
-  'li': {
+  li: {
     display: 'inline-block',
   },
-  'a': {
+  a: {
     color: UI.Text.Dark,
     fontFamily: UIFontStack,
     fontWeight: Weight.Medium,
@@ -25,30 +22,33 @@ const FooterContainer = styled('div')({
     transition: 'all .3s ease-in-out',
     '&:hover': {
       color: UI.Text.Light,
-    }
-  }
+    },
+  },
 });
 
-class Footer extends React.Component {
-  render() {
-    return (
-      <div>
-        <FooterContainer>
-          <ul>
-            <li>
-              <Link href={`/`}>Comic Cruncher</Link>
-            </li>
-            <li>
-              <Link href={`https://twitter.com/aimeelaplant`}>@aimeelaplant</Link>
-            </li>
-            <li>
-              <Link href={`https://twitter.com/ghanbak`}>@ghanbak</Link>
-            </li>
-          </ul>
-        </FooterContainer>
-      </div>
-    )
-  }
-};
+const Footer = (props) => (
+  <React.Fragment>
+    <FooterContainer>
+      <ul>
+        <li>
+          <Link href={`/`}>
+            <a>Comic Cruncher</a>
+          </Link>
+        </li>
+        <li>
+          <Link href={`https://twitter.com/aimeelaplant`}>
+            <a>@aimeelaplant</a>
+          </Link>
+        </li>
+        <li>
+          <Link href={`https://twitter.com/ghanbak`}>
+            <a>@ghanbak</a>
+          </Link>
+        </li>
+      </ul>
+      {props.children}
+    </FooterContainer>
+  </React.Fragment>
+);
 
 export default Footer;

@@ -13,6 +13,20 @@ app
   .then(() => {
     const server = express();
 
+    server.get('/publishers/marvel', (req, res) => {
+      // `/marvel` is the filename of `/pages/marvel.js
+      // * must pass in req.params for back button to work:
+      // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
+      app.render(req, res, '/marvel', req.params);
+    });
+
+    server.get('/publishers/dc', (req, res) => {
+      // `/dc` is the filename of `/pages/dc.js
+      // * must pass in req.params for back button to work:
+      // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
+      app.render(req, res, '/dc', req.params);
+    });
+
     server.get('/characters/:slug', (req, res) => {
       // `/character` is the filename of `/pages/character.js
       // * must pass in req.params for back button to work:
