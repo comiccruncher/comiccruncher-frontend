@@ -4,9 +4,9 @@ workflows:
   test-build-deploy:
     jobs:
       - install_deps:
-          context: comiccruncher_web
+          context: comiccruncher-web
       - build:
-          context: comiccruncher_web
+          context: comiccruncher-web
           requires:
             - install_deps
           filters:
