@@ -3,7 +3,7 @@ workflows:
   version: 2
   test-build-deploy:
     jobs:
-      - install_deps:
+      - install_deps
       - build:
           requires:
             - install_deps
