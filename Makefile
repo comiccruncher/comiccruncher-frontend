@@ -14,9 +14,12 @@ DOCKER_RUN_AWSCLI = docker run --rm \
 DOCKER_COMPOSE_DEPLOYMENT = docker-compose -f ./deploy/uploads/docker-compose.deploy.yml
 
 DEPLOY_COMMAND = ${DOCKER_COMPOSE_DEPLOYMENT} up \
+	-d \
 	--build \
 	--force-recreate \
 	--remove-orphans
+
+PM2_IMAGE = comiccruncher/frontend:test
 
 # Installs the S3 image.
 docker-pull-awscli:
@@ -54,10 +57,13 @@ yarn-build:
 # Builds the Docker image for PM2.
 # Make sure to build the yarn build first..
 docker-build-pm2:
-	docker build -t comiccruncher/frontend:test -f deploy/Dockerfile .
+	docker build -t ${PM2_IMAGE} -f deploy/Dockerfile .
 
 docker-push-pm2:
-	docker push comiccruncher/frontend:test
+	docker push ${PM2_IMAGE}
+
+docker-pull-pm2:
+	docker pull ${PM2_IMAGE}
 
 docker-compose-deploy:
 	${DEPLOY_COMMAND}
@@ -69,10 +75,10 @@ docker-compose-deploy-rm:
 	${DOCKER_COMPOSE_DEPLOYMENT} rm
 
 remote-upload-deployments:
-	scp -r ./deploy/uploads/ ${WEB_SERVER}:~/deploy/uploads/*
+	scp -r ./deploy/uploads ${WEB_SERVER}:~/deploy
 
 remote-deploy:
-	ssh ${WEB_SERVER} "${DEPLOY_COMMAND}"
+	ssh ${WEB_SERVER} "docker pull ${PM2_IMAGE} && ${DEPLOY_COMMAND}"
 
 # Run docker-compose on the development version.
 docker-compose-deploy-dev:
