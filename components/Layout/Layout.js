@@ -26,6 +26,22 @@ injectGlobal`
     background-size: contain;
     background-position-x: center;
     background-position-y: calc(100% + 400px);
+
+    @media (max-width: 767px) {
+      padding-bottom: 60px;
+      background-size: 180%;
+      background-position-y: calc(100% + 140px);
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: inherit;
+    font-size: inherit;
   }
 
   .react-autosuggest__container {
@@ -59,15 +75,13 @@ injectGlobal`
   .react-autosuggest__container--open .react-autosuggest__suggestions-container {
     display: block;
     position: absolute;
-    /*top: 51px;*/
-    width: 280px;
-    border: 1px solid #aaa;
+    width: 100%;
+    border: 2px solid #121017;
+    border-radius: 0;
     background-color: #fff;
     font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
     z-index: 2;
   }
 
@@ -98,7 +112,6 @@ injectGlobal`
   }
 
   .name {
-
     margin-left: 0;
     line-height: 45px;
   }
@@ -145,6 +158,7 @@ const Layout = (props) => (
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
     </Head>
+    <Navigation />
     {props.children}
   </React.Fragment>
 );

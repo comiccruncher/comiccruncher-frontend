@@ -4,6 +4,7 @@ import { CharacterProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
+import Responsive from '../shared/styles/responsive';
 
 const Character = styled.div(
   {
@@ -40,9 +41,15 @@ const Character = styled.div(
     '& img': {
       zIndex: 0,
       width: '100%',
-      height: Spacing.xxLarge * 6.25,
+      height: 'inherit',
       objectFit: 'cover',
       transition: '0.3s ease-in-out'
+    },
+    [Responsive.Mobile]: {
+      height: Spacing.xxLarge * 9,
+    },
+    [Responsive.Tablet]: {
+      height: Spacing.xxLarge * 8.25,
     },
     '&:hover': {
       cursor: 'pointer',

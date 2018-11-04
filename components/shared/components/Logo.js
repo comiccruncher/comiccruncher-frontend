@@ -3,6 +3,7 @@ import { Box, Flex } from 'rebass/emotion';
 import { UI } from '../styles/colors';
 import Dimensions from '../styles/dimensions';
 import Spacing from '../styles/spacing';
+import Responsive from '../styles/responsive';
 import Type, { UIFontStack, BangersFontStack } from '../styles/type';
 
 const Logo = styled('div')(
@@ -22,14 +23,20 @@ const Logo = styled('div')(
       position: 'absolute',
       color: UI.Text.Blue,
       fontFamily: BangersFontStack,
-      fontSize: Type.Size.XXLarge,
-      letterSpacing: 12,
+      fontSize: 'inherit',
+      letterSpacing: 'inherit',
       fontWeight: Type.Weight.Normal,
       marginBottom: Spacing.Large,
       textShadow: `${Type.TextOutline}`,
       top: '6px',
       left: '-7px',
       zIndex: '-1',
+    },
+    [Responsive.Mobile]: {
+      fontSize: '60px',
+      '&::before': {
+        fontSize: '60px',
+      }
     },
   },
   (props) => props.content && {

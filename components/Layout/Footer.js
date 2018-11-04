@@ -13,6 +13,7 @@ const FooterContainer = styled('div')({
   },
   li: {
     display: 'inline-block',
+    padding: Spacing.Tiny,
   },
   a: {
     color: UI.Text.Dark,

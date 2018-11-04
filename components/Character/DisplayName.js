@@ -5,7 +5,8 @@ import { Text } from '../shared/styles/type';
 export const DisplayName = (props) => (
   <div className="DisplayName">
     <Text.Default bold>{props.name}</Text.Default>
-    <Text.Default>{props.other_name}</Text.Default>
+
+    {/* Can we move these stats to FullCharacter.js? */}
     {props.issue_count &&
       props.issue_count_rank && (
         <Text.Default>

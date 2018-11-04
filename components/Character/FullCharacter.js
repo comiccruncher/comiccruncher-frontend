@@ -1,11 +1,37 @@
 import React from 'react';
+import styled, { css } from 'react-emotion';
 import CountUp from 'react-countup';
 import { Box, Flex } from 'rebass/emotion';
 import AppearanceChart from './AppearanceChart';
 import { UI, Brands } from '../shared/styles/colors';
 import Dimensions from '../shared/styles/dimensions';
+import Responsive from '../shared/styles/responsive';
 import { Title, Section, Text, TextDefault } from '../shared/styles/type';
 import { FullCharacterProps } from './Types';
+
+const AngledBox = css({
+  zIndex: 10,
+  position: 'relative',
+  '&::after': {
+    content: `' '`,
+    width: '100%',
+    height: '100%',
+    zIndex: -1,
+    transform: 'skew(-6deg)',
+    backgroundColor: 'inherit',
+    position: 'absolute',
+    top: 0,
+    left: '-40px',
+    borderLeft: '20px solid ' + UI.Background.White,
+    [Responsive.Mobile]: {
+      borderLeft: 'none',
+      borderTop: '20px solid ' + UI.Background.White,
+      left: 0,
+      top: '-40px',
+      transform: 'skewY(-6deg)',
+    }
+  },
+});
 
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
@@ -57,15 +83,19 @@ class FullCharacter extends React.Component {
     return (
       <React.Fragment>
         <Flex flexWrap="wrap" style={{ minHeight: '520px', overflow: 'hidden' }}>
-          <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 1 / 3]}>
+          <Box
+            flex="1 0 auto"
+            width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}
+            style={{ zIndex: '0' }}>
             <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>
           <Box
             flex="1 0 auto"
-            width={[1, `${Dimensions.GoldenRatio.Large}`, 2 / 3]}
+            width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
             p={32}
             bg={c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}
             style={{ textAlign: 'center' }}
+            className={AngledBox}
           >
             <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
               <Box alignSelf="center">
@@ -86,9 +116,9 @@ class FullCharacter extends React.Component {
                 <h3>Appearances per year</h3>
               </Section.Title>
               <Section.Byline>
-                <p>
+                <Text.Default>
                   <CountUp end={appearanceCount} /> lifetime total
-                </p>
+                </Text.Default>
                 {/* TODO: change appearanceCount when someone clicks on main/alt label */}
               </Section.Byline>
               <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />

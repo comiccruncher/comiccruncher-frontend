@@ -1,53 +1,64 @@
 import React from 'react';
+import styled from 'react-emotion';
 import Link from 'next/link';
 import { Box, Flex } from 'rebass/emotion';
 import { UI } from '../shared/styles/colors';
 import Dimensions from '../shared/styles/dimensions';
 import Spacing from '../shared/styles/spacing';
+import Responsive from '../shared/styles/responsive';
 import Type, { UIFontStack, BangersFontStack } from '../shared/styles/type';
 import { constants } from 'zlib';
 
-const mainNav = {
+const MainNav = styled(Flex)({
   position: 'absolute',
   top: Spacing.Small,
   left: Spacing.Small,
+  backgroundColor: UI.Background.Yellow,
   borderWidth: 2,
   borderStyle: 'solid',
-  borderColor: UI.Border.Dark,
-  backgroundColor: UI.Background.Yellow,
-};
+  zIndex: 999,
+  [Responsive.Mobile]: {
+    position: 'fixed',
+    top: 'auto',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+  },
+});
 
-const linkStyle = {
+const LinkStyle = styled('a')({
   color: UI.Text.Dark,
   textDecoration: 'none',
   fontFamily: UIFontStack,
   fontWeight: Type.Weight.Bold,
   padding: Spacing.Small,
   display: 'inline-block',
-};
+  [Responsive.Mobile]: {
+    paddingLeft: Spacing.Tiny,
+    paddingRight: Spacing.Tiny,
+  },
+});
 
 const Navigation = (props) => (
-  <Flex>
-    <Box width={[1 / 2, 1 / 2, 1 / 2]}>
-      <div style={mainNav}>
-        <Link href="/">
-          <a style={linkStyle}>Home</a>
-        </Link>
-        <Link href="/about">
-          <a style={linkStyle}>About</a>
-        </Link>
-        <Link href="/trending">
-          <a style={linkStyle}>Trending</a>
-        </Link>
-        <Link href="/publishers/marvel">
-          <a style={linkStyle}>Marvel</a>
-        </Link>
-        <Link href="/publishers/dc">
-          <a style={linkStyle}>DC</a>
-        </Link>
-      </div>
+  <MainNav
+    justifyContent="space-around"
+    alignItems="center"
+    alignContent="center">
+    <Box>
+      <Link href="/">
+        <LinkStyle>Home</LinkStyle>
+      </Link>
+      <Link href="/trending">
+        <LinkStyle>Trending</LinkStyle>
+      </Link>
+      <Link href="/publishers/marvel">
+        <LinkStyle>Marvel</LinkStyle>
+      </Link>
+      <Link href="/publishers/dc">
+        <LinkStyle>DC</LinkStyle>
+      </Link>
     </Box>
-  </Flex>
+  </MainNav>
 );
 
 export default Navigation;

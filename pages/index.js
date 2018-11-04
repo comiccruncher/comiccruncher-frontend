@@ -32,18 +32,23 @@ class Home extends React.Component {
           <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
             <Box alignSelf="center">
               <Logo content="Comic Cruncher">Comic Cruncher</Logo>
-              <Search />
             </Box>
           </Flex>
         </HeaderSection>
+        <Flex justifyContent="center" alignItems="center" alignContent="center" height={Spacing.Small}>
+          <Box alignSelf="center" style={{ width: '80%' }}>
+            <Search />
+          </Box>
+        </Flex>
         <Flex
           justifyContent="space-between"
           alignItems="center"
           alignContent="center"
           flexWrap="wrap"
           bg={UI.Background.Blue}
-          my={Spacing.Small}
-          py={Spacing.Large}
+          mb={Spacing.Small}
+          pt={Spacing.xxLarge}
+          pb={Spacing.Large}
           px={Spacing.xxLarge}>
             <Box width={[1, 1 / 2, 1 / 3, 1 / 4]} className={StatBlock}>
               <Title.Red><CountUp end={s.total_characters} /></Title.Red>
