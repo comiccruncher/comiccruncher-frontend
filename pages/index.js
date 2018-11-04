@@ -50,21 +50,37 @@ class Home extends React.Component {
           pt={Spacing.xxLarge}
           pb={Spacing.Large}
           px={Spacing.xxLarge}>
-            <Box width={[1, 1 / 2, 1 / 3, 1 / 4]} className={StatBlock}>
+            <Box
+              width={[1, 1 / 2, 1 / 3, 1 / 4]}
+              className={StatBlock}
+              style={{ transform: 'rotate(6deg)' }}
+            >
               <Title.Red><CountUp end={s.total_characters} /></Title.Red>
-              <Text.Default bold>total characters</Text.Default>
+              <Text.Default bold>characters</Text.Default>
             </Box>
-            <Box width={[1, 1 / 2, 1 / 3, 1 / 4]} className={StatBlock}>
+            <Box
+              width={[1, 1 / 2, 1 / 3, 1 / 4]}
+              className={StatBlock}
+              style={{ transform: 'rotate(-4deg)' }}
+            >
               <Title.Red><CountUp end={s.total_appearances} /></Title.Red>
-              <Text.Default bold>total appearances</Text.Default>
+              <Text.Default bold>appearances</Text.Default>
             </Box>
-            <Box width={[1, 1 / 2, 1 / 3, 1 / 4]} className={StatBlock}>
+            <Box
+              width={[1, 1 / 2, 1 / 3, 1 / 4]}
+              className={StatBlock}
+              style={{ transform: 'rotate(3deg)' }}
+            >
               <Title.Red><CountUp end={s.total_issues} /></Title.Red>
-              <Text.Default bold>total issues</Text.Default>
+              <Text.Default bold>issues</Text.Default>
             </Box>
-            <Box width={[1, 1 / 2, 1 / 3, 1 / 4]} className={StatBlock}>
+            <Box
+              width={[1, 1 / 2, 1 / 3, 1 / 4]}
+              className={StatBlock}
+              style={{ transform: 'rotate(-6deg)' }}
+            >
+              <Text.Default bold>dating from</Text.Default>
               <Title.Red><CountUp end={s.min_year} /></Title.Red>
-              <Text.Default bold>and on</Text.Default>
             </Box>
         </Flex>
         <CharactersList characters={this.props.characters} referer="/" />
