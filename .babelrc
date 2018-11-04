@@ -1,27 +1,9 @@
 {
     "compact": true,
     "presets": [
-        [
-            "@babel/preset-env",
-            {
-                "modules": false,
-                "targets": {
-                    "browsers": ["last 3 versions", "ie >= 8"]
-                }
-            }
-        ],
-        "@babel/preset-react",
         "next/babel"
     ],
     "plugins": [
-        "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-runtime",
         ["emotion", { "hoist": true, "inline": true }]
-    ],
-    "env": {
-        "test": {
-            "plugins": ["@babel/plugin-transform-modules-commonjs"]
-        }
-    }
+    ]
 }
