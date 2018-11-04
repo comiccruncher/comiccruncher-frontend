@@ -4,14 +4,12 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-if (!dev) {
-  app.setAssetPrefix('https://flash.comiccruncher.com');
-}
-
 app
   .prepare()
   .then(() => {
     const server = express();
+
+    server.disable('x-powered-by');
 
     server.get('/publishers/marvel', (req, res) => {
       // `/marvel` is the filename of `/pages/marvel.js

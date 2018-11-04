@@ -1,0 +1,62 @@
+version: 2
+workflows:
+  version: 2
+  test-build-deploy:
+    jobs:
+      - install_deps:
+          context: comiccruncher_web
+      - build:
+          context: comiccruncher_web
+          requires:
+            - install_deps
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+jobs:
+  install_deps:
+    docker:
+      - image: circleci/node:10.12
+    steps:
+      - checkout
+      - restore_cache:
+          keys: 
+            - node_modules-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies.
+          command: yarn install
+      - save_cache:
+          key: node_modules-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+    build:
+      machine: true
+      docker:
+        - image: circleci/node:10.12
+      steps:
+        - checkout
+        - run:
+            name: Upload to S3.
+            command: make remote-upload
+        - restore_cache:
+            keys: 
+              - node_modules-{{ checksum "yarn.lock" }}
+        - run:
+            name: Build the application.
+            command: yarn build
+        - run:
+            name: Upload assets to S3.
+            command: make docker-upload-s3 > /dev/null
+        - run:
+            name: Login to docker.
+            command: docker login -u $CC_DOCKER_USER -p $CC_DOCKER_PASS > /dev/null
+        - run:
+            name: Build the docker image.
+            command: docker-build-pm2
+        - run:
+            name: Push the docker image.
+            command: docker-push-pm2
+        - run:
+            name: Upload deployment-related files.
+            command: make remote-upload-deployments
