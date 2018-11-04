@@ -28,6 +28,7 @@ export const UI = {
   Border: {
     Dark: Palette.Gray.Dark,
     Default: Palette.Gray.Default,
+    Light: Palette.Gray.Light,
     White: Palette.White.Default
   },
   Text: {

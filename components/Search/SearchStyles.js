@@ -7,7 +7,7 @@ import Type, { UIFontStack, BangersFontStack, Size } from '../shared/styles/type
 import Dimensions from '../shared/styles/dimensions';
 
 export const SearchBar = css({
-  border: '1px solid ' + UI.Border.Dark,
+  border: '2px solid ' + UI.Border.Dark,
   backgroundColor: UI.Background.White,
   boxShadow: `-4px 4px 0 ${UI.Text.Dark}`,
   padding: Spacing.Small,

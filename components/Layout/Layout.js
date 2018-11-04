@@ -56,7 +56,7 @@ injectGlobal`
     font-weight: 300;
     font-size: 16px;
     border: 1px solid #aaa;
-    border-radius: 4px;
+    border-radius: 0;
   }
 
   .react-autosuggest__input:focus {
@@ -76,13 +76,14 @@ injectGlobal`
     display: block;
     position: absolute;
     width: 100%;
-    border: 2px solid #121017;
+    border: 2px solid ${UI.Border.Dark};
     border-radius: 0;
-    background-color: #fff;
+    background-color: ${UI.Background.White};
     font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
     z-index: 2;
+    top: 32px;
   }
 
   .react-autosuggest__suggestions-list {
@@ -93,16 +94,21 @@ injectGlobal`
 
   .react-autosuggest__suggestion {
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 16px;
   }
 
   .react-autosuggest__suggestion:not(:first-child) {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid ${UI.Border.Light};
+  }
+
+  .react-autosuggest__suggestion--highlighted {
+    background: ${UI.Background.Gray};
+    outline: normal;
   }
 
   .react-autosuggest__suggestion--focused {
-    background-color: #0C7EAF;
-    color: #fff;
+    background-color: ${UI.Background.Gray};
+    color: ${UI.Text.White};
   }
 
   .suggestion-content {
