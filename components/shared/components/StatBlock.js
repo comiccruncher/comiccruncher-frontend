@@ -1,4 +1,6 @@
-import styled from 'react-emotion';
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled, { css } from 'react-emotion';
 import { Box, Flex } from 'rebass/emotion';
 import { UI } from '../styles/colors';
 import Dimensions from '../styles/dimensions';
@@ -7,12 +9,14 @@ import Type, { UIFontStack, BangersFontStack } from '../styles/type';
 
 const Bang = '/static/assets/bang.svg';
 
-const StatBlock = styled('div')({
+const StatBlock = css({
   backgroundImage: `url(${Bang})`,
   backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
+  backgroundSize: 'contain',
   backgroundPosition: 'center',
   textAlign: 'center',
+  paddingTop: Spacing.xxLarge,
+  paddingBottom: Spacing.xxLarge
 });
 
 export default StatBlock;

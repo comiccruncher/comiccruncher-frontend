@@ -151,7 +151,6 @@ const Layout = (props) => (
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
       <style type="text/css">{searchCss}</style>
     </Head>
-    <Navigation />
     {props.children}
   </React.Fragment>
 );

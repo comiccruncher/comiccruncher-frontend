@@ -7,7 +7,7 @@ import Spacing from '../shared/styles/spacing';
 
 const Character = styled.div(
   {
-    width: Spacing.xxLarge * 5,
+    width: '100%',
     height: Spacing.xxLarge * 6.25,
     overflow: 'hidden',
     position: 'relative',
@@ -39,7 +39,7 @@ const Character = styled.div(
     },
     '& img': {
       zIndex: 0,
-      width: Spacing.xxLarge * 5,
+      width: '100%',
       height: Spacing.xxLarge * 6.25,
       objectFit: 'cover',
       transition: '0.3s ease-in-out'

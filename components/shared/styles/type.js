@@ -45,11 +45,10 @@ const YellowTitle = styled.div({
 const RedTitle = styled.div({
   color: UI.Text.Red,
   fontFamily: BangersFontStack,
-  fontSize: Size.XLarge,
+  fontSize: Size.Large,
   letterSpacing: 5,
   fontWeight: Weight.Normal,
   textShadow: `${TextShadow}`,
-  marginBottom: Spacing.Small,
 });
 
 const SubTitle = styled.div({

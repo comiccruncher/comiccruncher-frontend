@@ -7,8 +7,9 @@ import Type, { UIFontStack, BangersFontStack } from '../styles/type';
 
 const HeaderSection = styled('div')({
   backgroundColor: UI.Background.Red,
-  height: '520px',
+  minHeight: '520px',
   textAlign: 'center',
+  padding: Spacing.xxLarge,
 });
 
 export default HeaderSection;

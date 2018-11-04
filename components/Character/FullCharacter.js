@@ -77,24 +77,26 @@ class FullCharacter extends React.Component {
             </Flex>
           </Box>
         </Flex>
-        <Flex flexWrap="wrap" py={40}>
-          <Box flex="1 1 auto" width={1} px={24}>
-            <Section.Title>Appearances per year</Section.Title>
-            <Section.Byline>
-              <CountUp end={appearanceCount} /> lifetime total
-              {/* TODO: change appearanceCount when someone clicks on main/alt label */}
-            </Section.Byline>
-            {appearanceCount && (
+        {appearanceCount && (
+          <Flex flexWrap="wrap" py={40}>
+            <Box flex="1 1 auto" width={1} px={24}>
+              <Section.Title>Appearances per year</Section.Title>
+              <Section.Byline>
+                <CountUp end={appearanceCount} /> lifetime total
+                {/* TODO: change appearanceCount when someone clicks on main/alt label */}
+              </Section.Byline>
               <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
-            )}
-          </Box>
-        </Flex>
-        <Flex flexWrap="wrap" py={40}>
-          <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={24}>
-            <Section.Title>Bio</Section.Title>
-            <Text.Default>{bio}</Text.Default>
-          </Box>
-        </Flex>
+            </Box>
+          </Flex>
+        )}
+        {bio && (
+          <Flex flexWrap="wrap" py={40}>
+            <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={24}>
+              <Section.Title>Bio</Section.Title>
+              <Text.Default>{bio}</Text.Default>
+            </Box>
+          </Flex>
+        )}
       </div>
     );
   }

@@ -14,6 +14,7 @@ const mainNav = {
   borderWidth: 2,
   borderStyle: 'solid',
   borderColor: UI.Border.Dark,
+  backgroundColor: UI.Background.Yellow,
 };
 
 const linkStyle = {
@@ -23,7 +24,6 @@ const linkStyle = {
   fontWeight: Type.Weight.Bold,
   padding: Spacing.Small,
   display: 'inline-block',
-  backgroundColor: UI.Background.Yellow,
 };
 
 const Navigation = (props) => (
