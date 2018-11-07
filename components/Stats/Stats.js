@@ -47,9 +47,9 @@ export const Stats = (props) => (
   </React.Fragment>
 );
 
-Stats.PropTypes = {
-  total_characters: PropTypes.number,
-  total_appearances: PropTypes.number,
-  total_issues: PropTypes.number,
-  min_year: PropTypes.number,
+Stats.propTypes = {
+  total_characters: PropTypes.number.isRequired,
+  total_appearances: PropTypes.number.isRequired,
+  total_issues: PropTypes.number.isRequired,
+  min_year: PropTypes.number.isRequired,
 };
