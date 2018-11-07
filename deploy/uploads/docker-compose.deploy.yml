@@ -1,21 +1,42 @@
 version: "3.1"
 services:
-  pm2:
+  #letsencrypt:
+  #  image: linuxserver/letsencrypt
+  #  depends_on:
+  #    - nginx
+  #  environment:
+  #    - EMAIL=aimee@aimeelaplant.com
+  #    - URL=comiccruncher.com
+  #    - SUBDOMAINS=www
+  #    - TZ=America/NewYork
+  #    - VALIDATION=dns
+  #    - PUID=1001
+  #    - PGID=1001
+  frontend1:
+    restart: always
+    image: comiccruncher/frontend:test
+  frontend2:
+    restart: always
+    image: comiccruncher/frontend:test
+  frontend3:
+    restart: always
+    image: comiccruncher/frontend:test
+  frontend4:
     restart: always
     image: comiccruncher/frontend:test
   nginx:
     restart: always
     image: nginx:1.15-alpine
     links:
-      - pm2
+      - frontend1
+      - frontend2
+      - frontend3
+      - frontend4
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx:/etc/nginx
-    links:
-      - pm2
-    depends_on:
-      - pm2
   log:
     restart: always
     image: gliderlabs/logspout
