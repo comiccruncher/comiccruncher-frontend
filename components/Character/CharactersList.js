@@ -20,6 +20,7 @@ class CharactersList extends React.Component {
       error: null,
       currentModal: null,
       wasModalOpened: false,
+      currentCharacter: null,
     };
   }
 
@@ -99,9 +100,16 @@ class CharactersList extends React.Component {
       this.handleModalCloseRequest();
       return;
     }
+    this.loadCharacter(slug);
+  };
 
-    this.setState({
-      currentModal: slug,
+  /**
+   * Loads the character.
+   */
+  loadCharacter = (slug) => {
+    const link = 'https://api.comiccruncher.com/characters/' + encodeURIComponent(slug) + '?key=batmansmellsbadly';
+    request.get(link).then((res) => {
+      this.setState({ currentCharacter: res.body.data, currentModal: slug });
     });
   };
 
@@ -143,8 +151,13 @@ class CharactersList extends React.Component {
                   parentSelector={() => document.querySelector('#__next')}
                 >
                   <Box width={1152} bg="white" style={{ position: 'relative' }}>
-                    <Button onClick={this.closeModal} style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}>Close</Button>
-                    <FullCharacter {...character} />
+                    <Button
+                      onClick={this.closeModal}
+                      style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
+                    >
+                      Close
+                    </Button>
+                    <FullCharacter {...this.state.currentCharacter} />
                   </Box>
                 </Modal>
                 <a href={`/characters/${character.slug}`} onClick={this.toggleModal(character.slug)}>
