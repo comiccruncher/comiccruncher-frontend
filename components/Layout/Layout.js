@@ -140,7 +140,7 @@ injectGlobal`
     justify-content: center;
     border:0;
     outline:0;
-    padding: 50px;
+    margin: 50px;
   }
 
   .Overlay {

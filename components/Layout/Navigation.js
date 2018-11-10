@@ -8,35 +8,16 @@ import Spacing from '../shared/styles/spacing';
 import Responsive from '../shared/styles/responsive';
 import Type, { UIFontStack, BangersFontStack } from '../shared/styles/type';
 import { constants } from 'zlib';
+import Logo from '../shared/components/Logo';
 
 const MainNav = styled(Flex)({
   position: 'absolute',
-  top: Spacing.Small,
-  left: Spacing.Small,
-  backgroundColor: UI.Background.Yellow,
-  borderWidth: 2,
-  borderStyle: 'solid',
+  top: 0,
+  left: 0,
+  width: '100%',
   zIndex: 999,
   [Responsive.Mobile]: {
     position: 'fixed',
-    top: 'auto',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-  },
-});
-
-const LinkStyle = styled('a')({
-  color: UI.Text.Dark,
-  textDecoration: 'none',
-  fontFamily: UIFontStack,
-  fontWeight: Type.Weight.Bold,
-  padding: Spacing.Small,
-  display: 'inline-block',
-  cursor: 'pointer',
-  [Responsive.Mobile]: {
-    paddingLeft: Spacing.Tiny,
-    paddingRight: Spacing.Tiny,
   },
 });
 
@@ -47,16 +28,7 @@ const Navigation = (props) => (
     alignContent="center">
     <Box>
       <Link href="/">
-        <LinkStyle>Home</LinkStyle>
-      </Link>
-      <Link href="/trending">
-        <LinkStyle>Trending</LinkStyle>
-      </Link>
-      <Link href="/publishers/marvel">
-        <LinkStyle>Marvel</LinkStyle>
-      </Link>
-      <Link href="/publishers/dc">
-        <LinkStyle>DC</LinkStyle>
+        <Logo content="Comic Cruncher" style={{ cursor: 'pointer' }}>Comic Cruncher</Logo>
       </Link>
     </Box>
   </MainNav>

@@ -10,11 +10,11 @@ const Logo = styled('div')(
   {
     color: UI.Text.Yellow,
     fontFamily: BangersFontStack,
-    fontSize: Type.Size.XXLarge,
-    letterSpacing: 12,
+    fontSize: Type.Size.Large,
+    letterSpacing: 6,
     fontWeight: Type.Weight.Normal,
-    marginTop: Spacing.xxLarge * 2,
-    marginBottom: Spacing.xxLarge * 2,
+    marginTop: Spacing.Large,
+    marginBottom: Spacing.Large,
     textShadow: `${Type.TextOutline}`,
     transform: 'rotate(-3deg)',
     position: 'relative',
@@ -22,21 +22,18 @@ const Logo = styled('div')(
     '&::before': {
       position: 'absolute',
       color: UI.Text.Blue,
-      fontFamily: BangersFontStack,
+      fontFamily: 'inherit',
       fontSize: 'inherit',
       letterSpacing: 'inherit',
-      fontWeight: Type.Weight.Normal,
+      fontWeight: 'inherit',
       marginBottom: Spacing.Large,
       textShadow: `${Type.TextOutline}`,
-      top: '6px',
-      left: '-7px',
+      top: '3px',
+      left: '-4px',
       zIndex: '-1',
     },
     [Responsive.Mobile]: {
       fontSize: '60px',
-      '&::before': {
-        fontSize: '60px',
-      }
     },
   },
   (props) => props.content && {

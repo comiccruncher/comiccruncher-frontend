@@ -29,23 +29,13 @@ class Home extends React.Component {
           <title>Comic Cruncher!!!</title>
         </Head>
         <HeaderSection>
-          <Flex justifyContent="center" alignItems="center" alignContent="center">
-            <Box alignSelf="center">
-              <Logo content="Comic Cruncher">Comic Cruncher</Logo>
-            </Box>
-          </Flex>
-          <Flex justifyContent="center" alignItems="center" alignContent="center">
-            <Box alignSelf="center" style={{ width: '80%' }}>
-              <Search />
-            </Box>
-          </Flex>
           <Flex
             justifyContent="space-between"
             alignItems="center"
             alignContent="center"
             flexWrap="wrap"
             mb={Spacing.Small}
-            pt={Spacing.xxLarge}
+            pt={Spacing.xxLarge * 2}
             pb={Spacing.Large}
             px={Spacing.xxLarge}>
               <Box
@@ -80,6 +70,11 @@ class Home extends React.Component {
                 <Text.Default bold>dating from</Text.Default>
                 <Title.Red><CountUp end={s.min_year} /></Title.Red>
               </Box>
+          </Flex>
+          <Flex justifyContent="center" alignItems="center" alignContent="center">
+            <Box alignSelf="center" style={{ width: '80%' }}>
+              <Search />
+            </Box>
           </Flex>
         </HeaderSection>
         <CharactersList characters={this.props.characters} referer="/" />
