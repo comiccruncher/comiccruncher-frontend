@@ -13,10 +13,11 @@ DOCKER_RUN_AWSCLI = docker run --rm \
 
 DOCKER_COMPOSE_DEPLOYMENT = docker-compose -f ./deploy/uploads/docker-compose.deploy.yml
 
+DOCKER_COMPOSE_DEV = docker-compose -f docker-compose.yml
+
 DEPLOY_COMMAND = ${DOCKER_COMPOSE_DEPLOYMENT} up \
 	-d \
 	--build \
-	--force-recreate \
 	--remove-orphans
 
 PM2_IMAGE = comiccruncher/frontend:test
@@ -81,5 +82,15 @@ remote-deploy:
 	ssh ${WEB_SERVER} "docker pull ${PM2_IMAGE} && ${DEPLOY_COMMAND}"
 
 # Run docker-compose on the development version.
+# Make sure to run `yarn build` to build the production files.
+# This is for testing the production build on development.
+# If you want to run the NextJS app on dev, then run `yarn dev`.
 docker-compose-deploy-dev:
-	docker-compose -f docker-compose.yml up --build --force-recreate
+	${DOCKER_COMPOSE_DEV} up --build --force-recreate
+
+docker-compose-deploy-dev-stop:
+	${DOCKER_COMPOSE_DEV} stop
+
+
+docker-compose-deploy-dev-rm:
+	${DOCKER_COMPOSE_DEV} stop
