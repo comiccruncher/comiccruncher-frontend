@@ -11,7 +11,7 @@ export const SearchBar = css({
   backgroundColor: UI.Background.White,
   boxShadow: `-4px 4px 0 ${UI.Text.Dark}`,
   padding: Spacing.Small,
-  margin: '-40px auto',
+  margin: '0 auto',
   width: '100%',
   color: UI.Text.Default,
   fontFamily: UIFontStack,

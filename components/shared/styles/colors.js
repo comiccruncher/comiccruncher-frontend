@@ -48,7 +48,8 @@ export const UI = {
     White: Palette.White.Default,
     Dark: Palette.Gray.Dark,
     Yellow: Palette.Yellow.Default,
-    Gray: Palette.Gray.Pale
+    Gray: Palette.Gray.Pale,
+    DarkGradient: `radial-gradient(${Palette.Gray.Default}, ${Palette.Gray.Dark})`,
   }
 };
 

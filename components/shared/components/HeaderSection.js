@@ -6,7 +6,7 @@ import Spacing from '../styles/spacing';
 import Type, { UIFontStack, BangersFontStack } from '../styles/type';
 
 const HeaderSection = styled('div')({
-  backgroundColor: UI.Background.Red,
+  background: UI.Background.DarkGradient,
   minHeight: '420px',
   textAlign: 'center',
   padding: Spacing.xxLarge,
