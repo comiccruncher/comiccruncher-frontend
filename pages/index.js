@@ -3,19 +3,16 @@ import request from 'superagent';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
-import CountUp from 'react-countup';
 import Layout from '../components/Layout/Layout';
 import Logo from '../components/shared/components/Logo';
-import StatBlock from '../components/shared/components/StatBlock';
 import Search from '../components/Search/Search';
 import HeaderSection from '../components/shared/components/HeaderSection';
 import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import Footer from '../components/Layout/Footer';
-import { Title, Text } from '../components/shared/styles/type';
-import { UI } from '../components/shared/styles/colors';
 import Spacing from '../components/shared/styles/spacing';
+import { Stats } from '../components/Stats/Stats';
 
 class Home extends React.Component {
   render() {
@@ -37,39 +34,9 @@ class Home extends React.Component {
             mb={Spacing.Small}
             pt={Spacing.xxLarge * 2}
             pb={Spacing.Large}
-            px={Spacing.xxLarge}>
-              <Box
-                width={[1, 1 / 2, 1 / 3, 1 / 4]}
-                className={StatBlock}
-                style={{ transform: 'rotate(6deg)' }}
-              >
-                <Title.Red><CountUp end={s.total_characters} /></Title.Red>
-                <Text.Default bold>characters</Text.Default>
-              </Box>
-              <Box
-                width={[1, 1 / 2, 1 / 3, 1 / 4]}
-                className={StatBlock}
-                style={{ transform: 'rotate(-4deg)' }}
-              >
-                <Title.Red><CountUp end={s.total_appearances} /></Title.Red>
-                <Text.Default bold>appearances</Text.Default>
-              </Box>
-              <Box
-                width={[1, 1 / 2, 1 / 3, 1 / 4]}
-                className={StatBlock}
-                style={{ transform: 'rotate(3deg)' }}
-              >
-                <Title.Red><CountUp end={s.total_issues} /></Title.Red>
-                <Text.Default bold>issues</Text.Default>
-              </Box>
-              <Box
-                width={[1, 1 / 2, 1 / 3, 1 / 4]}
-                className={StatBlock}
-                style={{ transform: 'rotate(-6deg)' }}
-              >
-                <Text.Default bold>dating from</Text.Default>
-                <Title.Red><CountUp end={s.min_year} /></Title.Red>
-              </Box>
+            px={Spacing.xxLarge}
+          >
+            <Stats {...s} />
           </Flex>
           <Flex justifyContent="center" alignItems="center" alignContent="center">
             <Box alignSelf="center" style={{ width: '80%' }}>
