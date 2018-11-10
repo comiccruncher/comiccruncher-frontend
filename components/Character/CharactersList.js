@@ -8,6 +8,7 @@ import Button from '../shared/components/Button';
 import Modal from 'react-modal';
 import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
+import Spacing from '../shared/styles/spacing';
 
 class CharactersList extends React.Component {
   constructor(props) {
@@ -141,7 +142,8 @@ class CharactersList extends React.Component {
                   shouldCloseOnOverlayClick={true}
                   parentSelector={() => document.querySelector('#__next')}
                 >
-                  <Box width={1152} bg="white">
+                  <Box width={1152} bg="white" style={{ position: 'relative' }}>
+                    <Button onClick={this.closeModal} style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}>Close</Button>
                     <FullCharacter {...character} />
                   </Box>
                 </Modal>

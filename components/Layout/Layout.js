@@ -83,7 +83,7 @@ injectGlobal`
     font-weight: 300;
     font-size: 16px;
     z-index: 2;
-    top: 32px;
+    top: 100%;
   }
 
   .react-autosuggest__suggestions-list {

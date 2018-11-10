@@ -1,5 +1,5 @@
 import styled from 'react-emotion';
-import Colors from '../styles/colors';
+import { UI } from '../styles/colors';
 import Dimensions from '../styles/dimensions';
 import Spacing from '../styles/spacing';
 import Type, { UIFontStack, BangersFontStack } from '../styles/type';
@@ -12,6 +12,8 @@ const Button = styled.button(
     fontSize: Type.Size.Default,
     fontFamily: UIFontStack,
     fontWeight: Type.Weight.Medium,
+    backgroundColor: UI.Background.Dark,
+    color: UI.Text.White,
     paddingTop: Spacing.Tiny,
     paddingBottom: Spacing.Tiny,
     paddingLeft: Spacing.Large,
@@ -21,16 +23,17 @@ const Button = styled.button(
   },
   (props) =>
     props.type === 'primary' && {
-      backgroundColor: Colors.UI.Background.Blue,
-      color: Colors.UI.Text.White,
+      backgroundColor: UI.Background.Blue,
       '&:hover': {
-        backgroundColor: Colors.UI.Background.BlueHover,
+        backgroundColor: UI.Background.BlueHover,
       },
     },
   (props) =>
     props.disabled && {
       opacity: '0.3',
       cursor: 'not-allowed',
+      backgroundColor: UI.Background.Gray,
+      color: UI.Text.Dark,
     }
 );
 

@@ -33,6 +33,7 @@ const LinkStyle = styled('a')({
   fontWeight: Type.Weight.Bold,
   padding: Spacing.Small,
   display: 'inline-block',
+  cursor: 'pointer',
   [Responsive.Mobile]: {
     paddingLeft: Spacing.Tiny,
     paddingRight: Spacing.Tiny,
