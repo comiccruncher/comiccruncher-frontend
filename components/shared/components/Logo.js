@@ -32,9 +32,6 @@ const Logo = styled('div')(
       left: '-4px',
       zIndex: '-1',
     },
-    [Responsive.Mobile]: {
-      fontSize: '60px',
-    },
   },
   (props) => props.content && {
     '&::before': {

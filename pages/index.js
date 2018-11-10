@@ -34,7 +34,7 @@ class Home extends React.Component {
             mb={Spacing.Small}
             pt={Spacing.xxLarge * 2}
             pb={Spacing.Large}
-            px={Spacing.xxLarge}
+            px={Spacing.xxLarge, Spacing.Large, 0}
           >
             <Stats {...s} />
           </Flex>

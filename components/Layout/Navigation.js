@@ -13,12 +13,9 @@ import Logo from '../shared/components/Logo';
 const MainNav = styled(Flex)({
   position: 'absolute',
   top: 0,
-  left: 0,
-  width: '100%',
+  left: Spacing.Large,
+  width: 'auto',
   zIndex: 999,
-  [Responsive.Mobile]: {
-    position: 'fixed',
-  },
 });
 
 const Navigation = (props) => (

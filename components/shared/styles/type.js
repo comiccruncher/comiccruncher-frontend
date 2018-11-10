@@ -21,7 +21,12 @@ const Weight = {
   Bold: 700,
 };
 
-const TextOutline = `-2px -2px 0 ${UI.Text.Dark},
+const TextOutline = `-1px -1px 0 ${UI.Text.Dark},
+  1px -1px 0 ${UI.Text.Dark},
+  -1px 1px 0 ${UI.Text.Dark},
+  1px 1px 0 ${UI.Text.Dark}`;
+
+const TextOutlineBig = `-2px -2px 0 ${UI.Text.Dark},
   2px -2px 0 ${UI.Text.Dark},
   -2px 2px 0 ${UI.Text.Dark},
   2px 2px 0 ${UI.Text.Dark}`;
@@ -100,6 +105,7 @@ Type.Weight = Weight;
 Type.Size = Size;
 Type.TextShadow = TextShadow;
 Type.TextOutline = TextOutline;
+Type.TextOutlineBig = TextOutlineBig;
 
 // Large Title
 const Title = {};
