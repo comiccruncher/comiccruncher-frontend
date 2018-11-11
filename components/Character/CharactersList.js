@@ -10,6 +10,7 @@ import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
 import Layout from '../Layout/Layout';
+import { LoadingIcon } from '../shared/components/LoadingIcon';
 
 class CharactersList extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class CharactersList extends React.Component {
       currentModal: null,
       wasModalOpened: false,
       currentCharacter: null,
+      isLoading: false,
     };
   }
 
@@ -40,6 +42,7 @@ class CharactersList extends React.Component {
    * Loads data for the next page.
    */
   loadData = () => {
+    this.setState({ isLoading: true });
     let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page.link;
     if (this.state.nextHref) {
       link = this.state.nextHref;
@@ -50,6 +53,7 @@ class CharactersList extends React.Component {
         const body = res.body;
         this.setState((prevState) => ({
           data: prevState.data.concat(body.data),
+          isLoading: false,
         }));
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
@@ -172,11 +176,13 @@ class CharactersList extends React.Component {
         </Flex>
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
-            {this.state.hasMoreItems && (
-              <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
-                Load More
-              </Button>
-            )}
+            {this.state.hasMoreItems &&
+              !this.state.isLoading && (
+                <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
+                  Load More
+                </Button>
+              )}
+            {this.state.isLoading && <LoadingIcon />}
           </Box>
         </Flex>
       </React.Fragment>

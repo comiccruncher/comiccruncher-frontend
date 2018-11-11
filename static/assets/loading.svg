@@ -1,0 +1,11 @@
+<svg width="110" height="110" viewBox="0 0 110 110" id="loader-1" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <path id="svg_1" d="m18.14,26.616c8.506,-11.031 21.853,-18.136 36.86,-18.136c8.515,0 16.496,2.288 23.361,6.282" stroke-miterlimit="10" stroke-linecap="round" stroke-width="10" stroke="#FD4B46" fill="none">
+    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 55 55" to="360 55 55" dur="0.8s" repeatCount="indefinite"></animateTransform>
+  </path>
+   
+  <path id="svg_2" d="m18.14,26.616c8.506,-11.031 21.853,-18.136 36.86,-18.136c8.515,0 16.496,2.288 23.361,6.282" stroke-miterlimit="10" stroke-linecap="round" stroke-width="10" stroke="#FD4B46" fill="none">
+    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 55 55" to="360 55 55" dur="1s" repeatCount="indefinite"></animateTransform>
+  </path>
+ </g>
+</svg>
