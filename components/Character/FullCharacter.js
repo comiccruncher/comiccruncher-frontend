@@ -36,6 +36,7 @@ const AngledBox = css({
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
 const getDataSets = (appearances) => {
+  // TODO: Change to red/blue for marvel/dc characters??
   return appearances.map((appearance) => {
     return {
       label: appearance.category,
@@ -83,10 +84,7 @@ class FullCharacter extends React.Component {
     return (
       <React.Fragment>
         <Flex flexWrap="wrap" style={{ minHeight: '520px', overflow: 'hidden' }}>
-          <Box
-            flex="1 0 auto"
-            width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}
-            style={{ zIndex: '0' }}>
+          <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} style={{ zIndex: '0' }}>
             <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>
           <Box
