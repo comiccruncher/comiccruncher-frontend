@@ -6,7 +6,7 @@ import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
 import { Flex, Box } from 'rebass/emotion';
 
-const FooterContainer = styled('div')({
+const FooterContainer = styled('footer')({
   textAlign: 'center',
   padding: Spacing.xLarge,
   ul: {
