@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
+import Layout from '../Layout/Layout';
 
 class CharactersList extends React.Component {
   constructor(props) {
@@ -136,7 +137,7 @@ class CharactersList extends React.Component {
     const characters = this.state.data;
     const currentModal = this.state.currentModal;
     return (
-      <div>
+      <React.Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center">
           {characters.map((character, i) => {
             return (
@@ -157,7 +158,9 @@ class CharactersList extends React.Component {
                     >
                       Close
                     </Button>
-                    <FullCharacter {...this.state.currentCharacter} />
+                    <Layout showNavigation={false}>
+                      <FullCharacter {...this.state.currentCharacter} />
+                    </Layout>
                   </Box>
                 </Modal>
                 <a href={`/characters/${character.slug}`} onClick={this.toggleModal(character.slug)}>
@@ -176,7 +179,7 @@ class CharactersList extends React.Component {
             )}
           </Box>
         </Flex>
-      </div>
+      </React.Fragment>
     );
   }
 }

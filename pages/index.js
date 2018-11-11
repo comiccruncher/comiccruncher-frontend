@@ -45,7 +45,6 @@ class Home extends React.Component {
           </Flex>
         </HeaderSection>
         <CharactersList characters={this.props.characters} referer="/" />
-        <Footer />
       </Layout>
     );
   }

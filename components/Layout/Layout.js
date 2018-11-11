@@ -3,8 +3,11 @@ import Head from 'next/head';
 import Navigation from './Navigation';
 import { injectGlobal } from 'emotion';
 import { UI } from '../shared/styles/colors';
+import PropTypes from 'prop-types';
+import Footer from './Footer';
+import { Flex, Box } from 'rebass/emotion';
 
-const Halftone = '/static/assets/Halftone.png';
+const Halftone = 'https://flash.comiccruncher.com/static/assets/Halftone.png';
 
 injectGlobal`
   * {
@@ -164,9 +167,20 @@ const Layout = (props) => (
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
     </Head>
-    <Navigation />
-    {props.children}
+    {props.showNavigation && <Navigation />}
+    <Flex>
+      <Box width={1152}>{props.children}</Box>
+    </Flex>
+    <Footer />
   </React.Fragment>
 );
+
+Layout.propTypes = {
+  showNavigation: PropTypes.bool,
+};
+
+Layout.defaultProps = {
+  showNavigation: true,
+};
 
 export default Layout;

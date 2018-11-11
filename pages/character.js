@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import request from 'superagent';
 import Head from 'next/head';
 import Layout from '../components/Layout/Layout';
-import Footer from '../components/Layout/Footer';
 import { FullCharacterProps } from '../components/Character/Types';
 import FullCharacter from '../components/Character/FullCharacter';
 
@@ -12,11 +11,12 @@ class Character extends React.Component {
     const c = this.props.data;
     return (
       <Layout>
-        <Head>
-          <title>{c.name}</title>
+        <Head title={c}>
+          <title>
+            {c.name} {c.other_name && `(${c.other_name})`} | Comic Cruncher
+          </title>
         </Head>
         <FullCharacter {...c} />
-        <Footer />
       </Layout>
     );
   }

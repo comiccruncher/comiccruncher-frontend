@@ -1,10 +1,8 @@
 import styled from 'react-emotion';
-import { Box, Flex } from 'rebass/emotion';
 import { UI } from '../styles/colors';
-import Dimensions from '../styles/dimensions';
 import Spacing from '../styles/spacing';
 import Responsive from '../styles/responsive';
-import Type, { UIFontStack, BangersFontStack } from '../styles/type';
+import Type, { BangersFontStack } from '../styles/type';
 
 const Logo = styled('div')(
   {

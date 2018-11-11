@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
+import { Flex, Box } from 'rebass/emotion';
 
 const FooterContainer = styled('div')({
   textAlign: 'center',
@@ -29,26 +30,30 @@ const FooterContainer = styled('div')({
 
 const Footer = (props) => (
   <React.Fragment>
-    <FooterContainer>
-      <ul>
-        <li>
-          <Link href={`/`}>
-            <a>Comic Cruncher</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`https://twitter.com/aimeelaplant`}>
-            <a>@aimeelaplant</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`https://twitter.com/ghanbak`}>
-            <a>@ghanbak</a>
-          </Link>
-        </li>
-      </ul>
-      {props.children}
-    </FooterContainer>
+    <Flex>
+      <Box width={1}>
+        <FooterContainer>
+          <ul>
+            <li>
+              <Link href={`/`}>
+                <a>Comic Cruncher</a>
+              </Link>
+            </li>
+            <li>
+              <Link href={`https://twitter.com/aimeelaplant`}>
+                <a>@aimeelaplant</a>
+              </Link>
+            </li>
+            <li>
+              <Link href={`https://twitter.com/ghanbak`}>
+                <a>@ghanbak</a>
+              </Link>
+            </li>
+          </ul>
+          {props.children}
+        </FooterContainer>
+      </Box>
+    </Flex>
   </React.Fragment>
 );
 
