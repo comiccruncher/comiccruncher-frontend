@@ -50,6 +50,7 @@ export const UI = {
     Yellow: Palette.Yellow.Default,
     Gray: Palette.Gray.Pale,
     DarkGradient: `radial-gradient(${Palette.Gray.Default}, ${Palette.Gray.Dark})`,
+    RedGradient: `radial-gradient(#fa0000, #b50000)`,
   }
 };
 
