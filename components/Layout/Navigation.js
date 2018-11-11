@@ -25,7 +25,7 @@ const Navigation = (props) => (
     alignContent="center">
     <Box>
       <Link href="/">
-        <Logo content="Comic Cruncher" style={{ cursor: 'pointer' }}>Comic Cruncher</Logo>
+        <Logo content="Comic Cruncher" style={{ cursor: 'pointer' }}><a>Comic Cruncher</a></Logo>
       </Link>
     </Box>
   </MainNav>

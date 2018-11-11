@@ -18,34 +18,36 @@ class Home extends React.Component {
   render() {
     const s = this.props.stats.data;
     return (
-      <Layout>
-        {/* How to render a title ...
+      <React.Fragment>
+        <Layout>
+          {/* How to render a title ...
           just import the head and use a title.
           You won't overwrite anything else set. */}
-        <Head>
-          <title>Comic Cruncher!!!</title>
-        </Head>
-        <HeaderSection>
-          <Flex
-            justifyContent="space-between"
-            alignItems="center"
-            alignContent="center"
-            flexWrap="wrap"
-            mb={Spacing.Small}
-            pt={Spacing.xxLarge * 2}
-            pb={Spacing.Large}
-            px={Spacing.xxLarge, Spacing.Large, 0}
-          >
-            <Stats {...s} />
-          </Flex>
-          <Flex justifyContent="center" alignItems="center" alignContent="center">
-            <Box alignSelf="center" style={{ width: '80%' }}>
-              <Search />
-            </Box>
-          </Flex>
-        </HeaderSection>
-        <CharactersList characters={this.props.characters} referer="/" />
-      </Layout>
+          <Head>
+            <title>Comic Cruncher!!!</title>
+          </Head>
+          <HeaderSection>
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              alignContent="center"
+              flexWrap="wrap"
+              mb={Spacing.Small}
+              pt={Spacing.xxLarge * 2}
+              pb={Spacing.Large}
+              px={(Spacing.xxLarge, Spacing.Large, 0)}
+            >
+              <Stats {...s} />
+            </Flex>
+            <Flex justifyContent="center" alignItems="center" alignContent="center">
+              <Box alignSelf="center" style={{ width: '80%' }}>
+                <Search />
+              </Box>
+            </Flex>
+          </HeaderSection>
+          <CharactersList characters={this.props.characters} referer="/" />
+        </Layout>
+      </React.Fragment>
     );
   }
 }
