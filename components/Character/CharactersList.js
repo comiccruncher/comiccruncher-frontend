@@ -153,7 +153,7 @@ class CharactersList extends React.Component {
                 >
                   <Box width={1152} bg="white" style={{ position: 'relative' }}>
                     <Button
-                      onClick={this.closeModal}
+                      onClick={this.handleModalCloseRequest}
                       style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
                     >
                       Close
