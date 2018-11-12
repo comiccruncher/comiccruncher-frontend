@@ -10,7 +10,7 @@ import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
 import Layout from '../Layout/Layout';
-import { LoadingIcon } from '../shared/components/LoadingIcon';
+import { LoadingIcon } from '../shared/components/Icons';
 
 class CharactersList extends React.Component {
   constructor(props) {

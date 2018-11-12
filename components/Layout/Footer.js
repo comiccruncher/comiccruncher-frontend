@@ -5,6 +5,7 @@ import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
 import { Flex, Box } from 'rebass/emotion';
+import { Github } from '../shared/components/Icons';
 
 const FooterContainer = styled('footer')({
   textAlign: 'center',
@@ -50,7 +51,11 @@ const Footer = (props) => (
               </Link>
             </li>
           </ul>
-          {props.children}
+          <div style={{ width: '32px', height: '32px', margin: '10px auto' }}>
+            <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
+              <Github />
+            </a>
+          </div>
         </FooterContainer>
       </Box>
     </Flex>
