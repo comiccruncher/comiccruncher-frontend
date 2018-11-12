@@ -155,17 +155,13 @@ class CharactersList extends React.Component {
                   shouldCloseOnOverlayClick={true}
                   parentSelector={() => document.querySelector('#__next')}
                 >
-                  <Box width={1152} bg="white" style={{ position: 'relative' }}>
-                    <Button
-                      onClick={this.handleModalCloseRequest}
-                      style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
-                    >
-                      Close
-                    </Button>
-                    <Layout showNavigation={false}>
-                      <FullCharacter {...this.state.currentCharacter} />
-                    </Layout>
-                  </Box>
+                  <Button
+                    onClick={this.handleModalCloseRequest}
+                    style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
+                  >
+                    Close
+                  </Button>
+                  <FullCharacter {...this.state.currentCharacter} />
                 </Modal>
                 <a href={`/characters/${character.slug}`} onClick={this.toggleModal(character.slug)}>
                   <CharacterCard {...character} />

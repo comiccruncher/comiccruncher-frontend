@@ -15,6 +15,7 @@ injectGlobal`
     padding:0;
     box-sizing:border-box;
   }
+
   html {
     background-color: ${UI.Background.Gray};
   }
@@ -135,15 +136,13 @@ injectGlobal`
   }
 
   .Modal {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+    position:relative;
+    height: auto;
     border:0;
     outline:0;
-    margin: 50px;
+    margin: 0 auto;
+    width:100%;
+    max-width: 1152px;
   }
 
   .Overlay {
@@ -156,6 +155,7 @@ injectGlobal`
     right: 0;
     top: 0;
     z-index: 100;
+    padding: 0px 25px;
   }
 `;
 
@@ -167,11 +167,7 @@ const Layout = (props) => (
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
     </Head>
-    {props.showNavigation && <Navigation />}
-    <Flex>
-      <Box width={1152}>{props.children}</Box>
-    </Flex>
-    <Footer />
+    {props.children}
   </React.Fragment>
 );
 
