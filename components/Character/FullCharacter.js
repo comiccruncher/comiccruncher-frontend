@@ -91,7 +91,7 @@ class FullCharacter extends React.Component {
       <React.Fragment>
         <Header bg={c.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}>
           <ContentBlock>
-            <div css={{ 'margin-bottom': '40px' }}>
+            <div css={{ 'margin-bottom': '0' }}>
               <Flex flexWrap="wrap" style={{ overflow: 'hidden' }} p={0}>
                 <Box
                   flex="1 0 auto"
@@ -102,9 +102,11 @@ class FullCharacter extends React.Component {
                   <div
                     style={{
                       width: '100%',
+                      /*
                       'border-top': '20px solid #fff',
                       'border-left': '20px solid #fff',
                       'border-bottom': '20px solid #fff',
+                      */
                       height: '100%',
                     }}
                   >
