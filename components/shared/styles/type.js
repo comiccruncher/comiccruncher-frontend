@@ -11,6 +11,7 @@ const Size = {
   XXLarge: 120,
   XLarge: 80,
   Large: 32,
+  Medium: 24,
   Default: 16,
   Small: 14,
 };
@@ -130,6 +131,23 @@ const Label = {};
 Type.Label = Label;
 Label.Default = LabelDefault;
 
+const HeadingH1 = styled.h1((props) => ({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: props.lineHeight || 1.5,
+  fontSize: props.fontSize || Size.Large,
+  fontWeight: props.fontWeight || Weight.Medium,
+}));
+
+const HeadingH2 = styled.h2((props) => ({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: 1.5,
+  fontSize: props.fontSize || Size.Medium,
+  fontWeight: props.fontWeight || Weight.Medium,
+  margin: '20px 0',
+}));
+
 export {
   UIFontStack,
   BangersFontStack,
@@ -139,6 +157,8 @@ export {
   Section,
   Text,
   Label,
+  HeadingH1,
+  HeadingH2,
 };
 
 export default Type;

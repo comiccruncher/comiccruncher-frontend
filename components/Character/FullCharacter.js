@@ -8,6 +8,9 @@ import Dimensions from '../shared/styles/dimensions';
 import Responsive from '../shared/styles/responsive';
 import { Title, Section, Text, TextDefault } from '../shared/styles/type';
 import { FullCharacterProps } from './Types';
+import { MainContent, ContentBlock } from '../Layout/Content';
+import { Header } from '../Layout/Header';
+import { StatBlock } from '../Stats/Stats';
 
 const AngledBox = css({
   zIndex: 10,
@@ -29,9 +32,17 @@ const AngledBox = css({
       left: 0,
       top: '-40px',
       transform: 'skewY(-6deg)',
-    }
+    },
   },
 });
+
+const characterImg = (publisher) =>
+  css({
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    objectPosition: publisher.slug === 'marvel' ? 'center' : 'top',
+  });
 
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
@@ -48,7 +59,6 @@ const getDataSets = (appearances) => {
 
 class FullCharacter extends React.Component {
   state = {
-    isEnabled: true,
     totalAppearanceCount: 0,
     years: [],
     datasets: [],
@@ -69,10 +79,6 @@ class FullCharacter extends React.Component {
     }
   }
 
-  onClick = () => {
-    this.setState({ isEnabled: !this.state.isEnabled });
-  };
-
   render() {
     const c = this.props;
     const otherName = c.other_name ? `${c.other_name}` : '';
@@ -83,58 +89,115 @@ class FullCharacter extends React.Component {
     const bio = c.vendor_description.replace(regex, '');
     return (
       <React.Fragment>
-        <Flex flexWrap="wrap" style={{ minHeight: '520px', overflow: 'hidden' }}>
-          <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} style={{ zIndex: '0' }}>
-            <img src={c.vendor_image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </Box>
-          <Box
-            flex="1 0 auto"
-            width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
-            p={32}
-            bg={c.publisher.slug === 'dc' ? Brands.DC : Brands.Marvel}
-            style={{ textAlign: 'center' }}
-            className={AngledBox}
-          >
-            <Flex justifyContent="center" alignItems="center" alignContent="center" style={{ height: '100%' }}>
-              <Box alignSelf="center">
-                <Title.Large>
-                  <h1>{title}</h1>
-                </Title.Large>
-                <Title.Byline>
-                  <h2>{otherName}</h2>
-                </Title.Byline>
+        <Header bg={c.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}>
+          <ContentBlock>
+            <div css={{ 'margin-bottom': '40px' }}>
+              <Flex flexWrap="wrap" style={{ overflow: 'hidden' }} p={0}>
+                <Box
+                  flex="1 0 auto"
+                  width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}
+                  style={{ zIndex: '0', maxHeight: '400px' }}
+                  p={0}
+                >
+                  <div
+                    style={{
+                      width: '100%',
+                      'border-top': '20px solid #fff',
+                      'border-left': '20px solid #fff',
+                      'border-bottom': '20px solid #fff',
+                      height: '100%',
+                    }}
+                  >
+                    <img src={c.vendor_image} css={characterImg(c.publisher)} />
+                  </div>
+                </Box>
+                <Box
+                  flex="1 0 auto"
+                  width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
+                  p={0}
+                  style={{ textAlign: 'center' }}
+                  className={AngledBox}
+                  bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
+                >
+                  <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    alignContent="center"
+                    style={{ height: '100%', position: 'relative' }}
+                    p={0}
+                  >
+                    <Box alignSelf="center">
+                      <Title.Large>
+                        <h1>{title}</h1>
+                      </Title.Large>
+                      <Title.Byline>
+                        <h2>{otherName}</h2>
+                      </Title.Byline>
+                      <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                        <Title.Red>
+                          #<CountUp end={1} />
+                        </Title.Red>
+                        <Text.Default bold>All Time</Text.Default>
+                      </div>
+                    </Box>
+                  </Flex>
+                </Box>
+              </Flex>
+            </div>
+          </ContentBlock>
+        </Header>
+        <MainContent>
+          <ContentBlock>
+            <Flex flexWrap={'wrap'}>
+              <Box p={30} width={[1, 1, 3 / 4]}>
+                {appearanceCount && (
+                  <React.Fragment>
+                    <Section.Title>
+                      <h3>Appearances per year</h3>
+                    </Section.Title>
+                    <Section.Byline>
+                      <Text.Default>
+                        <CountUp end={appearanceCount} /> lifetime total
+                      </Text.Default>
+                      {/* TODO: change appearanceCount when someone clicks on main/alt label */}
+                      <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
+                    </Section.Byline>
+                  </React.Fragment>
+                )}
+                {bio && (
+                  <React.Fragment>
+                    <Section.Title>
+                      <h3>Bio</h3>
+                    </Section.Title>
+                    <Text.Default>
+                      <p>{bio}</p>
+                    </Text.Default>
+                  </React.Fragment>
+                )}
+              </Box>
+              <Box p={3} width={[1, 1, 1 / 4]}>
+                <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                  <Title.Red>
+                    #<CountUp end={1} />
+                  </Title.Red>
+                  <Text.Default bold>All Time</Text.Default>
+                </div>
+                <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                  <Title.Red>
+                    #<CountUp end={1} />
+                  </Title.Red>
+                  <Text.Default bold>Marvel</Text.Default>
+                </div>
+                <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                  <Title.Red>
+                    <CountUp end={30} />
+                  </Title.Red>
+                  <Text.Default bold>avg issues/year</Text.Default>
+                </div>
               </Box>
             </Flex>
-          </Box>
-        </Flex>
-        {appearanceCount && (
-          <Flex flexWrap="wrap" py={40}>
-            <Box flex="1 1 auto" width={1} px={24}>
-              <Section.Title>
-                <h3>Appearances per year</h3>
-              </Section.Title>
-              <Section.Byline>
-                <Text.Default>
-                  <CountUp end={appearanceCount} /> lifetime total
-                </Text.Default>
-                {/* TODO: change appearanceCount when someone clicks on main/alt label */}
-              </Section.Byline>
-              <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
-            </Box>
-          </Flex>
-        )}
-        {bio && (
-          <Flex flexWrap="wrap" py={40}>
-            <Box flex="1 1 auto" width={[1, 1 / 2, 2 / 3]} px={24}>
-              <Section.Title>
-                <h3>Bio</h3>
-              </Section.Title>
-              <Text.Default>
-                <p>{bio}</p>
-              </Text.Default>
-            </Box>
-          </Flex>
-        )}
+          </ContentBlock>
+        </MainContent>
       </React.Fragment>
     );
   }

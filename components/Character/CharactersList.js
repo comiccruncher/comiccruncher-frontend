@@ -145,7 +145,7 @@ class CharactersList extends React.Component {
         <Flex flexWrap="wrap" alignItems="center" alignContent="center">
           {characters.map((character, i) => {
             return (
-              <Box px={2} py={2} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
+              <Box pr={3} pb={3} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
                 <Modal
                   className="Modal"
                   overlayClassName="Overlay"

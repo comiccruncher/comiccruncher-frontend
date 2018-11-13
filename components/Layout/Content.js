@@ -19,8 +19,15 @@ const bgCSS = css({
 
 // A generic content block with flex and box.
 export const ContentBlock = (props) => (
-  <Flex>
-    <Box width={props.width || 1152} p={props.padding || 3} m={props.margin || 'auto'}>
+  <Flex bg={props.bg || 'transparent'} p={0}>
+    <Box
+      width={props.width || 1152}
+      pr={props.pr !== null ? props.pr : 10}
+      pl={props.pl !== null ? props.pl : 10}
+      pt={props.pt !== null ? props.pt : 10}
+      pb={props.bt !== null ? props.bt : 10}
+      m={props.margin || 'auto'}
+    >
       {props.children}
     </Box>
   </Flex>
@@ -28,10 +35,8 @@ export const ContentBlock = (props) => (
 
 // A content block for <main> content with a <footer> at the end.
 export const MainContent = (props) => (
-  <div css={props.css || bgCSS}>
-    <ContentBlock>
-      <main>{props.children}</main>
-    </ContentBlock>
+  <div css={props.style || bgCSS}>
+    {props.children}
     <ContentBlock>
       <Footer />
     </ContentBlock>

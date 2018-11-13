@@ -8,7 +8,7 @@ import Spacing from '../shared/styles/spacing';
 
 const Bang = 'https://flash.comiccruncher.com/static/assets/bang.svg';
 
-const StatBlock = css({
+export const StatBlock = css({
   backgroundImage: `url(${Bang})`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'contain',

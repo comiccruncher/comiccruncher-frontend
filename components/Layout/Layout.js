@@ -16,9 +16,11 @@ injectGlobal`
     box-sizing:border-box;
   }
 
+/*
   html {
     background-color: ${UI.Background.Gray};
   }
+
   body {
     max-width: 1024px;
     margin: 0 auto;
@@ -37,7 +39,7 @@ injectGlobal`
       background-position-y: calc(100% + 140px);
     }
   }
-
+  */
   h1,
   h2,
   h3,
@@ -88,6 +90,7 @@ injectGlobal`
     font-size: 16px;
     z-index: 2;
     top: 100%;
+    position: relative; /* Fix for suggestions being hidden whose parent div has overflow:hidden  */
   }
 
   .react-autosuggest__suggestions-list {
@@ -143,6 +146,8 @@ injectGlobal`
     margin: 0 auto;
     width:100%;
     max-width: 1152px;
+    border: 4px solid #000;
+    box-shadow: 10px 10px #1f1f1f;
   }
 
   .Overlay {
@@ -155,7 +160,7 @@ injectGlobal`
     right: 0;
     top: 0;
     z-index: 100;
-    padding: 0px 25px;
+    padding: 30px;
   }
 `;
 

@@ -7,16 +7,19 @@ import { UI } from '../shared/styles/colors';
 
 // A generic fluid header with options to customize the CSS.
 export const Header = (props) => (
-  <div css={props.css}>
-    <header>
+  <div style={{ background: `${props.bg}`, position: 'relative', overflow: 'hidden', padding: props.padding || 0 }}>
+    <Lines />
+    <header style={{ padding: '50px' }}>
       <ContentBlock>
-        <Link href="/">
-          <Logo content="Comic Cruncher">
-            <h1>
-              <a>Comic Cruncher</a>
-            </h1>
-          </Logo>
-        </Link>
+        <div style={{ margin: '20px 0', height: '80px' }}>
+          <Link href="/">
+            <Logo content="Comic Cruncher">
+              <h1>
+                <a>Comic Cruncher</a>
+              </h1>
+            </Logo>
+          </Link>
+        </div>
       </ContentBlock>
       {props.children}
     </header>
@@ -27,7 +30,7 @@ export const Header = (props) => (
 export const MainHeader = (props) => (
   <div
     css={
-      props.css || {
+      props.style || {
         background: UI.Background.RedGradient,
         position: 'relative',
         minHeight: '500px',
@@ -36,7 +39,7 @@ export const MainHeader = (props) => (
     }
   >
     <Lines />
-    <header>
+    <header style={{ padding: '10px 10px 50px 10px' }}>
       <ContentBlock>
         <Link href="/">
           <Logo content="Comic Cruncher">
