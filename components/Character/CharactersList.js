@@ -147,6 +147,7 @@ class CharactersList extends React.Component {
             return (
               <Box pr={3} pb={3} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
                 <Modal
+                  closeTimeoutMS={500}
                   className="Modal"
                   overlayClassName="Overlay"
                   id={character.slug}

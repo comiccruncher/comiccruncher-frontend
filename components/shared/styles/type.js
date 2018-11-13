@@ -148,6 +148,14 @@ const HeadingH2 = styled.h2((props) => ({
   margin: '20px 0',
 }));
 
+const NavLink = styled.a((props) => ({
+  fontFamily: UIFontStack,
+  color: UI.Text.Dark,
+  fontSize: Size.Default,
+  fontWeight: Weight.Bold,
+  cursor: 'pointer',
+}));
+
 export {
   UIFontStack,
   BangersFontStack,
@@ -159,6 +167,7 @@ export {
   Label,
   HeadingH1,
   HeadingH2,
+  NavLink,
 };
 
 export default Type;

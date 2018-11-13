@@ -16,13 +16,15 @@ injectGlobal`
     box-sizing:border-box;
   }
 
-/*
   html {
-    background-color: ${UI.Background.Gray};
+    /*
+    background-color: #fff;
+    */
   }
 
   body {
-    max-width: 1024px;
+    
+    max-width: 1152px;
     margin: 0 auto;
     position: relative;
     box-shadow: 0 0 10px rgba(0,0,0,0.08);
@@ -38,8 +40,17 @@ injectGlobal`
       background-size: 180%;
       background-position-y: calc(100% + 140px);
     }
+  
   }
-  */
+
+  #__next {
+    border-top:4px solid #3e3d3d;
+    border-bottom: 4px solid #3e3d3d;
+    border-right: 4px solid #3e3d3d;
+    border-left: 3px solid #3e3d3d;
+    box-shadow: 15px 10px #3e3d3d;
+  }
+
   h1,
   h2,
   h3,
@@ -162,6 +173,41 @@ injectGlobal`
     z-index: 100;
     padding: 30px;
   }
+
+  @keyframes blowUpModal {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes blowUpModalTwo {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+
+  .ReactModal__Overlay {
+    background: rgba(0,0,0,.7);
+    transition: opacity 1ms ease-in-out;
+    animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+
+  .ReactModal__Overlay--after-open{
+    animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    opacity: 1;
+
+  }
+  .ReactModal__Overlay--before-close{
+    opacity: 0;
+    animation: blowUpModalTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; 
+  }
 `;
 
 const Layout = (props) => (
@@ -172,7 +218,7 @@ const Layout = (props) => (
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
     </Head>
-    {props.children}
+    <div>{props.children}</div>
   </React.Fragment>
 );
 

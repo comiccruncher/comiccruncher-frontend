@@ -54,11 +54,9 @@ export class Home extends React.Component {
     }
     let query = '';
     if (!this.state.isMain && this.state.isAlternate) {
-      console.log('!this.state.isMain && this.stateIsAlternate');
       query = 'alternate';
     }
     if (!this.state.isAlternate && this.state.isMain) {
-      console.log('!this.state.isAlternate && this.stateIsMain');
       query = 'main';
     }
     let url = `https://api.comiccruncher.com/characters?key=batmansmellsbadly&type=${encodeURIComponent(query)}`;

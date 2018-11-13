@@ -14,6 +14,7 @@ const bl = (bottom = -58, left = 15) =>
     width: '44px',
     transform: 'rotate(-118deg)',
     opacity: '.3',
+    'z-index': 9999,
   });
 
 const br = (bottom = -59, right = 31) =>
@@ -28,6 +29,7 @@ const br = (bottom = -59, right = 31) =>
     '-webkit-transform': 'rotate(-50deg)',
     transform: 'rotate(108deg)',
     opacity: '.3',
+    'z-index': 9999,
   });
 
 const tl = (top = -38, left = 35) =>
@@ -42,6 +44,7 @@ const tl = (top = -38, left = 35) =>
     '-webkit-transform': 'rotate(-50deg)',
     transform: 'rotate(-50deg)',
     opacity: '.3',
+    'z-index': 9999,
   });
 
 const tr = (top = -30, right = 50) =>
@@ -56,6 +59,7 @@ const tr = (top = -30, right = 50) =>
     '-webkit-transform': 'rotate(50deg)',
     transform: 'rotate(50deg)',
     opacity: '.3',
+    'z-index': 9999,
   });
 
 const Lines = (props) => (
