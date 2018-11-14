@@ -4,6 +4,6 @@
         "next/babel"
     ],
     "plugins": [
-        ["emotion", { "hoist": true, "inline": true }]
+        ["emotion", { "inline": true }]
     ]
 }

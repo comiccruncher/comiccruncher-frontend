@@ -1,21 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import request from 'superagent';
-import Head from 'next/head';
 import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
 import FullCharacter from '../components/Character/FullCharacter';
+import { withCache } from '../components/emotion/cache';
 
 class Character extends React.Component {
   render() {
     const c = this.props.data;
     return (
-      <Layout>
-        <Head title={c}>
-          <title>
-            {c.name} {c.other_name && `(${c.other_name})`} | Comic Cruncher
-          </title>
-        </Head>
+      <Layout title={`${c.name} ${c.other_name && `(${c.other_name})`} | Comic Cruncher`}>
         <FullCharacter {...c} />
       </Layout>
     );
@@ -37,4 +32,4 @@ Character.getInitialProps = async ({ req }) => {
   return res.body;
 };
 
-export default Character;
+export default withCache(Character);

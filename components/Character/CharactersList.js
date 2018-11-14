@@ -9,8 +9,8 @@ import Modal from 'react-modal';
 import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
-import Layout from '../Layout/Layout';
 import { LoadingIcon } from '../shared/components/Icons';
+import { withCache } from '../emotion/cache';
 
 class CharactersList extends React.Component {
   constructor(props) {
@@ -214,4 +214,4 @@ CharactersList.propTypes = {
 Modal.setAppElement('#__next');
 
 // TODO: Fix modal for marvel and dc route!!!
-export default withRouter(CharactersList);
+export default withCache(withRouter(CharactersList));

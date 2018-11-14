@@ -12,9 +12,10 @@ import { MainHeader } from '../components/Layout/Header';
 import { MainContent, ContentBlock } from '../components/Layout/Content';
 import { HeadingH1 } from '../components/shared/styles/type';
 import Button from '../components/shared/components/Button';
-import { css } from 'react-emotion';
 import { LoadingIcon } from '../components/shared/components/Icons';
 import Layout from '../components/Layout/Layout';
+import { css } from 'react-emotion';
+import { withCache } from '../components/emotion/cache';
 
 const buttonDiv = css({
   'text-align': 'right',
@@ -165,4 +166,4 @@ Home.propTypes = {
   }),
 };
 
-export default withRouter(Home);
+export default withCache(withRouter(Home));

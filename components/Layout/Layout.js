@@ -4,6 +4,7 @@ import { injectGlobal } from 'emotion';
 import { UI } from '../shared/styles/colors';
 import PropTypes from 'prop-types';
 import Navigation from './Navigation';
+import { withCache } from '../emotion/cache';
 
 injectGlobal`
   * {
@@ -190,6 +191,7 @@ const Layout = (props) => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
+      <title>{props.title}</title>
     </Head>
     <div className="app">
       <Navigation background={props.navBackground} />
@@ -206,4 +208,4 @@ Layout.defaultProps = {
   showNavigation: true,
 };
 
-export default Layout;
+export default withCache(Layout);

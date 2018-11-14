@@ -11,7 +11,7 @@ import { FullCharacterProps } from './Types';
 import { MainContent, ContentBlock } from '../Layout/Content';
 import { Header } from '../Layout/Header';
 import { StatBlock } from '../Stats/Stats';
-import Lines from '../shared/components/Lines';
+
 
 const AngledBox = css({
   zIndex: 10,
