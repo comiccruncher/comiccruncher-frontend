@@ -103,11 +103,6 @@ class FullCharacter extends React.Component {
                   <div
                     style={{
                       width: '100%',
-                      /*
-                      'border-top': '20px solid #fff',
-                      'border-left': '20px solid #fff',
-                      'border-bottom': '20px solid #fff',
-                      */
                       height: '100%',
                     }}
                   >
