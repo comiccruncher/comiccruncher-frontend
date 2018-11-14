@@ -26,7 +26,7 @@ injectGlobal`
     width: 100%;
     max-width: 1152px;
     margin: 0 auto;
-    border-top:4px solid #3e3d3d;
+    border-top: 4px solid #3e3d3d;
     border-bottom: 4px solid #3e3d3d;
     border-right: 4px solid #3e3d3d;
     border-left: 3px solid #3e3d3d;
@@ -128,9 +128,10 @@ injectGlobal`
     outline:0;
     margin: 0 auto;
     width:100%;
-    max-width: 1152px;
+    max-width: 1024px;
     border: 4px solid #000;
     box-shadow: 10px 10px #1f1f1f;
+    margin: 50px auto;
   }
 
   .Overlay {
