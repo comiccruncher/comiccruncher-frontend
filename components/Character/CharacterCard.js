@@ -79,7 +79,7 @@ const Character = styled.div(
 export const CharacterCard = (props) => (
   <React.Fragment>
     <Character {...props}>
-      <img src={props.vendor_image} alt={props.name} title={props.name} />
+      <img src={props.image || props.vendor_image} alt={props.name} title={props.name} />
       <DisplayName {...props} />
     </Character>
   </React.Fragment>

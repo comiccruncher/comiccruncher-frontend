@@ -111,7 +111,7 @@ class FullCharacter extends React.Component {
                       height: '100%',
                     }}
                   >
-                    <img src={c.vendor_image} css={characterImg(c.publisher)} />
+                    <img src={c.image || c.vendor_image} css={characterImg(c.publisher)} />
                   </div>
                 </Box>
                 <Box

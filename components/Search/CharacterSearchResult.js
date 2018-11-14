@@ -17,7 +17,13 @@ export const CharacterSearchResult = (props) => (
       <span className="name">
         <Link href={`/characters/${encodeURIComponent(props.slug)}`}>
           <SearchResult>
-            <img src={props.vendor_image} alt={props.name} width={50} height={50} style={{ objectFit: 'cover', marginRight: Spacing.Small }}/>
+            <img
+              src={props.image || props.vendor_image}
+              alt={props.name}
+              width={50}
+              height={50}
+              style={{ objectFit: 'cover', marginRight: Spacing.Small }}
+            />
             <DisplayName {...props} />
           </SearchResult>
         </Link>
