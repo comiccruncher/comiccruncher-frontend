@@ -6,12 +6,11 @@ import AppearanceChart from './AppearanceChart';
 import { UI, Brands } from '../shared/styles/colors';
 import Dimensions from '../shared/styles/dimensions';
 import Responsive from '../shared/styles/responsive';
-import { Title, Section, Text, TextDefault } from '../shared/styles/type';
+import { Title, Section, Text } from '../shared/styles/type';
 import { FullCharacterProps } from './Types';
 import { MainContent, ContentBlock } from '../Layout/Content';
 import { Header } from '../Layout/Header';
 import { StatBlock } from '../Stats/Stats';
-
 
 const AngledBox = css({
   zIndex: 10,
@@ -37,13 +36,12 @@ const AngledBox = css({
   },
 });
 
-const characterImg = (publisher) =>
-  css({
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    objectPosition: publisher.slug === 'marvel' ? 'center' : 'top',
-  });
+const CharacterImg = styled('img')((props) => ({
+  width: props.width || '100%',
+  height: props.height || '100%',
+  objectFit: 'cover',
+  objectPosition: props.objectPosition || 'center',
+}));
 
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
@@ -90,58 +88,40 @@ class FullCharacter extends React.Component {
     const bio = c.vendor_description.replace(regex, '');
     return (
       <React.Fragment>
-        <Header>
+        <Header background="#fff">
           <ContentBlock>
-            <div css={{ 'margin-bottom': '0' }}>
-              <Flex flexWrap="wrap" style={{ overflow: 'hidden' }} p={0}>
-                <Box
-                  flex="1 0 auto"
-                  width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}
-                  style={{ zIndex: '0', maxHeight: '400px' }}
-                  p={0}
-                >
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  >
-                    <img src={c.image || c.vendor_image} css={characterImg(c.publisher)} />
-                  </div>
-                </Box>
-                <Box
-                  flex="1 0 auto"
-                  width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
-                  p={0}
-                  style={{ textAlign: 'center' }}
-                  className={AngledBox}
-                  bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
-                >
-                  <Flex
-                    justifyContent="center"
-                    alignItems="center"
-                    alignContent="center"
-                    style={{ height: '100%', position: 'relative' }}
-                    p={0}
-                  >
-                    <Box alignSelf="center">
-                      <Title.Large>
-                        <h1>{title}</h1>
-                      </Title.Large>
-                      <Title.Byline>
-                        <h2>{otherName}</h2>
-                      </Title.Byline>
-                      <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                        <Title.Red>
-                          #<CountUp end={1} />
-                        </Title.Red>
-                        <Text.Default bold>All Time</Text.Default>
-                      </div>
-                    </Box>
-                  </Flex>
-                </Box>
-              </Flex>
-            </div>
+            <Flex flexWrap="wrap">
+              <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} style={{ maxHeight: '400px' }}>
+                <CharacterImg
+                  src={c.image || c.vendor_image}
+                  objectPosition={!c.image && c.publisher.slug == 'dc' ? 'top' : 'center'}
+                  alt={`${c.name} profile image`}
+                />
+              </Box>
+              <Box
+                flex="1 0 auto"
+                width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
+                className={AngledBox}
+                bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
+              >
+                <Flex justifyContent="center" alignItems="center" alignContent="center">
+                  <Box p={30}>
+                    <Title.Large>
+                      <h1>{title}</h1>
+                    </Title.Large>
+                    <Title.Byline>
+                      <h2>{otherName}</h2>
+                    </Title.Byline>
+                    <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                      <Title.Red>
+                        #<CountUp end={1} />
+                      </Title.Red>
+                      <Text.Default bold>All Time</Text.Default>
+                    </div>
+                  </Box>
+                </Flex>
+              </Box>
+            </Flex>
           </ContentBlock>
         </Header>
         <MainContent>
@@ -158,6 +138,7 @@ class FullCharacter extends React.Component {
                         <CountUp end={appearanceCount} /> lifetime total
                       </Text.Default>
                       {/* TODO: change appearanceCount when someone clicks on main/alt label */}
+                      {/* TODO: This is a limitation of charts.js. The appearance chart is responsive upon first render of viewport. */}
                       <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
                     </Section.Byline>
                   </React.Fragment>
