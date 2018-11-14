@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'react-emotion';
 
-const linesSvg = 'static/assets/loading.svg';
+const linesSvg = 'https://flash.comiccruncher.com/static/assets/loading.svg';
 
 const loadingCSS = css({
   height: '110px',
