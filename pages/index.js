@@ -4,7 +4,6 @@ import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
-import Head from 'next/head';
 import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { Stats } from '../components/Stats/Stats';
@@ -63,8 +62,6 @@ export class Home extends React.Component {
     }
     let url = `https://api.comiccruncher.com/characters?key=batmansmellsbadly&type=${encodeURIComponent(query)}`;
     request.get(url).then((result) => {
-      console.log(url);
-      console.log(result.body);
       this.setState({ characters: result.body, isLoading: false });
     });
   };
@@ -72,10 +69,7 @@ export class Home extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout>
-          <Head>
-            <title>Home | Popular Characters | Comic Cruncher</title>
-          </Head>
+        <Layout title={'Home | Popular Characters | Comic Cruncher'}>
           <MainHeader>
             <div css={{ 'margin-top': '65px' }}>
               <ContentBlock>
