@@ -22,7 +22,7 @@ const bgCSS = css({
 export const ContentBlock = (props) =>
   withCache(
     <Flex bg={props.bg || 'transparent'} p={0}>
-      <Box
+      <Box css={{ maxWidth: '100%' }}
         pr={props.pr !== null ? props.pr : 10}
         pl={props.pl !== null ? props.pl : 10}
         pt={props.pt !== null ? props.pt : 10}
