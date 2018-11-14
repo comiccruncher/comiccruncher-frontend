@@ -90,7 +90,7 @@ class FullCharacter extends React.Component {
     const bio = c.vendor_description.replace(regex, '');
     return (
       <React.Fragment>
-        <Header bg={c.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}>
+        <Header>
           <ContentBlock>
             <div css={{ 'margin-bottom': '0' }}>
               <Flex flexWrap="wrap" style={{ overflow: 'hidden' }} p={0}>

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { injectGlobal } from 'emotion';
 import { UI } from '../shared/styles/colors';
 import PropTypes from 'prop-types';
+import Navigation from './Navigation';
 
 injectGlobal`
   * {
@@ -22,7 +23,8 @@ injectGlobal`
   }
 
   .app {
-    width: 1152px;
+    width: 100%;
+    max-width: 1152px;
     margin: 0 auto;
     border-top:4px solid #3e3d3d;
     border-bottom: 4px solid #3e3d3d;
@@ -188,7 +190,10 @@ const Layout = (props) => (
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
     </Head>
-    <div className="app">{props.children}</div>
+    <div className="app">
+      <Navigation background={props.navBackground} />
+      {props.children}
+    </div>
   </React.Fragment>
 );
 
