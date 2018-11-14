@@ -17,13 +17,6 @@ const MainNav = styled('nav')({
     ' > li': {
       display: 'inline-block',
       'margin-right': '30px',
-      ' > a': {
-        height: '50px',
-        display: 'block',
-        ':hover': {
-          color: 'red',
-        },
-      },
     },
   },
 });
@@ -34,6 +27,11 @@ const NavLink = styled.a((props) => ({
   fontSize: Size.Default,
   fontWeight: Weight.Bold,
   cursor: 'pointer',
+  display: 'block',
+  '&:hover': {
+    color: UI.Text.Light,
+    textDecoration: 'underline',
+  },
 }));
 
 const Navigation = (props) => (
@@ -41,7 +39,9 @@ const Navigation = (props) => (
     <ContentBlock>
       <Flex flexWrap="wrap">
         <Box width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} pl={20}>
-          <Logo>Comic Cruncher</Logo>
+          <Link href={'/'}>
+            <Logo>Comic Cruncher</Logo>
+          </Link>
         </Box>
         <Box width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
           <MainNav>

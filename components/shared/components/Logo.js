@@ -4,7 +4,7 @@ import Spacing from '../styles/spacing';
 import Responsive from '../styles/responsive';
 import Type, { BangersFontStack } from '../styles/type';
 
-const Logo = styled('div')(
+const Logo = styled('a')(
   {
     color: UI.Text.Yellow,
     fontFamily: BangersFontStack,
@@ -17,6 +17,8 @@ const Logo = styled('div')(
     transform: 'rotate(-3deg)',
     position: 'relative',
     zIndex: '1',
+    cursor: 'pointer',
+    display: 'inline-block',
     '&::before': {
       position: 'absolute',
       color: UI.Text.Blue,

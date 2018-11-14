@@ -169,18 +169,17 @@ injectGlobal`
 
   .ReactModal__Overlay {
     background: rgba(0,0,0,.7);
-    transition: opacity 1ms ease-in-out;
-    animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    transition: 0.3s all ease-in-out;
   }
 
-  .ReactModal__Overlay--after-open{
+  .ReactModal__Content--after-open{
     animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     opacity: 1;
 
   }
-  .ReactModal__Overlay--before-close{
+  .ReactModal__Content--before-close{
     opacity: 0;
-    animation: blowUpModalTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; 
+    animation: blowUpModalTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
   }
 `;
 
