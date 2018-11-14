@@ -1,54 +1,14 @@
 import React from 'react';
 import Head from 'next/head';
-import Navigation from './Navigation';
 import { injectGlobal } from 'emotion';
 import { UI } from '../shared/styles/colors';
 import PropTypes from 'prop-types';
-import Footer from './Footer';
-import { Flex, Box } from 'rebass/emotion';
-
-const Halftone = 'https://flash.comiccruncher.com/static/assets/Halftone.png';
 
 injectGlobal`
   * {
     margin:0;
     padding:0;
     box-sizing:border-box;
-  }
-
-  html {
-    /*
-    background-color: #fff;
-    */
-  }
-
-  body {
-    
-    max-width: 1152px;
-    margin: 0 auto;
-    position: relative;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
-    background-color: ${UI.Background.White};
-    background-image: url('${Halftone}');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-x: center;
-    background-position-y: calc(100% + 400px);
-
-    @media (max-width: 767px) {
-      padding-bottom: 60px;
-      background-size: 180%;
-      background-position-y: calc(100% + 140px);
-    }
-  
-  }
-
-  #__next {
-    border-top:4px solid #3e3d3d;
-    border-bottom: 4px solid #3e3d3d;
-    border-right: 4px solid #3e3d3d;
-    border-left: 3px solid #3e3d3d;
-    box-shadow: 15px 10px #3e3d3d;
   }
 
   h1,
@@ -59,6 +19,16 @@ injectGlobal`
   h6 {
     font-family: inherit;
     font-size: inherit;
+  }
+
+  .app {
+    width: 1152px;
+    margin: 0 auto;
+    border-top:4px solid #3e3d3d;
+    border-bottom: 4px solid #3e3d3d;
+    border-right: 4px solid #3e3d3d;
+    border-left: 3px solid #3e3d3d;
+    box-shadow: 15px 10px #3e3d3d;
   }
 
   .react-autosuggest__container {
@@ -218,7 +188,7 @@ const Layout = (props) => (
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
     </Head>
-    <div>{props.children}</div>
+    <div className="app">{props.children}</div>
   </React.Fragment>
 );
 
