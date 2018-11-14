@@ -34,9 +34,6 @@ jobs:
         - image: circleci/node:10.12
       steps:
         - checkout
-        - run:
-            name: Upload to S3.
-            command: make remote-upload
         - restore_cache:
             keys: 
               - node_modules-{{ .Branch }}-{{ checksum "yarn.lock" }}
