@@ -2,6 +2,7 @@ import React from 'react';
 import request from 'superagent';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
+import Type, { Section } from '../components/shared/styles/type';
 import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
 import CharactersList from '../components/Character/CharactersList';
@@ -88,9 +89,9 @@ export class Home extends React.Component {
             <ContentBlock pl={3} pr={0} pb={0} pt={0}>
               <Flex flexWrap={'wrap'} m={'30px auto'}>
                 <Box width={[1, 2 / 4, 2 / 4, 2 / 4]}>
-                  <HeadingH1>Popular Characters</HeadingH1>
-                  {this.state.isMain && !this.state.isAlternate && <p>Main Appearances Only</p>}
-                  {this.state.isAlternate && !this.state.isMain && <p>Alternate Appearances Only</p>}
+                  <Section.Title><h1>Popular Characters</h1></Section.Title>
+                  {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
+                  {this.state.isAlternate && !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
                 </Box>
                 <Box width={[1, 2 / 4, 2 / 4, 2 / 4]} css={buttonDiv} pr={3}>
                   <Button

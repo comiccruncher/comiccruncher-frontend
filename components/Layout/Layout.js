@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { injectGlobal } from 'emotion';
 import { UI } from '../shared/styles/colors';
+import Spacing from '../shared/styles/spacing';
 import PropTypes from 'prop-types';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
@@ -132,7 +133,7 @@ injectGlobal`
     max-width: 1024px;
     border: 4px solid #000;
     box-shadow: 10px 10px #1f1f1f;
-    margin: 50px auto;
+    margin: 0 auto;
   }
 
   .Overlay {
@@ -145,7 +146,7 @@ injectGlobal`
     right: 0;
     top: 0;
     z-index: 100;
-    padding: 30px;
+    padding: ${Spacing.Small}px;
   }
 
   @keyframes blowUpModal {
