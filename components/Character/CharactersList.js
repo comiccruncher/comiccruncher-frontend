@@ -24,6 +24,7 @@ class CharactersList extends React.Component {
       wasModalOpened: false,
       currentCharacter: null,
       isLoading: false,
+      isModalLoading: false,
     };
   }
 
@@ -72,6 +73,7 @@ class CharactersList extends React.Component {
    */
   toggleModal = (key) => (event) => {
     event.preventDefault();
+    this.setState({ isModalLoading: true });
     if (!this.state.wasModalOpened) {
       this.setState({ wasModalOpened: true });
     }
@@ -112,10 +114,13 @@ class CharactersList extends React.Component {
    * Loads the character.
    */
   loadCharacter = (slug) => {
-    const link = 'https://api.comiccruncher.com/characters/' + encodeURIComponent(slug) + '?key=batmansmellsbadly';
-    request.get(link).then((res) => {
-      this.setState({ currentCharacter: res.body.data, currentModal: slug });
-    });
+    const link = `https://api.comiccruncher.com/characters/${encodeURIComponent(slug)}`;
+    request
+      .get(link)
+      .query({ key: 'batmansmellsbadly' })
+      .then((res) => {
+        this.setState({ currentCharacter: res.body.data, currentModal: slug, isModalLoading: false });
+      });
   };
 
   /**
@@ -156,6 +161,7 @@ class CharactersList extends React.Component {
                   shouldCloseOnOverlayClick={true}
                   parentSelector={() => document.querySelector('#__next')}
                 >
+                  {/* TODO: Add loading icon. */}
                   <Button
                     onClick={this.handleModalCloseRequest}
                     style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
