@@ -76,7 +76,7 @@ export class Home extends React.Component {
             <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge, }}>
               <ContentBlock>
                 <Flex flexWrap="wrap" alignItems="center" alignContent="center">
-                  <Stats total_characters={1000} total_appearances={200000} total_issues={60000} min_year={1938} />
+                  <Stats {...this.props.stats.data} />
                 </Flex>
               </ContentBlock>
             </div>

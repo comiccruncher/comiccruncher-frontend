@@ -39,8 +39,6 @@ export const MainContent = (props) =>
   withCache(
     <div css={props.style || bgCSS}>
       {props.children}
-      <ContentBlock>
-        <Footer />
-      </ContentBlock>
+      <Footer />
     </div>
   );

@@ -8,7 +8,7 @@ import Dimensions from '../shared/styles/dimensions';
 import Responsive from '../shared/styles/responsive';
 import { Title, Section, Text } from '../shared/styles/type';
 import { FullCharacterProps } from './Types';
-import { MainContent, ContentBlock } from '../Layout/Content';
+import { MainContent } from '../Layout/Content';
 import { Header } from '../Layout/Header';
 import { StatBlock } from '../Stats/Stats';
 
@@ -89,93 +89,89 @@ class FullCharacter extends React.Component {
     return (
       <React.Fragment>
         <Header background="#fff">
-          <ContentBlock>
-            <Flex flexWrap="wrap">
-              <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} style={{ maxHeight: '400px' }}>
-                <CharacterImg
-                  src={c.image || c.vendor_image}
-                  objectPosition={!c.image && c.publisher.slug == 'dc' ? 'top' : 'center'}
-                  alt={`${c.name} profile image`}
-                />
-              </Box>
-              <Box
-                flex="1 0 auto"
-                width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
-                className={AngledBox}
-                bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
-              >
-                <Flex justifyContent="center" alignItems="center" alignContent="center">
-                  <Box p={30}>
-                    <Title.Large>
-                      <h1>{title}</h1>
-                    </Title.Large>
-                    <Title.Byline>
-                      <h2>{otherName}</h2>
-                    </Title.Byline>
-                    <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                      <Title.Red>
-                        #<CountUp end={1} />
-                      </Title.Red>
-                      <Text.Default bold>All Time</Text.Default>
-                    </div>
-                  </Box>
-                </Flex>
-              </Box>
-            </Flex>
-          </ContentBlock>
+          <Flex flexWrap="wrap">
+            <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
+              <CharacterImg
+                src={c.image || c.vendor_image}
+                objectPosition={!c.image && c.publisher.slug == 'dc' ? 'top' : 'center'}
+                alt={`${c.name} profile image`}
+              />
+            </Box>
+            <Box
+              flex="1 0 auto"
+              width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
+              className={AngledBox}
+              bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
+            >
+              <Flex justifyContent="center" alignItems="center" alignContent="center">
+                <Box p={30}>
+                  <Title.Large>
+                    <h1>{title}</h1>
+                  </Title.Large>
+                  <Title.Byline>
+                    <h2>{otherName}</h2>
+                  </Title.Byline>
+                  <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                    <Title.Red>
+                      #<CountUp end={1} />
+                    </Title.Red>
+                    <Text.Default bold>All Time</Text.Default>
+                  </div>
+                </Box>
+              </Flex>
+            </Box>
+          </Flex>
         </Header>
         <MainContent>
-          <ContentBlock>
-            <Flex flexWrap={'wrap'}>
-              <Box p={30} width={[1, 1, 3 / 4]}>
-                {appearanceCount && (
-                  <React.Fragment>
-                    <Section.Title>
-                      <h3>Appearances per year</h3>
-                    </Section.Title>
-                    <Section.Byline>
-                      <Text.Default>
-                        <CountUp end={appearanceCount} /> lifetime total
-                      </Text.Default>
-                      {/* TODO: change appearanceCount when someone clicks on main/alt label */}
-                      {/* TODO: This is a limitation of charts.js. The appearance chart is responsive upon first render of viewport. */}
-                      <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
-                    </Section.Byline>
-                  </React.Fragment>
-                )}
-                {bio && (
-                  <React.Fragment>
-                    <Section.Title>
-                      <h3>Bio</h3>
-                    </Section.Title>
+          <Flex flexWrap={'wrap'}>
+            <Box p={30} width={[1, 1, 3 / 4]}>
+              {appearanceCount && (
+                <React.Fragment>
+                  <Section.Title>
+                    <h3>Appearances per year</h3>
+                  </Section.Title>
+                  <Section.Byline>
                     <Text.Default>
-                      <p>{bio}</p>
+                      <CountUp end={appearanceCount} /> lifetime total
                     </Text.Default>
-                  </React.Fragment>
-                )}
-              </Box>
-              <Box p={3} width={[1, 1, 1 / 4]}>
-                <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                  <Title.Red>
-                    #<CountUp end={1} />
-                  </Title.Red>
-                  <Text.Default bold>All Time</Text.Default>
-                </div>
-                <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                  <Title.Red>
-                    #<CountUp end={1} />
-                  </Title.Red>
-                  <Text.Default bold>Marvel</Text.Default>
-                </div>
-                <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                  <Title.Red>
-                    <CountUp end={30} />
-                  </Title.Red>
-                  <Text.Default bold>avg issues/year</Text.Default>
-                </div>
-              </Box>
-            </Flex>
-          </ContentBlock>
+                    {/* TODO: change appearanceCount when someone clicks on main/alt label */}
+                    {/* TODO: This is a limitation of charts.js. The appearance chart is responsive upon first render of viewport. */}
+                    <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
+                  </Section.Byline>
+                </React.Fragment>
+              )}
+              {bio && (
+                <React.Fragment>
+                  <Section.Title>
+                    <h3>Bio</h3>
+                  </Section.Title>
+                  <Text.Default>
+                    <p>{bio}</p>
+                  </Text.Default>
+                </React.Fragment>
+              )}
+            </Box>
+            <Box p={3} width={[1, 1, 1 / 4]}>
+              <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                <Title.Red>
+                  #<CountUp end={1} />
+                </Title.Red>
+                <Text.Default bold>All Time</Text.Default>
+              </div>
+              <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                <Title.Red>
+                  #<CountUp end={1} />
+                </Title.Red>
+                <Text.Default bold>Marvel</Text.Default>
+              </div>
+              <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                <Title.Red>
+                  <CountUp end={30} />
+                </Title.Red>
+                <Text.Default bold>avg issues/year</Text.Default>
+              </div>
+            </Box>
+          </Flex>
         </MainContent>
       </React.Fragment>
     );
