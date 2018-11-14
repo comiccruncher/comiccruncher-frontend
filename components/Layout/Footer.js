@@ -51,8 +51,8 @@ const Footer = (props) => (
               </Link>
             </li>
           </ul>
-          <div style={{ width: '32px', height: '32px', margin: '10px auto' }}>
-            <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
+          <div style={{ width: '32px', height: '32px', margin: Spacing.Small + 'px auto', }}>
+            <a style={{ padding: '0', display: 'inline-block' }} href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
               <Github />
             </a>
           </div>

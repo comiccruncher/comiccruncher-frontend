@@ -3,6 +3,7 @@ import request from 'superagent';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import Type, { Section } from '../components/shared/styles/type';
+import Spacing from '../components/shared/styles/spacing';
 import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
 import CharactersList from '../components/Character/CharactersList';
@@ -72,14 +73,14 @@ export class Home extends React.Component {
       <React.Fragment>
         <Layout title={'Home | Popular Characters | Comic Cruncher'}>
           <MainHeader>
-            <div css={{ 'margin-top': '65px' }}>
+            <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge, }}>
               <ContentBlock>
                 <Flex flexWrap="wrap" alignItems="center" alignContent="center">
                   <Stats total_characters={1000} total_appearances={200000} total_issues={60000} min_year={1938} />
                 </Flex>
               </ContentBlock>
             </div>
-            <div css={{ 'margin-top': '50px' }}>
+            <div>
               <ContentBlock width={1152} p={3}>
                 <Search />
               </ContentBlock>

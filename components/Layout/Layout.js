@@ -27,12 +27,12 @@ injectGlobal`
   .app {
     width: 100%;
     max-width: 1152px;
-    margin: 0 auto;
-    border-top: 4px solid #3e3d3d;
-    border-bottom: 4px solid #3e3d3d;
-    border-right: 4px solid #3e3d3d;
-    border-left: 3px solid #3e3d3d;
-    box-shadow: 15px 10px #3e3d3d;
+    margin: 0 auto ${Spacing.xLarge}px;
+    border-top: 4px solid ${UI.Background.Dark};
+    border-bottom: 4px solid ${UI.Background.Dark};
+    border-right: 4px solid ${UI.Background.Dark};
+    border-left: 3px solid ${UI.Background.Dark};
+    box-shadow: 15px 10px ${UI.Background.Dark};
   }
 
   .react-autosuggest__container {
