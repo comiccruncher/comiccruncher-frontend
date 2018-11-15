@@ -128,7 +128,6 @@ class CharactersList extends React.Component {
    */
   listenOnRouteChangeComplete = () => {
     Router.onRouteChangeComplete = (route) => {
-      console.log(route);
       if (this.state.wasModalOpened) {
         if (route === this.props.referer) {
           this.closeModal();
@@ -140,6 +139,17 @@ class CharactersList extends React.Component {
         }
       }
     };
+
+    Router.beforePopState(({ url, as, options }) => {
+      if (as === this.props.referer) {
+        this.handleModalCloseRequest();
+      }
+      if (url.includes('/?character=') || url.includes('/character?slug=')) {
+        window.location.href = as;
+        return false;
+      }
+      return true;
+    });
   };
 
   render() {
