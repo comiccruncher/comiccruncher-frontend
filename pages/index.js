@@ -11,7 +11,7 @@ import { RankedCharacterProps } from '../components/Character/Types';
 import { Stats } from '../components/Stats/Stats';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent, ContentBlock } from '../components/Layout/Content';
-import { HeadingH1 } from '../components/shared/styles/type';
+import { HeadingH1, Text } from '../components/shared/styles/type';
 import Button from '../components/shared/components/Button';
 import { LoadingIcon } from '../components/shared/components/Icons';
 import Layout from '../components/Layout/Layout';
@@ -74,7 +74,7 @@ export class Home extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'Home | Popular Characters | Comic Cruncher'}>
+        <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'}>
           <MainHeader>
             <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge, }}>
               <ContentBlock>
