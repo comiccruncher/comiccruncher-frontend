@@ -12,6 +12,8 @@ import Spacing from '../shared/styles/spacing';
 import { LoadingIcon } from '../shared/components/Icons';
 import { withCache } from '../emotion/cache';
 
+const characterURL = `https://api.comiccruncher.com/characters`;
+
 class CharactersList extends React.Component {
   constructor(props) {
     super(props);
@@ -114,7 +116,7 @@ class CharactersList extends React.Component {
    * Loads the character.
    */
   loadCharacter = (slug) => {
-    const link = `https://api.comiccruncher.com/characters/${encodeURIComponent(slug)}`;
+    const link = `${characterURL}/${encodeURIComponent(slug)}`;
     request
       .get(link)
       .query({ key: 'batmansmellsbadly' })
@@ -133,9 +135,9 @@ class CharactersList extends React.Component {
           this.closeModal();
           return;
         }
-        const currentCharacter = Router.query.character;
-        if (currentCharacter !== this.state.currentModal) {
-          this.showCharacter(currentCharacter);
+        const requested = Router.query.character;
+        if (requested !== this.state.currentModal) {
+          this.showCharacter(requested);
         }
       }
     };

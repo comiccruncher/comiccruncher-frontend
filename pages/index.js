@@ -52,6 +52,7 @@ export class Home extends React.Component {
   };
 
   loadCharacters = (s) => {
+    const url = `https://api.comiccruncher.com/characters`;
     if (!this.state.isMain && !this.state.isAlternate) {
       return;
     }
@@ -62,10 +63,12 @@ export class Home extends React.Component {
     if (!this.state.isAlternate && this.state.isMain) {
       query = 'main';
     }
-    let url = `https://api.comiccruncher.com/characters?key=batmansmellsbadly&type=${encodeURIComponent(query)}`;
-    request.get(url).then((result) => {
-      this.setState({ characters: result.body, isLoading: false });
-    });
+    request
+      .get(url)
+      .query({ key: 'batmansmellsbadly', type: query })
+      .then((result) => {
+        this.setState({ characters: result.body, isLoading: false });
+      });
   };
 
   render() {
