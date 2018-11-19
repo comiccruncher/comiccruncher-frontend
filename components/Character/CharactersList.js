@@ -46,7 +46,7 @@ class CharactersList extends React.Component {
    */
   loadData = () => {
     this.setState({ isLoading: true });
-    let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page.link;
+    let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
     if (this.state.nextHref) {
       link = this.state.nextHref;
     }
@@ -60,7 +60,7 @@ class CharactersList extends React.Component {
         }));
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
-          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage.link });
+          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
         } else {
           this.setState({ hasMoreItems: false, nextHref: null });
         }
@@ -205,11 +205,6 @@ class CharactersList extends React.Component {
   }
 }
 
-const pageProps = PropTypes.shape({
-  number: PropTypes.number,
-  link: PropTypes.string,
-});
-
 CharactersList.propTypes = {
   onDismissModal: PropTypes.func,
   onShowCharacter: PropTypes.func,
@@ -219,10 +214,9 @@ CharactersList.propTypes = {
       status_code: PropTypes.number,
       error: PropTypes.string,
       pagination: PropTypes.shape({
-        per_page: PropTypes.number,
-        previous_page: pageProps,
-        current_page: pageProps,
-        next_page: pageProps,
+        previous_page: PropTypes.string,
+        current_page: PropTypes.string,
+        next_page: PropTypes.string,
       }),
     }),
     data: PropTypes.arrayOf(RankedCharacterProps),

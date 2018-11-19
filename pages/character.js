@@ -21,7 +21,7 @@ Character.propTypes = {
   meta: PropTypes.shape({
     status_code: PropTypes.number,
     error: PropTypes.string,
-  }).isRequired,
+  }),
   data: FullCharacterProps,
 };
 

@@ -18,13 +18,13 @@ class AppearanceChart extends React.Component {
 
 AppearanceChart.propTypes = {
   options: PropTypes.object,
-  title: PropTypes.string.isRequired,
-  years: PropTypes.arrayOf(PropTypes.number).isRequired,
+  title: PropTypes.string,
+  years: PropTypes.arrayOf(PropTypes.number),
   max_year: PropTypes.number,
   datasets: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      data: PropTypes.arrayOf(PropTypes.number).isRequired,
+      label: PropTypes.string,
+      data: PropTypes.arrayOf(PropTypes.number),
       backgroundColor: PropTypes.string,
       stack: PropTypes.string,
     })
