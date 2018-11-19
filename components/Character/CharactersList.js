@@ -11,6 +11,7 @@ import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
 import { LoadingIcon } from '../shared/components/Icons';
 import { withCache } from '../emotion/cache';
+import Link from 'next/link';
 
 const characterURL = `https://api.comiccruncher.com/characters`;
 
@@ -102,7 +103,8 @@ class CharactersList extends React.Component {
   /**
    * Shows the character modal.
    */
-  showCharacter = (slug) => {
+  showCharacter(e, slug) {
+    e.preventDefault();
     slug = encodeURIComponent(slug);
     Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
     if (this.state.currentModal) {
@@ -110,7 +112,7 @@ class CharactersList extends React.Component {
       return;
     }
     this.loadCharacter(slug);
-  };
+  }
 
   /**
    * Loads the character.
@@ -146,7 +148,8 @@ class CharactersList extends React.Component {
       if (as === this.props.referer) {
         this.handleModalCloseRequest();
       }
-      if (url.includes('/?character=') || url.includes('/character?slug=')) {
+      console.log(url);
+      if (url.includes(`${this.props.referer}?character=`) || url.includes('/character?slug=')) {
         window.location.href = as;
         return false;
       }
@@ -182,7 +185,7 @@ class CharactersList extends React.Component {
                   </Button>
                   <FullCharacter {...this.state.currentCharacter} />
                 </Modal>
-                <a href={`/characters/${character.slug}`} onClick={this.toggleModal(character.slug)}>
+                <a href={`/characters/${character.slug}`} onClick={(e) => this.showCharacter(e, character.slug)}>
                   <CharacterCard {...character} />
                 </a>
               </Box>
