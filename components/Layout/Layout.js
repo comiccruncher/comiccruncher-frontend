@@ -138,6 +138,7 @@ injectGlobal`
   }
 
   .Overlay {
+    -webkit-overflow-scrolling: touch;
     position: fixed;
     background: rgba(0,0,0,.7);
     bottom: 0;
@@ -176,7 +177,8 @@ injectGlobal`
   }
 
   .ReactModal__Body--open {
-    overflow: hidden;
+    overflow: hidden!important;
+    width: 100%;
   }
 
   .ReactModal__Overlay {
@@ -208,6 +210,7 @@ const Layout = (props) => (
       <Navigation background={props.navBackground} />
       {props.children}
     </div>
+    <div className="modalApp" />
   </React.Fragment>
 );
 
