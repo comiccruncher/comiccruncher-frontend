@@ -67,14 +67,6 @@ class CharactersList extends React.Component {
   };
 
   /**
-   * Toggles the modal so that it shows the character.
-   */
-  toggleModal = (key) => (event) => {
-    event.preventDefault();
-    this.showCharacter(key);
-  };
-
-  /**
    * Closes the modal and propagates the history change.
    */
   handleModalCloseRequest = () => {
@@ -97,7 +89,7 @@ class CharactersList extends React.Component {
   /**
    * Shows the character modal.
    */
-  showCharacter(e, slug) {
+  handleModalOpenRequest(e, slug) {
     e.preventDefault();
     this.setState({ requestedCharacterSlug: slug });
     slug = encodeURIComponent(slug);
@@ -167,7 +159,7 @@ class CharactersList extends React.Component {
                 </Modal>
                 <CharacterLink
                   href={`/characters/${character.slug}`}
-                  onClick={(e) => this.showCharacter(e, character.slug)}
+                  onClick={(e) => this.handleModalOpenRequest(e, character.slug)}
                 >
                   <CharacterCard {...character} isLoading={reqSlug === character.slug} />
                 </CharacterLink>
