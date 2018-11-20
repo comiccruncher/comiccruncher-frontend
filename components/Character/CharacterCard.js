@@ -108,7 +108,7 @@ const LoadingBG = styled.div({
   position: 'absolute',
   zIndex: 10,
   [Responsive.Mobile]: {
-    width: '125px',
+    width: '134px',
   },
 });
 
