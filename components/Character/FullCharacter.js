@@ -11,6 +11,7 @@ import { FullCharacterProps } from './Types';
 import { MainContent } from '../Layout/Content';
 import { Header } from '../Layout/Header';
 import { StatBlock } from '../Stats/Stats';
+import { withCache } from '../emotion/cache';
 
 const AngledBox = css({
   zIndex: 10,
@@ -235,4 +236,4 @@ class FullCharacter extends React.Component {
 
 FullCharacter.propTypes = FullCharacterProps;
 
-export default FullCharacter;
+export default withCache(FullCharacter);
