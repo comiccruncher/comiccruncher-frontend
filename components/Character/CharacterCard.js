@@ -29,7 +29,7 @@ const Card = styled.div(
         position: 'relative',
         width: '100%',
         height: '125px',
-        padding: '35px 0 0 150px',
+        padding: '35px 0 0 140px',
       },
       '&::after': {
         content: `' '`,
