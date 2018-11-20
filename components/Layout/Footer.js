@@ -21,12 +21,16 @@ const FooterContainer = styled('footer')({
     color: UI.Text.Dark,
     fontFamily: UIFontStack,
     fontWeight: Weight.Medium,
-    padding: Spacing.Small,
+    padding: 0,
     transition: 'all .3s ease-in-out',
     '&:hover': {
       color: UI.Text.Light,
     },
   },
+});
+
+const IconsContainer = styled('div')({
+  margin: '10px auto',
 });
 
 const Footer = (props) => (
@@ -51,11 +55,11 @@ const Footer = (props) => (
               </Link>
             </li>
           </ul>
-          <div style={{ width: '32px', height: '32px', margin: Spacing.Small + 'px auto', }}>
-            <a style={{ padding: '0', display: 'inline-block' }} href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
-              <Github />
+          <IconsContainer>
+            <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
+              <Github width="32" height="32" />
             </a>
-          </div>
+          </IconsContainer>
         </FooterContainer>
       </Box>
     </Flex>
