@@ -28,7 +28,7 @@ const Character = styled.div(
         position: 'relative',
         width: '100%',
         height: '125px',
-        padding: '40px 0 0 150px',
+        padding: '35px 0 0 150px',
       },
       '&::after': {
         content: `' '`,
@@ -66,10 +66,11 @@ const Character = styled.div(
       },
     },
     [Responsive.Mobile]: {
-      height: '125px',
+      height: Spacing.xLarge * 3.5,
+      paddingBottom: 0,
     },
     [Responsive.Tablet]: {
-      height: Spacing.xxLarge * 8.25,
+      height: Spacing.xxLarge * 5,
     },
     '&:hover': {
       cursor: 'pointer',

@@ -169,7 +169,7 @@ class CharactersList extends React.Component {
         <Flex flexWrap="wrap" alignItems="center" alignContent="center">
           {characters.map((character, i) => {
             return (
-              <Box pr={3} pb={3} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
+              <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]} key={character.slug}>
                 <Modal
                   closeTimeoutMS={500}
                   className="Modal"
@@ -189,7 +189,10 @@ class CharactersList extends React.Component {
                   </Button>
                   <FullCharacter {...this.state.currentCharacter} />
                 </Modal>
-                <CharacterLink href={`/characters/${character.slug}`} onClick={(e) => this.showCharacter(e, character.slug)}>
+                <CharacterLink
+                  href={`/characters/${character.slug}`}
+                  onClick={(e) => this.showCharacter(e, character.slug)}
+                >
                   <CharacterCard {...character} />
                 </CharacterLink>
               </Box>
