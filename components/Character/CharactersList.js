@@ -98,7 +98,9 @@ class CharactersList extends React.Component {
       this.handleModalCloseRequest();
       return;
     }
-    this.loadCharacter(slug);
+    setTimeout(() => {
+      this.loadCharacter(slug);
+    }, 400);
   }
 
   /**
