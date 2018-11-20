@@ -75,6 +75,7 @@ class CharactersList extends React.Component {
     Router.push(this.props.referer);
     this.setState({
       currentCharacterData: null,
+      requestedCharacterSlug: null,
     });
     this.closeModal();
   };
@@ -114,7 +115,7 @@ class CharactersList extends React.Component {
       .get(link)
       .query({ key: 'batmansmellsbadly' })
       .then((res) => {
-        this.setState({ currentCharacterData: res.body.data, requestedCharacterSlug: null });
+        this.setState({ currentCharacterData: res.body.data });
       });
   };
 
