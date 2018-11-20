@@ -140,7 +140,7 @@ injectGlobal`
   .Overlay {
     -webkit-overflow-scrolling: touch;
     position: fixed;
-    background: rgba(0,0,0,.7);
+    background: rgba(0,0,0,.6);
     bottom: 0;
     left: 0;
     overflow: auto;
