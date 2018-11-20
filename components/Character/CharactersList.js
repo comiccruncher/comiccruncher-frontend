@@ -42,28 +42,30 @@ class CharactersList extends React.Component {
    */
   loadData = () => {
     this.setState({ isNextPageLoading: true });
-    let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
-    if (this.state.nextHref) {
-      link = this.state.nextHref;
-    }
-    request
-      .get(link)
-      .then((res) => {
-        const body = res.body;
-        this.setState((prevState) => ({
-          characters: prevState.characters.concat(body.data),
-          isNextPageLoading: false,
-        }));
-        const nextPage = body.meta.pagination.next_page;
-        if (nextPage) {
-          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
-        } else {
-          this.setState({ hasMoreItems: false, nextHref: null });
-        }
-      })
-      .catch((err) => {
-        this.setState({ error: 'Error loading page!! :(' });
-      });
+    setTimeout(() => {
+      let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
+      if (this.state.nextHref) {
+        link = this.state.nextHref;
+      }
+      request
+        .get(link)
+        .then((res) => {
+          const body = res.body;
+          this.setState((prevState) => ({
+            characters: prevState.characters.concat(body.data),
+            isNextPageLoading: false,
+          }));
+          const nextPage = body.meta.pagination.next_page;
+          if (nextPage) {
+            this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
+          } else {
+            this.setState({ hasMoreItems: false, nextHref: null });
+          }
+        })
+        .catch((err) => {
+          this.setState({ error: 'Error loading page!! :(' });
+        });
+    }, 300);
   };
 
   /**
@@ -100,7 +102,7 @@ class CharactersList extends React.Component {
     }
     setTimeout(() => {
       this.loadCharacter(slug);
-    }, 400);
+    }, 300);
   }
 
   /**
