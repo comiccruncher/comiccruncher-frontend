@@ -23,34 +23,25 @@ class CharactersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.characters.data, // an anti-pattern? w/e for now.
+      characters: props.characters.data,
       hasMoreItems: true,
       nextHref: null,
       error: null,
-      currentModal: null,
-      wasModalOpened: false,
-      currentCharacter: null,
-      isLoading: false,
-      isModalLoading: false,
+      currentCharacterData: null,
+      isNextPageLoading: false,
+      requestedCharacterSlug: null,
     };
   }
 
   componentDidMount() {
-    this.listenOnRouteChangeComplete();
+    this.listenBeforePopState();
   }
-
-  getParent = (element) => {
-    const document = typeof document === 'undefined' ? '' : document;
-    if (document) {
-      return document.querySelector(element);
-    }
-  };
 
   /**
    * Loads data for the next page.
    */
   loadData = () => {
-    this.setState({ isLoading: true });
+    this.setState({ isNextPageLoading: true });
     let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
     if (this.state.nextHref) {
       link = this.state.nextHref;
@@ -60,8 +51,8 @@ class CharactersList extends React.Component {
       .then((res) => {
         const body = res.body;
         this.setState((prevState) => ({
-          data: prevState.data.concat(body.data),
-          isLoading: false,
+          characters: prevState.characters.concat(body.data),
+          isNextPageLoading: false,
         }));
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
@@ -80,10 +71,6 @@ class CharactersList extends React.Component {
    */
   toggleModal = (key) => (event) => {
     event.preventDefault();
-    this.setState({ isModalLoading: true });
-    if (!this.state.wasModalOpened) {
-      this.setState({ wasModalOpened: true });
-    }
     this.showCharacter(key);
   };
 
@@ -92,6 +79,9 @@ class CharactersList extends React.Component {
    */
   handleModalCloseRequest = () => {
     Router.push(this.props.referer);
+    this.setState({
+      currentCharacterData: null,
+    });
     this.closeModal();
   };
 
@@ -100,7 +90,7 @@ class CharactersList extends React.Component {
    */
   closeModal = () => {
     this.setState({
-      currentModal: null,
+      currentCharacterData: null,
     });
   };
 
@@ -109,9 +99,10 @@ class CharactersList extends React.Component {
    */
   showCharacter(e, slug) {
     e.preventDefault();
+    this.setState({ requestedCharacterSlug: slug });
     slug = encodeURIComponent(slug);
     Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
-    if (this.state.currentModal) {
+    if (this.state.currentCharacterData) {
       this.handleModalCloseRequest();
       return;
     }
@@ -127,34 +118,20 @@ class CharactersList extends React.Component {
       .get(link)
       .query({ key: 'batmansmellsbadly' })
       .then((res) => {
-        this.setState({ currentCharacter: res.body.data, currentModal: slug, isModalLoading: false });
+        this.setState({ currentCharacterData: res.body.data, requestedCharacterSlug: null });
       });
   };
 
   /**
    * Listens on when the route changes and handles opening the modal.
    */
-  listenOnRouteChangeComplete = () => {
-    Router.onRouteChangeComplete = (route) => {
-      if (this.state.wasModalOpened) {
-        if (route === this.props.referer) {
-          this.closeModal();
-          return;
-        }
-        const requested = Router.query.character;
-        if (requested !== this.state.currentModal) {
-          this.showCharacter(requested);
-        }
-      }
-    };
-
+  listenBeforePopState = () => {
     Router.beforePopState(({ url, as, options }) => {
       if (as === this.props.referer) {
         this.handleModalCloseRequest();
       }
-      console.log(url);
       if (url.includes(`${this.props.referer}?character=`) || url.includes('/character?slug=')) {
-        window.location.href = as;
+        Router.push(as);
         return false;
       }
       return true;
@@ -162,8 +139,9 @@ class CharactersList extends React.Component {
   };
 
   render() {
-    const characters = this.state.data;
-    const currentModal = this.state.currentModal;
+    const characters = this.state.characters;
+    const currentCharacter = this.state.currentCharacterData;
+    const reqSlug = this.state.requestedCharacterSlug;
     return (
       <React.Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center">
@@ -176,24 +154,22 @@ class CharactersList extends React.Component {
                   overlayClassName="Overlay"
                   id={character.slug}
                   onRequestClose={this.handleModalCloseRequest}
-                  isOpen={currentModal === character.slug}
+                  isOpen={currentCharacter ? currentCharacter.slug === character.slug : false}
                   shouldCloseOnOverlayClick={true}
-                  parentSelector={() => document.querySelector('#__next')}
                 >
-                  {/* TODO: Add loading icon. */}
                   <Button
                     onClick={this.handleModalCloseRequest}
                     style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
                   >
                     Close
                   </Button>
-                  <FullCharacter {...this.state.currentCharacter} />
+                  {currentCharacter && <FullCharacter {...currentCharacter} />}
                 </Modal>
                 <CharacterLink
                   href={`/characters/${character.slug}`}
                   onClick={(e) => this.showCharacter(e, character.slug)}
                 >
-                  <CharacterCard {...character} />
+                  <CharacterCard {...character} isLoading={reqSlug === character.slug} />
                 </CharacterLink>
               </Box>
             );
@@ -202,12 +178,12 @@ class CharactersList extends React.Component {
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
             {this.state.hasMoreItems &&
-              !this.state.isLoading && (
+              !this.state.isNextPageLoading && (
                 <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
                   Load More
                 </Button>
               )}
-            {this.state.isLoading && <LoadingIcon />}
+            {this.state.isNextPageLoading && <LoadingIcon />}
           </Box>
         </Flex>
       </React.Fragment>
@@ -216,8 +192,6 @@ class CharactersList extends React.Component {
 }
 
 CharactersList.propTypes = {
-  onDismissModal: PropTypes.func,
-  onShowCharacter: PropTypes.func,
   referer: PropTypes.string,
   characters: PropTypes.shape({
     meta: PropTypes.shape({
@@ -235,5 +209,4 @@ CharactersList.propTypes = {
 
 Modal.setAppElement('#__next');
 
-// TODO: Fix modal for marvel and dc route!!!
 export default withCache(withRouter(CharactersList));

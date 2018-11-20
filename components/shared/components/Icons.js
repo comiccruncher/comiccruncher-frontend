@@ -3,6 +3,64 @@ import { css } from 'react-emotion';
 
 const linesSvg = 'https://flash.comiccruncher.com/static/assets/loading.svg';
 
+export const LoadingSVG = ({
+  width = '100',
+  height = '100',
+  viewBox = '0 0 110 110',
+  color = '#FD4B46',
+  className = '',
+}) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox={viewBox}
+    id="loader-1"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <g>
+      <path
+        id="svg_1"
+        d="m18.14,26.616c8.506,-11.031 21.853,-18.136 36.86,-18.136c8.515,0 16.496,2.288 23.361,6.282"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeWidth="10"
+        stroke={color}
+        fill="none"
+      >
+        <animateTransform
+          attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 55 55"
+          to="360 55 55"
+          dur="0.8s"
+          repeatCount="indefinite"
+        />
+      </path>
+      <path
+        id="svg_2"
+        d="m18.14,26.616c8.506,-11.031 21.853,-18.136 36.86,-18.136c8.515,0 16.496,2.288 23.361,6.282"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeWidth="10"
+        stroke={color}
+        fill="none"
+      >
+        <animateTransform
+          attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 55 55"
+          to="360 55 55"
+          dur="1s"
+          repeatCount="indefinite"
+        />
+      </path>
+    </g>
+  </svg>
+);
+
 const loadingCSS = css({
   height: '110px',
   width: '110px',
@@ -11,18 +69,19 @@ const loadingCSS = css({
 
 export const LoadingIcon = (props) => (
   <React.Fragment>
-    <div css={loadingCSS} />
+    <div key={props.key} css={loadingCSS} />
   </React.Fragment>
 );
 
-export const Github = (w = 100, h = 100) => (
+export const Github = ({ width = '100', height = '100', viewbox = '0 0 438.549 438.549', className = '' }) => (
   <svg
+    className={className}
     xmlns="http://www.w3.org/2000/svg"
     x="0px"
     y="0px"
-    width={`${w}px`}
-    height={`${h}px`}
-    viewBox="0 0 438.549 438.549"
+    width={`${width}px`}
+    height={`${height}px`}
+    viewBox={viewbox}
     styles="enable-background:new 0 0 438.549 438.549;"
     xmlSpace="preserve"
   >

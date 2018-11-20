@@ -1,12 +1,13 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { CharacterProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
 import Responsive from '../shared/styles/responsive';
+import { LoadingSVG } from '../shared/components/Icons';
 
-const Character = styled.div(
+const Card = styled.div(
   {
     width: '100%',
     height: Spacing.xxLarge * 6.25,
@@ -48,7 +49,7 @@ const Character = styled.div(
         },
       },
       '& *': {
-        color: UI.Text.White
+        color: UI.Text.White,
       },
     },
     '& img': {
@@ -99,13 +100,41 @@ const Character = styled.div(
     }
 );
 
+const LoadingBG = styled.div({
+  background: '#000',
+  opacity: 0.7,
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  zIndex: 10,
+  [Responsive.Mobile]: {
+    width: '125px',
+  },
+});
+
+const SVGStyle = css({
+  margin: 'auto',
+  top: 0,
+  right: 0,
+  position: 'absolute',
+  bottom: '25%',
+  left: 0,
+  [Responsive.Mobile]: {
+    bottom: 0,
+    padding: '10px 0',
+  },
+});
+
 export const CharacterCard = (props) => (
   <React.Fragment>
-    <Character {...props}>
+    <Card {...props}>
+      {props.isLoading && (
+        <LoadingBG>
+          <LoadingSVG className={SVGStyle} color={props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
+        </LoadingBG>
+      )}
       <img src={props.image || props.vendor_image} alt={props.name} title={props.name} />
       <DisplayName {...props} />
-    </Character>
+    </Card>
   </React.Fragment>
 );
-
-CharacterCard.propTypes = CharacterProps;
