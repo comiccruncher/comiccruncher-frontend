@@ -6,6 +6,7 @@ import Spacing from '../shared/styles/spacing';
 import PropTypes from 'prop-types';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
+import Responsive from '../shared/styles/responsive';
 
 injectGlobal`
   * {
@@ -149,6 +150,12 @@ injectGlobal`
     padding: ${Spacing.Small}px;
   }
 
+  ${Responsive.Mobile} {
+    .Overlay {
+      padding: 0;
+    }
+  }
+
   @keyframes blowUpModal {
     0% {
       transform: scale(0);
@@ -166,6 +173,10 @@ injectGlobal`
       transform: scale(0);
       opacity: 0;
     }
+  }
+
+  .ReactModal__Body--open {
+    overflow: hidden;
   }
 
   .ReactModal__Overlay {

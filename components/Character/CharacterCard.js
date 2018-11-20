@@ -12,6 +12,9 @@ const Character = styled.div(
     height: Spacing.xxLarge * 6.25,
     overflow: 'hidden',
     position: 'relative',
+    [Responsive.Mobile]: {
+      overflow: 'auto',
+    },
     '& .DisplayName': {
       position: 'absolute',
       color: UI.Text.White,
@@ -21,6 +24,12 @@ const Character = styled.div(
       left: 0,
       width: '80%',
       padding: Spacing.Small,
+      [Responsive.Mobile]: {
+        position: 'relative',
+        width: '100%',
+        height: '125px',
+        padding: '40px 0 0 150px',
+      },
       '&::after': {
         content: `' '`,
         width: '100%',
@@ -33,20 +42,31 @@ const Character = styled.div(
         right: '-10px',
         borderTop: '10px solid ' + UI.Background.White,
         borderRight: '10px solid ' + UI.Background.White,
+        [Responsive.Mobile]: {
+          position: 'relative',
+          border: 0,
+        },
       },
       '& *': {
         color: UI.Text.White
-      }
+      },
     },
     '& img': {
       zIndex: 0,
       width: '100%',
       height: 'inherit',
       objectFit: 'cover',
-      transition: '0.3s ease-in-out'
+      transition: '0.3s ease-in-out',
+      [Responsive.Mobile]: {
+        float: 'left',
+        height: '125px',
+        width: '125px',
+        position: 'absolute',
+        zIndex: 9,
+      },
     },
     [Responsive.Mobile]: {
-      height: Spacing.xxLarge * 9,
+      height: '125px',
     },
     [Responsive.Tablet]: {
       height: Spacing.xxLarge * 8.25,
@@ -54,26 +74,28 @@ const Character = styled.div(
     '&:hover': {
       cursor: 'pointer',
       '& img': {
-        transform: 'scale(1.1)'
-      }
-    }
+        transform: 'scale(1.1)',
+      },
+    },
   },
-  (props) => props.publisher.slug === 'marvel' && {
-    '& .DisplayName': {
-      backgroundColor: Brands.Marvel,
-      '&:after': {
-        backgroundColor: Brands.Marvel
-      }
+  (props) =>
+    props.publisher.slug === 'marvel' && {
+      '& .DisplayName': {
+        backgroundColor: Brands.Marvel,
+        '&:after': {
+          backgroundColor: Brands.Marvel,
+        },
+      },
+    },
+  (props) =>
+    props.publisher.slug === 'dc' && {
+      '& .DisplayName': {
+        backgroundColor: Brands.DC,
+        '&:after': {
+          backgroundColor: Brands.DC,
+        },
+      },
     }
-  },
-  (props) => props.publisher.slug === 'dc' && {
-    '& .DisplayName': {
-      backgroundColor: Brands.DC,
-      '&:after': {
-        backgroundColor: Brands.DC
-      }
-    }
-  }
 );
 
 export const CharacterCard = (props) => (

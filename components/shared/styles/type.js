@@ -1,6 +1,7 @@
 import styled from 'react-emotion';
 import { UI } from './colors';
 import Spacing from './spacing';
+import Responsive from './responsive';
 
 const UIFontStack =
   'Inter UI, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
@@ -41,11 +42,14 @@ const TextShadow = `-4px 4px 0 ${UI.Text.Dark},
 const YellowTitle = styled.div({
   color: UI.Text.Yellow,
   fontFamily: BangersFontStack,
-  fontSize: Size.XLarge,
+  fontSize: '70px',
   letterSpacing: 5,
   fontWeight: Weight.Normal,
   textShadow: `${TextShadow}`,
   marginBottom: Spacing.Large,
+  [Responsive.TabletAndBelow]: {
+    fontSize: '50px',
+  },
 });
 
 const RedTitle = styled.div({
@@ -65,6 +69,9 @@ const SubTitle = styled.div({
   letterSpacing: 2,
   fontWeight: Weight.Bold,
   marginBottom: Spacing.Small,
+  [Responsive.Tablet]: {
+    fontSize: '28px',
+  },
 });
 
 const SectionTitle = styled.div({

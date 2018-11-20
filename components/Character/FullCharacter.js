@@ -36,11 +36,31 @@ const AngledBox = css({
   },
 });
 
+const wrapper = css({
+  background: '#fff',
+});
+
+const HeaderTitle = styled('div')((props) => ({
+  marginTop: '120px',
+  [Responsive.Tablet]: {
+    marginTop: '70px',
+  },
+  [Responsive.Mobile]: {
+    margin: '20px',
+  },
+}));
+
 const CharacterImg = styled('img')((props) => ({
   width: props.width || '100%',
   height: props.height || '100%',
   objectFit: 'cover',
-  objectPosition: props.objectPosition || 'center',
+  objectPosition: props.objectPosition || 'top',
+  minHeight: '450px',
+  maxHeight: '450px',
+  [Responsive.Tablet]: {
+    minHeight: '350px',
+    maxHeight: '350px',
+  },
 }));
 
 const aggregateCountMap = (aggregate) => aggregate.count;
@@ -61,6 +81,8 @@ class FullCharacter extends React.Component {
     totalAppearanceCount: 0,
     years: [],
     datasets: [],
+    mainCount: 0,
+    altCount: 0,
   };
 
   componentDidMount() {
@@ -74,6 +96,8 @@ class FullCharacter extends React.Component {
         years: years,
         datasets: datasets,
         totalAppearanceCount: mainCounts + altCounts,
+        mainCount: mainCounts,
+        altCount: altCounts,
       });
     }
   }
@@ -86,93 +110,124 @@ class FullCharacter extends React.Component {
     // clean markup
     const regex = /(<([^>]+)>)/gi;
     const bio = c.vendor_description.replace(regex, '');
+    const allTime = c.stats ? c.stats.find((stat) => stat.category === 'all_time') : null;
+    const main = c.stats ? c.stats.find((stat) => stat.category === 'main') : null;
+    const lastSyncs = c.last_syncs ? c.last_syncs.slice(0, 2) : [];
+    const newIssues = lastSyncs.length == 2 ? lastSyncs[0].num_issues - lastSyncs[1].num_issues : 0;
     return (
       <React.Fragment>
-        <Header background="#fff">
-          <Flex flexWrap="wrap">
-            <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
-              <CharacterImg
-                src={c.image || c.vendor_image}
-                objectPosition={!c.image && c.publisher.slug == 'dc' ? 'top' : 'center'}
-                alt={`${c.name} profile image`}
-              />
-            </Box>
-            <Box
-              flex="1 0 auto"
-              width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
-              className={AngledBox}
-              bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
-            >
-              <Flex justifyContent="center" alignItems="center" alignContent="center">
-                <Box p={30}>
-                  <Title.Large>
-                    <h1>{title}</h1>
-                  </Title.Large>
-                  <Title.Byline>
-                    <h2>{otherName}</h2>
-                  </Title.Byline>
-                  <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                    <Title.Red>
-                      #<CountUp end={1} />
-                    </Title.Red>
-                    <Text.Default bold>All Time</Text.Default>
-                  </div>
-                </Box>
-              </Flex>
-            </Box>
-          </Flex>
-        </Header>
-        <MainContent>
-          <Flex flexWrap={'wrap'}>
-            <Box p={30} width={[1, 1, 3 / 4]}>
-              {appearanceCount && (
-                <React.Fragment>
-                  <Section.Title>
-                    <h3>Appearances per year</h3>
-                  </Section.Title>
-                  <Section.Byline>
+        <div className={wrapper}>
+          <Header background="#fff">
+            <Flex flexWrap="wrap">
+              <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
+                <CharacterImg src={c.image || c.vendor_image} alt={`${c.name} profile image`} />
+              </Box>
+              <Box
+                flex="1 0 auto"
+                width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
+                className={AngledBox}
+                bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
+              >
+                <Flex justifyContent="center" alignItems="center" alignContent="center">
+                  <Box p={30}>
+                    <HeaderTitle>
+                      <Title.Large>
+                        <h1>{title}</h1>
+                      </Title.Large>
+                      {otherName && (
+                        <Title.Byline>
+                          <h2>{otherName}</h2>
+                        </Title.Byline>
+                      )}
+                    </HeaderTitle>
+                  </Box>
+                </Flex>
+              </Box>
+            </Flex>
+          </Header>
+          <MainContent>
+            {allTime &&
+              main && (
+                <Flex flexWrap={'wrap'} mt={30} mb={30}>
+                  <Box width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+                    <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                      <Title.Red>
+                        #<CountUp end={allTime.issue_count_rank} />
+                      </Title.Red>
+                      <Text.Default bold>All Time</Text.Default>
+                    </div>
+                  </Box>
+                  <Box width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+                    <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                      <Title.Red>
+                        #<CountUp end={main.issue_count_rank} />
+                      </Title.Red>
+                      <Text.Default bold>{c.publisher.name}</Text.Default>
+                    </div>
+                  </Box>
+                  <Box width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+                    <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                      <Title.Red>
+                        #<CountUp end={main.average_issues_per_year_rank} />
+                      </Title.Red>
+                      <Text.Default bold>avg issues/year</Text.Default>
+                    </div>
+                  </Box>
+                  <Box width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+                    <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
+                      <Title.Red>
+                        <CountUp end={main.average_issues_per_year} />
+                      </Title.Red>
+                      <Text.Default bold>avg issues/year</Text.Default>
+                    </div>
+                  </Box>
+                </Flex>
+              )}
+            <Flex flexWrap={'wrap'}>
+              <Box p={30} width={[1]}>
+                {appearanceCount && (
+                  <React.Fragment>
+                    <Section.Title>
+                      <h3>Appearances per year</h3>
+                    </Section.Title>
+                    <Section.Byline>
+                      <Text.Default>
+                        <p>
+                          <strong>{this.state.totalAppearanceCount}</strong> total appearances
+                        </p>
+                        <p>
+                          <strong>{this.state.mainCount}</strong> main appearances
+                        </p>
+                        <p>
+                          <strong>{this.state.altCount}</strong> alternate appearances
+                        </p>
+                        {lastSyncs && (
+                          <p>
+                            Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
+                            {newIssues && `with ${newIssues} new issues`}
+                          </p>
+                        )}
+                      </Text.Default>
+                      {/* TODO: change appearanceCount when someone clicks on main/alt label */}
+                      {/* TODO: This is a limitation of charts.js. The appearance chart is responsive upon first render of viewport. */}
+                      <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
+                    </Section.Byline>
+                  </React.Fragment>
+                )}
+                {bio && (
+                  <React.Fragment>
+                    <Section.Title>
+                      <h3>Bio</h3>
+                    </Section.Title>
                     <Text.Default>
-                      <CountUp end={appearanceCount} /> lifetime total
+                      <p>{bio}</p>
                     </Text.Default>
-                    {/* TODO: change appearanceCount when someone clicks on main/alt label */}
-                    {/* TODO: This is a limitation of charts.js. The appearance chart is responsive upon first render of viewport. */}
-                    <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
-                  </Section.Byline>
-                </React.Fragment>
-              )}
-              {bio && (
-                <React.Fragment>
-                  <Section.Title>
-                    <h3>Bio</h3>
-                  </Section.Title>
-                  <Text.Default>
-                    <p>{bio}</p>
-                  </Text.Default>
-                </React.Fragment>
-              )}
-            </Box>
-            <Box p={3} width={[1, 1, 1 / 4]}>
-              <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                <Title.Red>
-                  #<CountUp end={1} />
-                </Title.Red>
-                <Text.Default bold>All Time</Text.Default>
-              </div>
-              <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                <Title.Red>
-                  #<CountUp end={1} />
-                </Title.Red>
-                <Text.Default bold>Marvel</Text.Default>
-              </div>
-              <div className={StatBlock} style={{ transform: 'rotate(6deg)' }}>
-                <Title.Red>
-                  <CountUp end={30} />
-                </Title.Red>
-                <Text.Default bold>avg issues/year</Text.Default>
-              </div>
-            </Box>
-          </Flex>
-        </MainContent>
+                  </React.Fragment>
+                )}
+              </Box>
+            </Flex>
+          </MainContent>
+        </div>
       </React.Fragment>
     );
   }

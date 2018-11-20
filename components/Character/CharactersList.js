@@ -11,9 +11,13 @@ import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
 import { LoadingIcon } from '../shared/components/Icons';
 import { withCache } from '../emotion/cache';
-import Link from 'next/link';
+import styled from 'react-emotion';
 
 const characterURL = `https://api.comiccruncher.com/characters`;
+
+const CharacterLink = styled.a({
+  textDecoration: 'none',
+});
 
 class CharactersList extends React.Component {
   constructor(props) {
@@ -87,8 +91,8 @@ class CharactersList extends React.Component {
    * Closes the modal and propagates the history change.
    */
   handleModalCloseRequest = () => {
-    this.closeModal();
     Router.push(this.props.referer);
+    this.closeModal();
   };
 
   /**
@@ -185,9 +189,9 @@ class CharactersList extends React.Component {
                   </Button>
                   <FullCharacter {...this.state.currentCharacter} />
                 </Modal>
-                <a href={`/characters/${character.slug}`} onClick={(e) => this.showCharacter(e, character.slug)}>
+                <CharacterLink href={`/characters/${character.slug}`} onClick={(e) => this.showCharacter(e, character.slug)}>
                   <CharacterCard {...character} />
-                </a>
+                </CharacterLink>
               </Box>
             );
           })}
