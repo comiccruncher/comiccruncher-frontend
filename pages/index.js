@@ -98,7 +98,7 @@ export class Home extends React.Component {
               <Box width={[1, 2 / 4, 2 / 4, 2 / 4]} css={buttonDiv} pr={3}>
                 <Button
                   isInactive={!this.state.isMain}
-                  style={{ 'margin-right': '10px' }}
+                  style={{ marginRight: '10px' }}
                   type={'dark'}
                   onClick={(e) => this.handleButton(e, 'main')}
                 >
