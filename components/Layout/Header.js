@@ -6,6 +6,7 @@ import Spacing from '../shared/styles/spacing';
 import Lines from '../shared/components/Lines';
 
 const HeaderSection = styled('div')((props) => ({
+  overflow: props.overflow || 'visible',
   position: 'relative',
   background: props.background || UI.Background.RedGradient,
   minHeight: '420px',
@@ -17,6 +18,7 @@ const HeaderSection = styled('div')((props) => ({
 }));
 
 const GenericHeader = styled('div')((props) => ({
+  overflow: props.overflow || 'visible',
   background: props.background,
   position: 'relative',
   padding: props.padding || 0,

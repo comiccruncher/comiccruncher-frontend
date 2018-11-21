@@ -118,7 +118,7 @@ class FullCharacter extends React.Component {
     return (
       <React.Fragment>
         <div className={wrapper}>
-          <Header background="#fff">
+          <Header background="#fff" overflow="hidden">
             <Flex flexWrap="wrap">
               <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
                 <CharacterImg src={c.image || c.vendor_image} alt={`${c.name} profile image`} />
