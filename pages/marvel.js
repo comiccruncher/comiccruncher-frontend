@@ -9,7 +9,7 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
-import { HeadingH1, Text } from '../components/shared/styles/type';
+import { Section, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
 
 class Marvel extends React.Component {
@@ -34,7 +34,9 @@ class Marvel extends React.Component {
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
               <Box width={[1]}>
-                <HeadingH1>Popular Marvel Characters</HeadingH1>
+                <Section.Title>
+                  <h1>Popular Marvel Characters</h1>
+                </Section.Title>
                 <Text.Default>
                   <p>
                     This page shows most popular Marvel characters by <strong>main</strong> appearances only (no
