@@ -1,14 +1,13 @@
 import React from 'react';
 import request from 'superagent';
 import Autosuggest from 'react-autosuggest';
-import AutosuggestHighlightMatch from 'autosuggest-highlight/match';
-import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 import { CharacterSearchResult } from './CharacterSearchResult';
 import { SearchBar } from './SearchStyles';
+import { withCache } from '../emotion/cache'; /* Keep this here */
 
-const searchUrl = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
+const searchURL = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 const escapeRegexCharacters = (str) => {
@@ -19,6 +18,10 @@ const getSuggestionValue = (suggestion) => {
   return `${suggestion.name}`;
 };
 
+const renderSearchInput = (inputProps) => (
+  <DebounceInput minLength={2} debounceTimeout={300} autoFocus {...inputProps} className={SearchBar} />
+);
+
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +30,6 @@ class Search extends React.Component {
       value: '',
       suggestions: [],
       error: '',
-      isLoading: false,
     };
   }
 
@@ -43,11 +45,13 @@ class Search extends React.Component {
     if (escapedValue === '') {
       return [];
     }
-    const full = searchUrl + '&query=' + encodeURIComponent(escapedValue);
     request
-      .get(full)
+      .get(searchURL)
+      .query({ query: encodeURIComponent(escapedValue) })
       .then((response) => {
-        this.setState({ suggestions: response.body.data });
+        const data = response.body.data;
+        // stupid hack for setting no suggestions...
+        this.setState({ suggestions: data && data.length === 0 ? [{ slug: 'no-suggestion' }] : data });
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -61,27 +65,15 @@ class Search extends React.Component {
   };
 
   renderSuggestion = (suggestion, { query }) => {
-    const suggestionText = `${suggestion.name}`;
-    const matches = AutosuggestHighlightMatch(suggestionText, query);
-    const parts = AutosuggestHighlightParse(suggestionText, matches);
-    // todo: fix autosuggest highlight parse match.
-    const match = parts.map((part, index) => {
-      const className = part.highlight ? 'highlight' : null;
-      return (
-        <span className={className} key={index}>
-          {part.text}
-        </span>
-      );
-    });
     return <CharacterSearchResult {...suggestion} />;
   };
 
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    Router.push('/characters/' + encodeURIComponent(suggestion.slug));
+    Router.push(`/characters/${encodeURIComponent(suggestion.slug)}`);
   };
 
   shouldRenderSuggestions = (value) => {
-    return value.trim().length > 2;
+    return value.trim().length > 1;
   };
 
   render() {
@@ -91,10 +83,6 @@ class Search extends React.Component {
       value,
       onChange: this.onChange,
     };
-    // TODO: Why is the debounce input so freakin slow?!!?!
-    const renderSearchInput = (inputProps) => (
-      <DebounceInput minLength={1} debounceTimeout={200} autoFocus {...inputProps} className={SearchBar} />
-    );
     return (
       <Autosuggest
         suggestions={suggestions}
