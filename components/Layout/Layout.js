@@ -210,16 +210,7 @@ const Layout = (props) => (
       <Navigation background={props.navBackground} />
       {props.children}
     </div>
-    <div className="modalApp" />
   </React.Fragment>
 );
-
-Layout.propTypes = {
-  showNavigation: PropTypes.bool,
-};
-
-Layout.defaultProps = {
-  showNavigation: true,
-};
 
 export default withCache(Layout);
