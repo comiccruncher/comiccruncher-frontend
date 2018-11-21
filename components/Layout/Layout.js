@@ -76,7 +76,7 @@ injectGlobal`
     font-size: 16px;
     z-index: 2;
     top: 100%;
-    position: relative; /* Fix for suggestions being hidden whose parent div has overflow:hidden  */
+    /*position: relative; Fix for suggestions being hidden whose parent div has overflow:hidden  */
   }
 
   .react-autosuggest__suggestions-list {
