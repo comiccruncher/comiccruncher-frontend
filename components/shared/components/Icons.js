@@ -1,7 +1,4 @@
 import React from 'react';
-import { css } from 'react-emotion';
-
-const linesSvg = 'https://flash.comiccruncher.com/static/assets/loading.svg';
 
 export const LoadingSVG = ({
   width = '100',
@@ -59,18 +56,6 @@ export const LoadingSVG = ({
       </path>
     </g>
   </svg>
-);
-
-const loadingCSS = css({
-  height: '110px',
-  width: '110px',
-  background: `url(${linesSvg}) no-repeat center`,
-});
-
-export const LoadingIcon = (props) => (
-  <React.Fragment>
-    <div key={props.key} css={loadingCSS} />
-  </React.Fragment>
 );
 
 export const Github = ({ width = '100', height = '100', viewbox = '0 0 438.549 438.549', className = '' }) => (

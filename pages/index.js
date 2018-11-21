@@ -12,7 +12,6 @@ import { Stats } from '../components/Stats/Stats';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
 import Button from '../components/shared/components/Button';
-import { LoadingIcon } from '../components/shared/components/Icons';
 import Layout from '../components/Layout/Layout';
 import { css } from 'react-emotion';
 import { withCache } from '../components/emotion/cache';
@@ -89,9 +88,12 @@ export class Home extends React.Component {
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} pl={3}>
               <Box width={[1, 2 / 4, 2 / 4, 2 / 4]}>
-                <Section.Title><h1>Popular Characters</h1></Section.Title>
+                <Section.Title>
+                  <h1>Popular Characters</h1>
+                </Section.Title>
                 {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
-                {this.state.isAlternate && !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
+                {this.state.isAlternate &&
+                  !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
               </Box>
               <Box width={[1, 2 / 4, 2 / 4, 2 / 4]} css={buttonDiv} pr={3}>
                 <Button
@@ -111,15 +113,7 @@ export class Home extends React.Component {
                 </Button>
               </Box>
             </Flex>
-            {(this.state.isMain || this.state.isAlternate) &&
-              !this.state.isLoading && (
-                <CharactersList characters={this.state.characters || this.props.characters} referer="/" />
-              )}
-            {this.state.isLoading && (
-              <div css={loadingDiv}>
-                <LoadingIcon />
-              </div>
-            )}
+            <CharactersList characters={this.state.characters || this.props.characters} referer="/" />
           </MainContent>
         </Layout>
       </React.Fragment>

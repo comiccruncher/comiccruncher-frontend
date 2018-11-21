@@ -9,7 +9,7 @@ import Modal from 'react-modal';
 import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
-import { LoadingIcon } from '../shared/components/Icons';
+import { LoadingSVG } from '../shared/components/Icons';
 import { withCache } from '../emotion/cache';
 import styled from 'react-emotion';
 
@@ -180,7 +180,7 @@ class CharactersList extends React.Component {
                   Load More
                 </Button>
               )}
-            {this.state.isNextPageLoading && <LoadingIcon />}
+            {this.state.isNextPageLoading && <LoadingSVG />}
           </Box>
         </Flex>
       </React.Fragment>

@@ -10,7 +10,6 @@ import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
 import { HeadingH1, Text } from '../components/shared/styles/type';
-import { LoadingIcon } from '../components/shared/components/Icons';
 import { Brands } from '../components/shared/styles/colors';
 
 class DC extends React.Component {
@@ -44,18 +43,7 @@ class DC extends React.Component {
                 </Text.Default>
               </Box>
             </Flex>
-            <Flex pl={3}>
-              <Box>
-                {!this.state.isLoading && (
-                  <CharactersList characters={this.state.characters || this.props.characters} referer="/dc" />
-                )}
-                {this.state.isLoading && (
-                  <div css={loadingDiv}>
-                    <LoadingIcon />
-                  </div>
-                )}
-              </Box>
-            </Flex>
+            <CharactersList characters={this.state.characters || this.props.characters} referer="/dc" />
           </MainContent>
         </Layout>
       </React.Fragment>
