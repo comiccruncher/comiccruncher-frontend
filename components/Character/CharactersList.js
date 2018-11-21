@@ -141,7 +141,7 @@ class CharactersList extends React.Component {
     const reqSlug = this.state.requestedCharacterSlug;
     return (
       <React.Fragment>
-        <Flex flexWrap="wrap" alignItems="center" alignContent="center">
+        <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
           {characters.map((character, i) => {
             return (
               <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]} key={character.slug}>

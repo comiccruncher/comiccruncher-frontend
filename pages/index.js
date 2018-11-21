@@ -2,7 +2,7 @@ import React from 'react';
 import request from 'superagent';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
-import Type, { Section } from '../components/shared/styles/type';
+import { Section } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
 import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
@@ -10,8 +10,7 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { Stats } from '../components/Stats/Stats';
 import { MainHeader } from '../components/Layout/Header';
-import { MainContent, ContentBlock } from '../components/Layout/Content';
-import { HeadingH1, Text } from '../components/shared/styles/type';
+import { MainContent } from '../components/Layout/Content';
 import Button from '../components/shared/components/Button';
 import { LoadingIcon } from '../components/shared/components/Icons';
 import Layout from '../components/Layout/Layout';
@@ -76,55 +75,51 @@ export class Home extends React.Component {
       <React.Fragment>
         <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'}>
           <MainHeader>
-            <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge, }}>
-              <ContentBlock>
-                <Flex flexWrap="wrap" alignItems="center" alignContent="center">
-                  <Stats {...this.props.stats.data} />
-                </Flex>
-              </ContentBlock>
+            <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge }}>
+              <Stats {...this.props.stats.data} />
             </div>
             <div>
-              <ContentBlock width={1152} p={3}>
-                <Search />
-              </ContentBlock>
+              <Flex flexWrap="wrap" alignItems="center" alignContent="center" p={3}>
+                <Box width={1124}>
+                  <Search />
+                </Box>
+              </Flex>
             </div>
           </MainHeader>
           <MainContent>
-            <ContentBlock pl={3} pr={0} pb={0} pt={0}>
-              <Flex flexWrap={'wrap'} m={'30px auto'}>
-                <Box width={[1, 2 / 4, 2 / 4, 2 / 4]}>
-                  <Section.Title><h1>Popular Characters</h1></Section.Title>
-                  {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
-                  {this.state.isAlternate && !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
-                </Box>
-                <Box width={[1, 2 / 4, 2 / 4, 2 / 4]} css={buttonDiv} pr={3}>
-                  <Button
-                    isInactive={!this.state.isMain}
-                    style={{ 'margin-right': '10px' }}
-                    type={'dark'}
-                    onClick={(e) => this.handleButton(e, 'main')}
-                  >
-                    Main
-                  </Button>
-                  <Button
-                    isInactive={!this.state.isAlternate}
-                    type={'dark'}
-                    onClick={(e) => this.handleButton(e, 'alternate')}
-                  >
-                    Alternate
-                  </Button>
-                </Box>
-              </Flex>
-              {(this.state.isMain || this.state.isAlternate) &&
-                !this.state.isLoading && (
-                  <CharactersList characters={this.state.characters || this.props.characters} referer="/" />
-                )}
-              {this.state.isLoading && (
-                <div css={loadingDiv}>
-                  <LoadingIcon />
-                </div>
+            <Flex flexWrap={'wrap'} m={'30px auto'} pl={3}>
+              <Box width={[1, 2 / 4, 2 / 4, 2 / 4]}>
+                <Section.Title><h1>Popular Characters</h1></Section.Title>
+                {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
+                {this.state.isAlternate && !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
+              </Box>
+              <Box width={[1, 2 / 4, 2 / 4, 2 / 4]} css={buttonDiv} pr={3}>
+                <Button
+                  isInactive={!this.state.isMain}
+                  style={{ 'margin-right': '10px' }}
+                  type={'dark'}
+                  onClick={(e) => this.handleButton(e, 'main')}
+                >
+                  Main
+                </Button>
+                <Button
+                  isInactive={!this.state.isAlternate}
+                  type={'dark'}
+                  onClick={(e) => this.handleButton(e, 'alternate')}
+                >
+                  Alternate
+                </Button>
+              </Box>
+            </Flex>
+            {(this.state.isMain || this.state.isAlternate) &&
+              !this.state.isLoading && (
+                <CharactersList characters={this.state.characters || this.props.characters} referer="/" />
               )}
-            </ContentBlock>
+            {this.state.isLoading && (
+              <div css={loadingDiv}>
+                <LoadingIcon />
+              </div>
+            )}
           </MainContent>
         </Layout>
       </React.Fragment>
