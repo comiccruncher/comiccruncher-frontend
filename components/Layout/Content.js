@@ -18,22 +18,6 @@ const bgCSS = css({
   },
 });
 
-// A generic content block with flex and box.
-export const ContentBlock = (props) =>
-  withCache(
-    <Flex bg={props.bg || 'transparent'} p={0}>
-      <Box
-        pr={props.pr !== null ? props.pr : 10}
-        pl={props.pl !== null ? props.pl : 10}
-        pt={props.pt !== null ? props.pt : 10}
-        pb={props.bt !== null ? props.bt : 10}
-        m={props.margin || 'auto'}
-      >
-        {props.children}
-      </Box>
-    </Flex>
-  );
-
 // A content block for <main> content with a <footer> at the end.
 export const MainContent = (props) =>
   withCache(

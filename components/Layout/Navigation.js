@@ -7,7 +7,6 @@ import Dimensions from '../shared/styles/dimensions';
 import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Spacing from '../shared/styles/spacing';
 import Logo from '../shared/components/Logo';
-import { ContentBlock } from './Content';
 import Responsive from '../shared/styles/responsive';
 
 const MainNav = styled('nav')({
@@ -51,41 +50,39 @@ const NavLink = styled.a((props) => ({
 
 const Navigation = (props) => (
   <div style={{ background: props.background || '#fff ' }}>
-    <ContentBlock>
-      <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
-        <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} px={20}>
-          <Link href={'/'}>
-            <Logo>Comic Cruncher</Logo>
-          </Link>
-        </Box>
-        <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
-          <MainNav>
-            <ul>
-              <li>
-                <Link href={'/trending'}>
-                  <NavLink>Trending</NavLink>
-                </Link>
-              </li>
-              <li>
-                <Link href={'/marvel'}>
-                  <NavLink>Marvel</NavLink>
-                </Link>
-              </li>
-              <li>
-                <Link href={'/dc'}>
-                  <NavLink>DC</NavLink>
-                </Link>
-              </li>
-              <li>
-                <Link href={'/faq'}>
-                  <NavLink>FAQ</NavLink>
-                </Link>
-              </li>
-            </ul>
-          </MainNav>
-        </Box>
-      </Flex>
-    </ContentBlock>
+    <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
+      <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} px={20}>
+        <Link href={'/'}>
+          <Logo>Comic Cruncher</Logo>
+        </Link>
+      </Box>
+      <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
+        <MainNav>
+          <ul>
+            <li>
+              <Link href={'/trending'}>
+                <NavLink>Trending</NavLink>
+              </Link>
+            </li>
+            <li>
+              <Link href={'/marvel'}>
+                <NavLink>Marvel</NavLink>
+              </Link>
+            </li>
+            <li>
+              <Link href={'/dc'}>
+                <NavLink>DC</NavLink>
+              </Link>
+            </li>
+            <li>
+              <Link href={'/faq'}>
+                <NavLink>FAQ</NavLink>
+              </Link>
+            </li>
+          </ul>
+        </MainNav>
+      </Box>
+    </Flex>
   </div>
 );
 
