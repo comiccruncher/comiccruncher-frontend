@@ -1,3 +1,4 @@
+// Breakpoints for the current grid layout..
 const Responsive = {
   Mobile: '@media (max-width: 639px)',
   Tablet: '@media (min-width: 640px) and (max-width: 993px)',

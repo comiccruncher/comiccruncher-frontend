@@ -58,7 +58,7 @@ const CharacterImg = styled('img')((props) => ({
   objectPosition: props.objectPosition || 'top',
   minHeight: '450px',
   maxHeight: '450px',
-  [Responsive.Tablet]: {
+  [Responsive.TabletAndBelow]: {
     minHeight: '350px',
     maxHeight: '350px',
   },
