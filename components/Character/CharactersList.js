@@ -115,7 +115,9 @@ class CharactersList extends React.Component {
       .get(link)
       .query({ key: 'batmansmellsbadly' })
       .then((res) => {
-        this.setState({ currentCharacterData: res.body.data });
+        const data = res.body.data;
+        document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+        this.setState({ currentCharacterData: data });
       });
   };
 
