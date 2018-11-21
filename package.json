@@ -9,13 +9,10 @@
     "scripts": {
         "dev": "cross-env NODE_ENV=development node server.js",
         "build": "rm -rf ./node_modules/.cache; cross-env NODE_ENV=production next build",
-        "start": "rm -rf ./node_modules/.cache; cross-env NODE_ENV=production node server.js",
-        "storybook": "start-storybook -p 9001 -c .storybook",
-        "build-storybook": "build-storybook -s public"
+        "start": "rm -rf ./node_modules/.cache; cross-env NODE_ENV=production node server.js"
     },
     "dependencies": {
         "@babel/runtime": "^7.1.2",
-        "autosuggest-highlight": "^3.1.1",
         "chart.js": "^2.7.2",
         "countup.js": "^1.9.3",
         "emotion": "^9.2.12",
@@ -41,10 +38,6 @@
         "@babel/plugin-transform-runtime": "^7.1.0",
         "@babel/preset-env": "^7.1.0",
         "@babel/preset-react": "^7.0.0",
-        "@storybook/addon-actions": "^3.4.10",
-        "@storybook/addon-links": "^3.4.10",
-        "@storybook/addons": "^3.4.10",
-        "@storybook/react": "^3.4.10",
         "babel-eslint": "^10.0.1",
         "babel-plugin-emotion": "^9.2.11",
         "cross-env": "^5.2.0",
