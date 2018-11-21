@@ -1,5 +1,5 @@
 import React from 'react';
-import request from 'superagent';
+import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
@@ -45,11 +45,10 @@ class Search extends React.Component {
     if (escapedValue === '') {
       return [];
     }
-    request
-      .get(searchURL)
-      .query({ query: encodeURIComponent(escapedValue) })
+    axios
+      .get(searchURL, { params: { query: encodeURIComponent(escapedValue) } })
       .then((response) => {
-        const data = response.body.data;
+        const data = response.data.data;
         // stupid hack for setting no suggestions...
         this.setState({ suggestions: data && data.length === 0 ? [{ slug: 'no-suggestion' }] : data });
       })

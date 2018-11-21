@@ -1,5 +1,5 @@
 import React from 'react';
-import request from 'superagent';
+import axios from 'axios';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
@@ -52,9 +52,9 @@ class Trending extends React.Component {
 }
 
 Trending.getInitialProps = async ({ req }) => {
-  const res2 = await request.get('https://api.comiccruncher.com/trending/marvel?key=batmansmellsbadly');
+  const res = await axios.get('https://api.comiccruncher.com/trending/marvel?key=batmansmellsbadly');
   return {
-    characters: res2.body,
+    characters: res.data,
   };
 };
 
@@ -68,4 +68,4 @@ Trending.propTypes = {
   }),
 };
 
-export default withRouter(Trending);
+export default Trending;

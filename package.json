@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.1.2",
+        "axios": "^0.18.0",
         "chart.js": "^2.7.2",
         "countup.js": "^1.9.3",
         "emotion": "^9.2.12",
@@ -28,8 +29,7 @@
         "react-dom": "^16.5.2",
         "react-emotion": "^9.2.10",
         "react-modal": "^3.6.1",
-        "rebass": "^3.0.0-9",
-        "superagent": "^3.8.3"
+        "rebass": "^3.0.0-9"
     },
     "devDependencies": {
         "@babel/core": "^7.1.2",

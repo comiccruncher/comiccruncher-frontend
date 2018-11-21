@@ -1,5 +1,5 @@
 import React from 'react';
-import request from 'superagent';
+import axios from 'axios';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import { Section } from '../components/shared/styles/type';
@@ -23,10 +23,8 @@ const buttonDiv = css({
   },
 });
 
-// TODO: center loading icon
-const loadingDiv = css({
-  margin: '0 auto',
-});
+const charactersURL = 'https://api.comiccruncher.com/characters';
+const statsURL = 'https://api.comiccruncher.com/stats';
 
 export class Home extends React.Component {
   state = {
@@ -50,7 +48,6 @@ export class Home extends React.Component {
   };
 
   loadCharacters = (s) => {
-    const url = `https://api.comiccruncher.com/characters`;
     if (!this.state.isMain && !this.state.isAlternate) {
       return;
     }
@@ -61,12 +58,9 @@ export class Home extends React.Component {
     if (!this.state.isAlternate && this.state.isMain) {
       query = 'main';
     }
-    request
-      .get(url)
-      .query({ key: 'batmansmellsbadly', type: query })
-      .then((result) => {
-        this.setState({ characters: result.body, isLoading: false });
-      });
+    axios.get(url, { params: { key: 'batmansmellsbadly', type: query } }).then((result) => {
+      this.setState({ characters: result.data, isLoading: false });
+    });
   };
 
   render() {
@@ -91,6 +85,7 @@ export class Home extends React.Component {
                 <Section.Title>
                   <h1>Popular Characters</h1>
                 </Section.Title>
+                {this.props.error && <p>{this.props.error}</p>}
                 {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
                 {this.state.isAlternate &&
                   !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
@@ -122,16 +117,21 @@ export class Home extends React.Component {
 }
 
 Home.getInitialProps = async ({ req }) => {
-  // TODO: hash history
-  const res = await request.get('https://api.comiccruncher.com/stats?key=batmansmellsbadly');
-  const res2 = await request.get('https://api.comiccruncher.com/characters?key=batmansmellsbadly');
+  const params = { params: { key: 'batmansmellsbadly' } };
+  const res = await Promise.all([axios.get(statsURL, params), axios.get(charactersURL, params)]).then(
+    axios.spread((stats, characters) => {
+      return [stats ? stats.data : [], characters ? characters.data : []];
+    })
+  );
   return {
-    stats: res.body,
-    characters: res2.body,
+    stats: res ? res[0] : [],
+    characters: res ? res[1] : [],
+    error: !res ? 'There was an error fetching from the remote server' : null,
   };
 };
 
 Home.propTypes = {
+  error: PropTypes.string,
   stats: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,
@@ -154,4 +154,4 @@ Home.propTypes = {
   }),
 };
 
-export default withCache(withRouter(Home));
+export default withRouter(Home);

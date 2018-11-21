@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import request from 'superagent';
+import axios from 'axios';
 import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
 import FullCharacter from '../components/Character/FullCharacter';
@@ -26,10 +26,10 @@ Character.propTypes = {
 };
 
 Character.getInitialProps = async ({ req }) => {
-  const res = await request.get(
+  const res = await axios.get(
     `https://api.comiccruncher.com/characters/${encodeURIComponent(req.params.slug)}?key=batmansmellsbadly`
   );
-  return res.body;
+  return res.data;
 };
 
-export default withCache(Character);
+export default Character;

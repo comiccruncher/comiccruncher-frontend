@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
-import request from 'superagent';
+import axios from 'axios';
 import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
@@ -47,10 +47,10 @@ class CharactersList extends React.Component {
       if (this.state.nextHref) {
         link = this.state.nextHref;
       }
-      request
+      axios
         .get(link)
         .then((res) => {
-          const body = res.body;
+          const body = res.data;
           this.setState((prevState) => ({
             characters: prevState.characters.concat(body.data),
             isNextPageLoading: false,
@@ -111,14 +111,11 @@ class CharactersList extends React.Component {
    */
   loadCharacter = (slug) => {
     const link = `${characterURL}/${encodeURIComponent(slug)}`;
-    request
-      .get(link)
-      .query({ key: 'batmansmellsbadly' })
-      .then((res) => {
-        const data = res.body.data;
-        document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-        this.setState({ currentCharacterData: data });
-      });
+    axios.get(link, { params: { key: 'batmansmellsbadly' } }).then((res) => {
+      const data = res.data.data;
+      document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+      this.setState({ currentCharacterData: data });
+    });
   };
 
   /**
