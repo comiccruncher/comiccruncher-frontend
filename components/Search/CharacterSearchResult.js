@@ -21,7 +21,7 @@ export const CharacterSearchResult = (props) => (
   <div>
     <span className={'suggestion-content ' + props.slug}>
       <span className="name">
-        <Link href={`/characters/${encodeURIComponent(props.slug)}`}>
+        <Link href={`/characters/${encodeURIComponent(props.slug)}`} onClick={props.onClick}>
           <SearchResult>
             {/* lol if there is no suggestion, then display no results... */}
             {props.slug === 'no-suggestion' ? (

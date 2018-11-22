@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
@@ -19,7 +20,7 @@ const getSuggestionValue = (suggestion) => {
 };
 
 const renderSearchInput = (inputProps) => (
-  <DebounceInput minLength={2} debounceTimeout={300} autoFocus {...inputProps} className={SearchBar} />
+  <DebounceInput minLength={2} debounceTimeout={300} autoFocus={false} {...inputProps} className={SearchBar} />
 );
 
 class Search extends React.Component {
@@ -63,8 +64,12 @@ class Search extends React.Component {
     });
   };
 
+  onClick = (e) => {
+    e.preventDefault();
+  };
+
   renderSuggestion = (suggestion, { query }) => {
-    return <CharacterSearchResult {...suggestion} />;
+    return <CharacterSearchResult {...suggestion} onClick={this.onClick} />;
   };
 
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
@@ -94,9 +99,16 @@ class Search extends React.Component {
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionSelected={this.onSuggestedSelected}
         renderInputComponent={renderSearchInput}
+        id={this.props.id || '1'}
       />
     );
   }
 }
+
+Search.propTypes = {
+  id: PropTypes.string,
+  onSuggestedSelected: PropTypes.func,
+  onSuggestionsClearRequested: PropTypes.func,
+};
 
 export default Search;
