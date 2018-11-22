@@ -77,11 +77,14 @@ const SubTitle = styled.div({
 const SectionTitle = styled.div({
   color: UI.Text.Title,
   fontFamily: BangersFontStack,
-  fontSize: Size.Large,
+  fontSize: `${Size.Large}px`,
   letterSpacing: 3,
   lineHeight: 1.3,
   fontWeight: Weight.Bold,
   marginBottom: Spacing.Tiny,
+  [Responsive.TabletAndBelow]: {
+    fontSize: '1.rem ',
+  },
 });
 
 const SectionByline = styled.div({
@@ -139,11 +142,13 @@ Type.Label = Label;
 Label.Default = LabelDefault;
 
 const HeadingH1 = styled.h1((props) => ({
-  color: UI.Text.Default,
-  fontFamily: UIFontStack,
-  lineHeight: props.lineHeight || 1.5,
   fontSize: props.fontSize || Size.Large,
-  fontWeight: props.fontWeight || Weight.Medium,
+  [Responsive.Tablet]: {
+    fontSize: '1.8rem',
+  },
+  [Responsive.Mobile]: {
+    fontsize: '1.6rem',
+  },
 }));
 
 const HeadingH2 = styled.h2((props) => ({
