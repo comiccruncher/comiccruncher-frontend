@@ -90,14 +90,14 @@ class Search extends React.Component {
     return (
       <Autosuggest
         suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        onSuggestionsFetchRequested={this.props.onSuggestionsFetchRequested || this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.props.onSuggestionsClearRequested || this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
         focusInputOnSuggestionClick={false}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
-        onSuggestionSelected={this.onSuggestedSelected}
+        onSuggestionSelected={this.props.onSuggestionSelected || this.onSuggestedSelected}
         renderInputComponent={renderSearchInput}
         id={this.props.id || '1'}
       />
@@ -107,8 +107,9 @@ class Search extends React.Component {
 
 Search.propTypes = {
   id: PropTypes.string,
-  onSuggestedSelected: PropTypes.func,
+  onSuggestionSelected: PropTypes.func,
   onSuggestionsClearRequested: PropTypes.func,
+  onSuggestionsFetchRequested: PropTypes.func,
 };
 
 export default Search;
