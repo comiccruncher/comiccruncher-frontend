@@ -1,4 +1,11 @@
 import React from 'react';
+import { css } from 'react-emotion';
+import { Brands } from '../styles/colors';
+
+const LoadingCSS = css({
+  margin: '0 auto',
+  display: 'block',
+});
 
 export const LoadingSVG = ({
   width = '100',
@@ -31,7 +38,7 @@ export const LoadingSVG = ({
           type="rotate"
           from="0 55 55"
           to="360 55 55"
-          dur="0.8s"
+          dur="0.6s"
           repeatCount="indefinite"
         />
       </path>
@@ -50,12 +57,30 @@ export const LoadingSVG = ({
           type="rotate"
           from="0 55 55"
           to="360 55 55"
-          dur="1s"
+          dur=".8s"
           repeatCount="indefinite"
         />
       </path>
     </g>
   </svg>
+);
+
+export const LoadingSection = (props) => (
+  <div>
+    <LoadingSVG className={LoadingCSS} {...props} />
+  </div>
+);
+
+export const LoadingMarvel = (props) => (
+  <div>
+    <LoadingSVG className={LoadingCSS} color={Brands.Marvel} {...props} />
+  </div>
+);
+
+export const LoadingDC = (props) => (
+  <div>
+    <LoadingSVG className={LoadingCSS} color={Brands.DC} {...props} />
+  </div>
 );
 
 export const Github = ({ width = '100', height = '100', viewbox = '0 0 438.549 438.549', className = '' }) => (
