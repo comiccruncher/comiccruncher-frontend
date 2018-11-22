@@ -64,6 +64,11 @@ const CharacterImg = styled('img')((props) => ({
   },
 }));
 
+const AppearanceDiv = styled.div({
+  marginLeft: '-60px',
+  marginRight: '-25px',
+});
+
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
 const getDataSets = (appearances) => {
@@ -209,10 +214,10 @@ class FullCharacter extends React.Component {
                           </p>
                         )}
                       </Text.Default>
-                      {/* TODO: change appearanceCount when someone clicks on main/alt label */}
-                      {/* TODO: This is a limitation of charts.js. The appearance chart is responsive upon first render of viewport. */}
-                      <AppearanceChart title={'Appearances'} years={this.state.years} datasets={this.state.datasets} />
                     </Section.Byline>
+                    <AppearanceDiv>
+                      <AppearanceChart character={this.props} />
+                    </AppearanceDiv>
                   </React.Fragment>
                 )}
                 {bio && (
