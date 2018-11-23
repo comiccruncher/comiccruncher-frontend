@@ -73,6 +73,7 @@ class Search extends React.Component {
   };
 
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    event.preventDefault();
     Router.push(`/characters/${encodeURIComponent(suggestion.slug)}`);
   };
 
@@ -83,7 +84,7 @@ class Search extends React.Component {
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: 'Search for a character',
+      placeholder: this.props.placeholder || 'Search for a character',
       value,
       onChange: this.onChange,
     };
@@ -110,6 +111,7 @@ Search.propTypes = {
   onSuggestionSelected: PropTypes.func,
   onSuggestionsClearRequested: PropTypes.func,
   onSuggestionsFetchRequested: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 
 export default Search;
