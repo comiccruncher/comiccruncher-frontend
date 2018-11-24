@@ -205,4 +205,4 @@ CharactersList.propTypes = {
 
 Modal.setAppElement('#__next');
 
-export default withCache(withRouter(CharactersList));
+export default withRouter(CharactersList);
