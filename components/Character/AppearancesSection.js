@@ -1,14 +1,8 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { Box, Flex } from 'rebass/emotion';
 import { Section, Text } from '../shared/styles/type';
 import AppearanceChart from './AppearanceChart';
 import { LoadingDC, LoadingMarvel } from '../shared/components/Icons';
-
-const ChartDiv = styled.div({
-  marginLeft: '-60px',
-  marginRight: '-25px',
-});
 
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
@@ -39,7 +33,7 @@ export class AppearancesSection extends React.Component {
           newIssues: newIssues,
           totalIssues: mainCounts + altCounts,
         }),
-      300
+      600
     );
   }
 
@@ -80,9 +74,7 @@ export class AppearancesSection extends React.Component {
                   )}
                 </Text.Default>
               </Section.Byline>
-              <ChartDiv>
-                <AppearanceChart character={c} />
-              </ChartDiv>
+              <AppearanceChart character={c} />
             </React.Fragment>
           )}
       </React.Fragment>
