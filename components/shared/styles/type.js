@@ -103,6 +103,14 @@ const TextDefault = styled.div((props) => ({
   fontWeight: props.bold ? Weight.Bold : '',
 }));
 
+const TextSmall = styled.div((props) => ({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: 1.5,
+  fontSize: Size.Small,
+  fontWeight: props.bold ? Weight.Bold : '',
+}));
+
 const LabelDefault = styled.label({
   color: UI.Text.Default,
   fontFamily: UIFontStack,
@@ -135,6 +143,7 @@ Section.Byline = SectionByline;
 const Text = {};
 Type.Text = Text;
 Text.Default = TextDefault;
+Text.Small = TextSmall;
 
 // Label
 const Label = {};
