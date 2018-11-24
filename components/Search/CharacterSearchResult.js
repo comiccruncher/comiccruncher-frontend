@@ -30,7 +30,7 @@ const DisplayName = (props) => (
       </p>
       {props.other_name && (
         <Text.Small>
-          <p>({props.other_name})</p>
+          <p>{props.other_name}</p>
         </Text.Small>
       )}
     </Text.Default>
