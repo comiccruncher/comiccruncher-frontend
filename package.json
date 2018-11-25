@@ -18,6 +18,7 @@
         "emotion-server": "^9.2.12",
         "express": "^4.16.3",
         "next": "^7.0.0",
+        "nprogress": "^0.2.0",
         "prop-types": "^15.6.2",
         "react": "^16.5.2",
         "react-autosuggest": "^9.4.2",
