@@ -32,12 +32,14 @@ const AngledBox = css({
 });
 
 const HeaderTitle = styled('div')((props) => ({
-  marginTop: '120px',
-  [Responsive.Tablet]: {
-    marginTop: '70px',
-  },
+  position: 'absolute',
+  top: '35%',
+  left: 0,
+  right: 0,
+  bottom: 0,
   [Responsive.Mobile]: {
-    margin: '20px',
+    margin: '20px 0 40px 0',
+    position: 'relative',
   },
 }));
 
@@ -57,7 +59,7 @@ export const CharacterHeader = (props) => {
   return (
     <React.Fragment>
       <Header background="#fff" overflow="hidden">
-        <Flex flexWrap="wrap">
+        <Flex flexWrap="wrap" justifyContent="space-between" alignContent="center">
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
             <CharacterImg src={c.image || c.vendor_image} alt={`${c.name} profile image`} />
           </Box>
@@ -67,8 +69,8 @@ export const CharacterHeader = (props) => {
             className={AngledBox}
             bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
           >
-            <Flex justifyContent="center" alignItems="center" alignContent="center">
-              <Box p={30}>
+            <Flex justifyContent="space-between" alignItems="center" alignContent="center">
+              <Box flex="1 0 auto">
                 <HeaderTitle>
                   <Title.Large>
                     <h1>{c.name}</h1>
