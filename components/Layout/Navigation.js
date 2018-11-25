@@ -8,6 +8,8 @@ import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Spacing from '../shared/styles/spacing';
 import Logo from '../shared/components/Logo';
 import Responsive from '../shared/styles/responsive';
+import Search from '../Search/Search';
+import { withCache } from '../emotion/cache';
 
 const MainNav = styled('nav')({
   marginLeft: '10px',
@@ -50,42 +52,58 @@ const NavLink = styled.a((props) => ({
 }));
 
 const Container = styled.div((props) => ({
+  padding: '0 20px',
   background: props.background || '#fff',
 }));
+
+const LogoContainer = styled.div({
+  [Responsive.Mobile]: {
+    textAlign: 'center',
+  },
+});
 
 const Navigation = (props) => (
   <Container background={props.background}>
     <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
-      <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} px={20}>
-        <Link href={'/'}>
-          <Logo>Comic Cruncher</Logo>
-        </Link>
+      <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
+        <LogoContainer>
+          <Link href={'/'} prefetch>
+            <Logo>Comic Cruncher</Logo>
+          </Link>
+        </LogoContainer>
       </Box>
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
-        <MainNav>
-          <ul>
-            <li>
-              <Link href={'/trending'}>
-                <NavLink>Trending</NavLink>
-              </Link>
-            </li>
-            <li>
-              <Link href={'/marvel'}>
-                <NavLink>Marvel</NavLink>
-              </Link>
-            </li>
-            <li>
-              <Link href={'/dc'}>
-                <NavLink>DC</NavLink>
-              </Link>
-            </li>
-            <li>
-              <Link href={'/faq'}>
-                <NavLink>FAQ</NavLink>
-              </Link>
-            </li>
-          </ul>
-        </MainNav>
+        <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
+          <Box width={[1, 1 / 3, 1 / 2]}>
+            <MainNav>
+              <ul>
+                <li>
+                  <Link href={'/trending'} prefetch>
+                    <NavLink>Trending</NavLink>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={'/marvel'} prefetch>
+                    <NavLink>Marvel</NavLink>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={'/dc'} prefetch>
+                    <NavLink>DC</NavLink>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={'/faq'} prefetch>
+                    <NavLink>FAQ</NavLink>
+                  </Link>
+                </li>
+              </ul>
+            </MainNav>
+          </Box>
+          <Box width={[1, 2 / 3, 1 / 2]}>
+            <Search id="navsearch" />
+          </Box>
+        </Flex>
       </Box>
     </Flex>
   </Container>

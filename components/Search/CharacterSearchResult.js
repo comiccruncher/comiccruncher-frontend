@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
 import { Text } from '../shared/styles/type';
+import { withCache } from '../emotion/cache';
 
 const SearchResult = styled('div')`
   display: flex;
