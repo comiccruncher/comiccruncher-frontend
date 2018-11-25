@@ -8,6 +8,8 @@ import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
 import Responsive from '../shared/styles/responsive';
 
+const CDN = 'https://flash.comiccruncher.com';
+
 injectGlobal`
   * {
     margin:0;
@@ -74,7 +76,7 @@ injectGlobal`
     font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
-    z-index: 2;
+    z-index: 15;
     top: 100%;
     /*position: relative; Fix for suggestions being hidden whose parent div has overflow:hidden  */
   }
@@ -204,6 +206,26 @@ const Layout = (props) => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
+      <link rel="apple-touch-icon-precomposed" sizes="57x57" href={`${CDN}/apple-touch-icon-57x57.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="114x114" href={`${CDN}/apple-touch-icon-114x114.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href={`${CDN}/apple-touch-icon-72x72.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="144x144" href={`{${CDN}/apple-touch-icon-144x144.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="60x60" href={`${CDN}/apple-touch-icon-60x60.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="120x120" href={`${CDN}/apple-touch-icon-120x120.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="76x76" href={`${CDN}/apple-touch-icon-76x76.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="152x152" href={`${CDN}/apple-touch-icon-152x152.png`} />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-196x196.png`} sizes="196x196" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-96x96.png`} sizes="96x96" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-32x32.png`} sizes="32x32" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-16x16.png`} sizes="16x16" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-128.png`} sizes="128x128" />
+      <meta name="msapplication-TileColor" content="#FFFFFF" />
+      <meta name="msapplication-TileImage" content={`${CDN}/mstile-144x144.png`} />
+      <meta name="msapplication-square70x70logo" content={`${CDN}/mstile-70x70.png`} />
+      <meta name="msapplication-square150x150logo" content={`${CDN}/mstile-150x150.png`} />
+      <meta name="msapplication-wide310x150logo" content={`${CDN}/mstile-310x150.png`} />
+      <meta name="msapplication-square310x310logo" content={`${CDN}/mstile-310x310.png`} />
+      <link rel="canonical" href={props.canonical} />
       <title>{props.title}</title>
     </Head>
     <div className="app">
@@ -213,4 +235,4 @@ const Layout = (props) => (
   </React.Fragment>
 );
 
-export default withCache(Layout);
+export default Layout;

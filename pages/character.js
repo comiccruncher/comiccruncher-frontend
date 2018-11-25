@@ -10,7 +10,10 @@ class Character extends React.Component {
   render() {
     const c = this.props.data;
     return (
-      <Layout title={`${c.name} ${c.other_name && `(${c.other_name})`} | Comic Cruncher`}>
+      <Layout
+        title={`${c.name} ${c.other_name && `(${c.other_name})`} | Comic Cruncher`}
+        canonical={`/characters/${c.slug}`}
+      >
         <FullCharacter {...c} />
       </Layout>
     );

@@ -20,7 +20,7 @@ class DC extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'DC Comics | Popular Characters | Comic Cruncher'}>
+        <Layout title={'DC Comics | Popular Characters | Comic Cruncher'} canonical="/dc">
           <MainHeader background={Brands.DC}>
             <div css={{ 'margin-top': '50px' }}>
               <Flex>

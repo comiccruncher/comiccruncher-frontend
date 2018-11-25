@@ -20,7 +20,7 @@ class Marvel extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'}>
+        <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical="/marvel">
           <MainHeader background={Brands.Marvel}>
             <div css={{ 'margin-top': '50px' }}>
               <Flex>

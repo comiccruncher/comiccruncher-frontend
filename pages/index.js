@@ -58,15 +58,15 @@ export class Home extends React.Component {
     if (!this.state.isAlternate && this.state.isMain) {
       query = 'main';
     }
-    axios.get(url, { params: { key: 'batmansmellsbadly', type: query } }).then((result) => {
-      this.setState({ characters: result.data, isLoading: false });
+    axios.get(charactersURL, { params: { key: 'batmansmellsbadly', type: query } }).then((result) => {
+      this.setState({ characters: result.data.data, isLoading: false });
     });
   };
 
   render() {
     return (
       <React.Fragment>
-        <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'}>
+        <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'} canonical="/">
           <MainHeader>
             <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge }}>
               <Stats {...this.props.stats.data} />
