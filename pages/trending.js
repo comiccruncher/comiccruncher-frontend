@@ -22,14 +22,12 @@ class Trending extends React.Component {
       <React.Fragment>
         <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'}>
           <MainHeader background={Brands.Marvel}>
-            <div css={{ 'margin-top': '50px' }}>
-              <Flex>
-                <Box width={1152} m="0 auto" p={3}>
-                  <h1>Trending</h1>
-                  <Search />
-                </Box>
-              </Flex>
-            </div>
+            <Flex>
+              <Box width={1152} m="0 auto" p={3}>
+                <h1>Trending</h1>
+                <Search />
+              </Box>
+            </Flex>
           </MainHeader>
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>

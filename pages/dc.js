@@ -22,14 +22,12 @@ class DC extends React.Component {
       <React.Fragment>
         <Layout title={'DC Comics | Popular Characters | Comic Cruncher'} canonical="/dc">
           <MainHeader background={Brands.DC}>
-            <div css={{ 'margin-top': '50px' }}>
-              <Flex>
-                <Box width={1152} m="0 auto" p={3}>
-                  <h1>DC</h1>
-                  <Search />
-                </Box>
-              </Flex>
-            </div>
+            <Flex>
+              <Box width={1152} m="0 auto" p={3}>
+                <h1>DC</h1>
+                <Search />
+              </Box>
+            </Flex>
           </MainHeader>
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>

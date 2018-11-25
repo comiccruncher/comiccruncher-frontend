@@ -10,6 +10,7 @@ import Logo from '../shared/components/Logo';
 import Responsive from '../shared/styles/responsive';
 
 const MainNav = styled('nav')({
+  marginLeft: '10px',
   position: 'relative',
   '> ul': {
     'list-style-type': 'none',
@@ -48,8 +49,12 @@ const NavLink = styled.a((props) => ({
   },
 }));
 
+const Container = styled.div((props) => ({
+  background: props.background || '#fff',
+}));
+
 const Navigation = (props) => (
-  <div style={{ background: props.background || '#fff ' }}>
+  <Container background={props.background}>
     <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]} px={20}>
         <Link href={'/'}>
@@ -83,7 +88,7 @@ const Navigation = (props) => (
         </MainNav>
       </Box>
     </Flex>
-  </div>
+  </Container>
 );
 
 export default Navigation;
