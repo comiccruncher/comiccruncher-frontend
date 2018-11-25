@@ -45,10 +45,10 @@ const CharacterImg = styled('img')((props) => ({
   width: props.width || '100%',
   height: props.height || '100%',
   objectFit: 'cover',
-  objectPosition: props.objectPosition || 'top',
+  objectPosition: props.objectPosition || 'center',
   height: '400px',
   [Responsive.TabletAndBelow]: {
-    height: '350px',
+    height: '300px',
   },
 }));
 

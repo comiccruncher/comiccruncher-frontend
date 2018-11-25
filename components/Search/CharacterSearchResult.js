@@ -24,16 +24,12 @@ const SearchLink = styled('a')({
 const DisplayName = (props) => (
   <React.Fragment>
     {(props.image || props.vendor_image) && <SearchImg src={props.image || props.vendor_image} alt={props.name} />}
-    <Text.Default>
+    <Text.SearchResult>
       <p>
         <strong>{props.name}</strong>
       </p>
-      {props.other_name && (
-        <Text.Small>
-          <p>{props.other_name}</p>
-        </Text.Small>
-      )}
-    </Text.Default>
+      {props.other_name && <p>{props.other_name}</p>}
+    </Text.SearchResult>
   </React.Fragment>
 );
 

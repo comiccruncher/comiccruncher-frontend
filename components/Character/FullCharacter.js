@@ -13,12 +13,13 @@ const Wrapper = styled.div({
   background: '#fff',
 });
 
+const Year = new Date().getFullYear();
+
 class FullCharacter extends React.Component {
   render() {
     const c = this.props;
     // clean markup
-    const regex = /(<([^>]+)>)/gi;
-    const bio = c.vendor_description.replace(regex, '');
+    const bio = c.vendor_description;
     return (
       <React.Fragment>
         <Wrapper>
@@ -28,16 +29,29 @@ class FullCharacter extends React.Component {
             <Flex flexWrap={'wrap'}>
               <Box p={30} width={[1]}>
                 <AppearancesSection {...c} />
-                {bio && (
-                  <React.Fragment>
-                    <Section.Title>
-                      <h3>Bio</h3>
-                    </Section.Title>
+                {c.publisher.slug === 'marvel' &&
+                  bio && (
+                    <React.Fragment>
+                      <Section.Title>
+                        <h3>Bio</h3>
+                      </Section.Title>
+                      <Text.Default>
+                        <p>{bio}</p>
+                      </Text.Default>
+                    </React.Fragment>
+                  )}
+                {c.publisher.slug === 'marvel' &&
+                  (bio || (c.vendor_image && !c.image)) && (
                     <Text.Default>
-                      <p>{bio}</p>
+                      <p>
+                        <small>
+                          Data ({bio && `biography`}
+                          {bio && ` and `}
+                          image) provided by Marvel. &copy; {Year} Marvel
+                        </small>
+                      </p>
                     </Text.Default>
-                  </React.Fragment>
-                )}
+                  )}
               </Box>
             </Flex>
           </MainContent>

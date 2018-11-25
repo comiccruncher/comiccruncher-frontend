@@ -46,9 +46,12 @@ const YellowTitle = styled.div({
   letterSpacing: 5,
   fontWeight: Weight.Normal,
   textShadow: `${TextShadow}`,
-  marginBottom: Spacing.Large,
-  [Responsive.TabletAndBelow]: {
-    fontSize: '50px',
+  marginBottom: Spacing.Tiny,
+  [Responsive.Tablet]: {
+    fontSize: '2.8rem',
+  },
+  [Responsive.Mobile]: {
+    fontSize: '2.2rem',
   },
 });
 
@@ -69,8 +72,8 @@ const SubTitle = styled.div({
   letterSpacing: 2,
   fontWeight: Weight.Bold,
   marginBottom: Spacing.Small,
-  [Responsive.Tablet]: {
-    fontSize: '28px',
+  [Responsive.TabletAndBelow]: {
+    fontSize: '1.4rem',
   },
 });
 
@@ -83,7 +86,7 @@ const SectionTitle = styled.div({
   fontWeight: Weight.Bold,
   marginBottom: Spacing.Tiny,
   [Responsive.TabletAndBelow]: {
-    fontSize: '1.rem ',
+    fontSize: '1.6rem ',
   },
 });
 
@@ -96,6 +99,17 @@ const SectionByline = styled.div({
 });
 
 const TextDefault = styled.div((props) => ({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: 1.5,
+  fontSize: Size.Default,
+  fontWeight: props.bold ? Weight.Bold : '',
+  '& p': {
+    marginTop: '10px',
+  },
+}));
+
+const TextSearchResult = styled.div((props) => ({
   color: UI.Text.Default,
   fontFamily: UIFontStack,
   lineHeight: 1.5,
@@ -144,6 +158,7 @@ const Text = {};
 Type.Text = Text;
 Text.Default = TextDefault;
 Text.Small = TextSmall;
+Text.SearchResult = TextSearchResult;
 
 // Label
 const Label = {};
