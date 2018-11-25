@@ -20,7 +20,7 @@ class Trending extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'}>
+        <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical={'/trending'}>
           <MainHeader background={Brands.Marvel}>
             <Flex>
               <Box width={1152} m="0 auto" p={3}>
@@ -34,14 +34,20 @@ class Trending extends React.Component {
               <Box width={[1]}>
                 <HeadingH1>Trending Marvel Characters</HeadingH1>
                 <Text.Default>
-                  <p>
-                    This page shows trending Marvel characters by <strong>main</strong> appearances only (no alternate
-                    realities)!
-                  </p>
+                  {this.props.error ? (
+                    <p>{this.props.error}</p>
+                  ) : (
+                    <p>
+                      This page shows trending Marvel characters by <strong>main</strong> appearances only (no alternate
+                      realities)!
+                    </p>
+                  )}
                 </Text.Default>
               </Box>
             </Flex>
-            <CharactersList characters={this.state.characters || this.props.characters} referer="/trending" />
+            {!this.props.error && (
+              <CharactersList characters={this.state.characters || this.props.characters} referer="/trending" />
+            )}
           </MainContent>
         </Layout>
       </React.Fragment>
@@ -50,13 +56,17 @@ class Trending extends React.Component {
 }
 
 Trending.getInitialProps = async ({ req }) => {
-  const res = await axios.get('https://api.comiccruncher.com/trending/marvel?key=batmansmellsbadly');
+  const res = await axios.get('https://api.comiccruncher.com/trending/marvel?key=batmansmellsbadly').catch((error) => {
+    return { error: error.toString() };
+  });
   return {
-    characters: res.data,
+    error: res.hasOwnProperty('error') ? res.error : null,
+    characters: res.hasOwnProperty('data') ? res.data : null,
   };
 };
 
 Trending.propTypes = {
+  error: PropTypes.string,
   characters: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,

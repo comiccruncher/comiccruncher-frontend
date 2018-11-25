@@ -36,14 +36,20 @@ class DC extends React.Component {
                   <h1>Popular DC Characters</h1>
                 </Section.Title>
                 <Text.Default>
-                  <p>
-                    This page shows most popular DC characters by <strong>main</strong> appearances only (no alternate
-                    alternate realities)!
-                  </p>
+                  {this.props.error ? (
+                    <p>{this.props.error}</p>
+                  ) : (
+                    <p>
+                      This page shows most popular DC characters by <strong>main</strong> appearances only (no alternate
+                      alternate realities)!
+                    </p>
+                  )}
                 </Text.Default>
               </Box>
             </Flex>
-            <CharactersList characters={this.state.characters || this.props.characters} referer="/dc" />
+            {!this.props.error && (
+              <CharactersList characters={this.state.characters || this.props.characters} referer="/dc" />
+            )}
           </MainContent>
         </Layout>
       </React.Fragment>
@@ -52,13 +58,17 @@ class DC extends React.Component {
 }
 
 DC.getInitialProps = async ({ req }) => {
-  const res = await axios.get('https://api.comiccruncher.com/publishers/dc?key=batmansmellsbadly');
+  const res = await axios.get('https://api.comiccruncher.com/publishers/dc?key=batmansmellsbadly').catch((error) => {
+    return { error: error.toString() };
+  });
   return {
-    characters: res.data,
+    error: res.hasOwnProperty('error') ? res.error : null,
+    characters: res.hasOwnProperty('data') ? res.data : null,
   };
 };
 
 DC.propTypes = {
+  error: PropTypes.string,
   characters: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,

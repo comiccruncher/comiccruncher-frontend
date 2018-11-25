@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
-import { Section } from '../components/shared/styles/type';
+import { Section, Text } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
 import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
@@ -64,12 +64,15 @@ export class Home extends React.Component {
   };
 
   render() {
+    const error = this.props.error;
+    const stats = this.props.stats;
+    const characters = this.props.characters;
     return (
       <React.Fragment>
         <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'} canonical="/">
           <MainHeader>
             <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge }}>
-              <Stats {...this.props.stats.data} />
+              {!error && <Stats {...stats.data} />}
             </div>
             <div>
               <Flex flexWrap="wrap" alignItems="center" alignContent="center" p={3}>
@@ -85,7 +88,11 @@ export class Home extends React.Component {
                 <Section.Title>
                   <h1>Popular Characters</h1>
                 </Section.Title>
-                {this.props.error && <p>{this.props.error}</p>}
+                {error && (
+                  <Text.Default>
+                    <p>{error}</p>
+                  </Text.Default>
+                )}
                 {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
                 {this.state.isAlternate &&
                   !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
@@ -108,7 +115,7 @@ export class Home extends React.Component {
                 </Button>
               </Box>
             </Flex>
-            <CharactersList characters={this.state.characters || this.props.characters} referer="/" />
+            {!error && <CharactersList characters={this.state.characters || characters} referer="/" />}
           </MainContent>
         </Layout>
       </React.Fragment>
@@ -118,15 +125,19 @@ export class Home extends React.Component {
 
 Home.getInitialProps = async ({ req }) => {
   const params = { params: { key: 'batmansmellsbadly' } };
-  const res = await Promise.all([axios.get(statsURL, params), axios.get(charactersURL, params)]).then(
-    axios.spread((stats, characters) => {
-      return [stats ? stats.data : [], characters ? characters.data : []];
-    })
-  );
+  const res = await Promise.all([axios.get(statsURL, params), axios.get(charactersURL, params)])
+    .then(
+      axios.spread((stats, characters) => {
+        return [stats ? stats.data : [], characters ? characters.data : []];
+      })
+    )
+    .catch((error) => {
+      return { error: error.toString() };
+    });
   return {
-    stats: res ? res[0] : [],
-    characters: res ? res[1] : [],
-    error: !res ? 'There was an error fetching from the remote server' : null,
+    stats: res ? res[0] : {},
+    characters: res ? res[1] : {},
+    error: res.hasOwnProperty('error') ? res.error : null,
   };
 };
 

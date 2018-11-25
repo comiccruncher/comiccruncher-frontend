@@ -40,10 +40,13 @@ class Marvel extends React.Component {
                     This page shows most popular Marvel characters by <strong>main</strong> appearances only (no
                     alternate realities)!
                   </p>
+                  {this.props.error && <p>{this.props.error}</p>}
                 </Text.Default>
               </Box>
             </Flex>
-            <CharactersList characters={this.state.characters || this.props.characters} referer="/marvel" />
+            {!this.props.error && (
+              <CharactersList characters={this.state.characters || this.props.characters} referer="/marvel" />
+            )}
           </MainContent>
         </Layout>
       </React.Fragment>
@@ -52,13 +55,19 @@ class Marvel extends React.Component {
 }
 
 Marvel.getInitialProps = async ({ req }) => {
-  const res = await axios.get('https://api.comiccruncher.com/publishers/marvel?key=batmansmellsbadly');
+  const res = await axios
+    .get('https://api.comiccruncher.com/publishers/marvel?key=batmansmellsbadly')
+    .catch((error) => {
+      return { error: error.toString() };
+    });
   return {
-    characters: res.data,
+    error: res.hasOwnProperty('error') ? res.error : null,
+    characters: res.hasOwnProperty('data') ? res.data : [],
   };
 };
 
 Marvel.propTypes = {
+  error: PropTypes.string,
   characters: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,

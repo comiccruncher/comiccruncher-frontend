@@ -73,12 +73,8 @@ class CharactersList extends React.Component {
    * Closes the modal and propagates the history change.
    */
   handleModalCloseRequest = () => {
-    Router.push(this.props.referer);
-    this.setState({
-      currentCharacterData: null,
-      requestedCharacterSlug: null,
-    });
     this.closeModal();
+    Router.push(this.props.referer);
   };
 
   /**
@@ -87,6 +83,7 @@ class CharactersList extends React.Component {
   closeModal = () => {
     this.setState({
       currentCharacterData: null,
+      requestedCharacterSlug: null,
     });
   };
 
