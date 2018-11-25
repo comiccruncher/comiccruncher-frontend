@@ -10,6 +10,7 @@ import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
 import { LoadingSVG } from '../shared/components/Icons';
+import { Text } from '../shared/styles/type';
 import { withCache } from '../emotion/cache';
 import styled from 'react-emotion';
 
@@ -63,7 +64,7 @@ class CharactersList extends React.Component {
           }
         })
         .catch((err) => {
-          this.setState({ error: 'Error loading page!! :(' });
+          this.setState({ error: err.toString() });
         });
     }, 300);
   };
@@ -95,8 +96,6 @@ class CharactersList extends React.Component {
   handleModalOpenRequest(e, slug) {
     e.preventDefault();
     this.setState({ requestedCharacterSlug: slug });
-    slug = encodeURIComponent(slug);
-    Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
     if (this.state.currentCharacterData) {
       this.handleModalCloseRequest();
       return;
@@ -111,11 +110,18 @@ class CharactersList extends React.Component {
    */
   loadCharacter = (slug) => {
     const link = `${characterURL}/${encodeURIComponent(slug)}`;
-    axios.get(link, { params: { key: 'batmansmellsbadly' } }).then((res) => {
-      const data = res.data.data;
-      document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-      this.setState({ currentCharacterData: data });
-    });
+    axios
+      .get(link, { params: { key: 'batmansmellsbadly' } })
+      .then((res) => {
+        const data = res.data.data;
+        document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+        slug = encodeURIComponent(slug);
+        Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
+        this.setState({ currentCharacterData: data });
+      })
+      .catch((error) => {
+        this.setState({ error: error.toString() });
+      });
   };
 
   /**
@@ -179,7 +185,12 @@ class CharactersList extends React.Component {
                   Load More
                 </Button>
               )}
-            {this.state.isNextPageLoading && <LoadingSVG />}
+            {!this.state.error && this.state.isNextPageLoading && <LoadingSVG />}
+            {this.state.error && (
+              <Text.Default>
+                <p>{this.state.error}.</p>
+              </Text.Default>
+            )}
           </Box>
         </Flex>
       </React.Fragment>
