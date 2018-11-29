@@ -29,7 +29,6 @@ jobs:
           paths:
             - "node_modules"
   build_and_deploy:
-    machine: true
     docker:
       - image: circleci/node:10.12
     steps:
