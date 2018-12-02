@@ -4,8 +4,10 @@ import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
+import { Flex, Box } from 'rebass/emotion';
+import { Github } from '../shared/components/Icons';
 
-const FooterContainer = styled('div')({
+const FooterContainer = styled('footer')({
   textAlign: 'center',
   padding: Spacing.xLarge,
   ul: {
@@ -19,7 +21,7 @@ const FooterContainer = styled('div')({
     color: UI.Text.Dark,
     fontFamily: UIFontStack,
     fontWeight: Weight.Medium,
-    padding: Spacing.Small,
+    padding: 0,
     transition: 'all .3s ease-in-out',
     '&:hover': {
       color: UI.Text.Light,
@@ -27,28 +29,40 @@ const FooterContainer = styled('div')({
   },
 });
 
+const IconsContainer = styled('div')({
+  margin: '10px auto',
+});
+
 const Footer = (props) => (
   <React.Fragment>
-    <FooterContainer>
-      <ul>
-        <li>
-          <Link href={`/`}>
-            <a>Comic Cruncher</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`https://twitter.com/aimeelaplant`}>
-            <a>@aimeelaplant</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={`https://twitter.com/ghanbak`}>
-            <a>@ghanbak</a>
-          </Link>
-        </li>
-      </ul>
-      {props.children}
-    </FooterContainer>
+    <Flex>
+      <Box width={1}>
+        <FooterContainer>
+          <ul>
+            <li>
+              <Link href={`/`}>
+                <a>Comic Cruncher</a>
+              </Link>
+            </li>
+            <li>
+              <Link href={`https://twitter.com/aimeelaplant`}>
+                <a>@aimeelaplant</a>
+              </Link>
+            </li>
+            <li>
+              <Link href={`https://twitter.com/ghanbak`}>
+                <a>@ghanbak</a>
+              </Link>
+            </li>
+          </ul>
+          <IconsContainer>
+            <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
+              <Github width="32" height="32" />
+            </a>
+          </IconsContainer>
+        </FooterContainer>
+      </Box>
+    </Flex>
   </React.Fragment>
 );
 

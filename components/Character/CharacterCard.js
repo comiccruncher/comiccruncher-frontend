@@ -1,17 +1,21 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { CharacterProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
 import Responsive from '../shared/styles/responsive';
+import { LoadingSVG } from '../shared/components/Icons';
 
-const Character = styled.div(
+const Card = styled.div(
   {
     width: '100%',
     height: Spacing.xxLarge * 6.25,
     overflow: 'hidden',
     position: 'relative',
+    [Responsive.Mobile]: {
+      overflow: 'auto',
+    },
     '& .DisplayName': {
       position: 'absolute',
       color: UI.Text.White,
@@ -21,6 +25,12 @@ const Character = styled.div(
       left: 0,
       width: '80%',
       padding: Spacing.Small,
+      [Responsive.Mobile]: {
+        position: 'relative',
+        width: '100%',
+        height: '125px',
+        padding: '35px 0 0 140px',
+      },
       '&::after': {
         content: `' '`,
         width: '100%',
@@ -33,56 +43,98 @@ const Character = styled.div(
         right: '-10px',
         borderTop: '10px solid ' + UI.Background.White,
         borderRight: '10px solid ' + UI.Background.White,
+        [Responsive.Mobile]: {
+          position: 'relative',
+          border: 0,
+        },
       },
       '& *': {
-        color: UI.Text.White
-      }
+        color: UI.Text.White,
+      },
     },
     '& img': {
       zIndex: 0,
       width: '100%',
       height: 'inherit',
       objectFit: 'cover',
-      transition: '0.3s ease-in-out'
+      transition: '0.3s ease-in-out',
+      [Responsive.Mobile]: {
+        float: 'left',
+        height: '125px',
+        width: '125px',
+        position: 'absolute',
+        zIndex: 9,
+      },
     },
     [Responsive.Mobile]: {
-      height: Spacing.xxLarge * 9,
+      height: Spacing.xLarge * 3.5,
+      paddingBottom: 0,
     },
     [Responsive.Tablet]: {
-      height: Spacing.xxLarge * 8.25,
+      height: Spacing.xxLarge * 5,
     },
     '&:hover': {
       cursor: 'pointer',
       '& img': {
-        transform: 'scale(1.1)'
-      }
-    }
+        transform: 'scale(1.1)',
+      },
+    },
   },
-  (props) => props.publisher.slug === 'marvel' && {
-    '& .DisplayName': {
-      backgroundColor: Brands.Marvel,
-      '&:after': {
-        backgroundColor: Brands.Marvel
-      }
+  (props) =>
+    props.publisher.slug === 'marvel' && {
+      '& .DisplayName': {
+        backgroundColor: Brands.Marvel,
+        '&:after': {
+          backgroundColor: Brands.Marvel,
+        },
+      },
+    },
+  (props) =>
+    props.publisher.slug === 'dc' && {
+      '& .DisplayName': {
+        backgroundColor: Brands.DC,
+        '&:after': {
+          backgroundColor: Brands.DC,
+        },
+      },
     }
-  },
-  (props) => props.publisher.slug === 'dc' && {
-    '& .DisplayName': {
-      backgroundColor: Brands.DC,
-      '&:after': {
-        backgroundColor: Brands.DC
-      }
-    }
-  }
 );
+
+const LoadingBG = styled.div({
+  background: '#000',
+  opacity: 0.7,
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  zIndex: 10,
+  [Responsive.Mobile]: {
+    width: '134px',
+  },
+});
+
+const SVGStyle = css({
+  margin: 'auto',
+  top: 0,
+  right: 0,
+  position: 'absolute',
+  bottom: '25%',
+  left: 0,
+  [Responsive.Mobile]: {
+    bottom: 0,
+    padding: '10px 0',
+  },
+});
 
 export const CharacterCard = (props) => (
   <React.Fragment>
-    <Character {...props}>
-      <img src={props.vendor_image} alt={props.name} title={props.name} />
+    <Card {...props}>
+      {props.isLoading && (
+        <LoadingBG>
+          <LoadingSVG className={SVGStyle} color={props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
+        </LoadingBG>
+      )}
+      <img src={props.image || props.vendor_image} alt={props.name} title={props.name} />
       <DisplayName {...props} />
-    </Character>
+    </Card>
   </React.Fragment>
 );
-
-CharacterCard.propTypes = CharacterProps;

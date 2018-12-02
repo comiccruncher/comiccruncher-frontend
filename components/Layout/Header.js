@@ -1,33 +1,44 @@
 import React from 'react';
-import Link from 'next/link';
-import { Box, Flex } from 'rebass/emotion';
+import styled from 'react-emotion';
 import { UI } from '../shared/styles/colors';
-import Dimensions from '../shared/styles/dimensions';
+import Responsive from '../shared/styles/responsive';
 import Spacing from '../shared/styles/spacing';
-import Type, { UIFontStack, BangersFontStack } from '../shared/styles/type';
-import { constants } from 'zlib';
+import Lines from '../shared/components/Lines';
 
-const mainNav = {
-  /*position: 'absolute',
-  top: Spacing.Large,
-  left: Spacing.Large,*/
-  'margin-left': Spacing.Large,
-  'margin-top': Spacing.Large,
-};
+const HeaderSection = styled('div')((props) => ({
+  overflow: props.overflow || 'visible',
+  position: 'relative',
+  background: props.background || UI.Background.RedGradient,
+  minHeight: '420px',
+  textAlign: props.textAlign || 'center',
+  padding: Spacing.xxxLarge,
+  [Responsive.Mobile]: {
+    padding: Spacing.Large,
+  },
+}));
 
-const linkStyle = {
-  color: UI.Text.Dark,
-  textDecoration: 'none',
-  fontFamily: UIFontStack,
-  fontWeight: Type.Weight.Bold,
-  padding: Spacing.Small,
-  display: 'inline-block',
-  borderWidth: 2,
-  borderStyle: 'solid',
-  borderColor: UI.Border.Dark,
-  backgroundColor: UI.Background.Yellow,
-};
+const GenericHeader = styled('div')((props) => ({
+  overflow: props.overflow || 'visible',
+  background: props.background,
+  position: 'relative',
+  padding: props.padding || 0,
+  textAlign: props.textAlign || 'center',
+}));
 
-const Header = (props) => <Flex bg={props.bg || UI.Background.Red}>{props.children}</Flex>;
+// A generic fluid header with options to customize the CSS.
+export const Header = (props) => (
+  <React.Fragment>
+    <GenericHeader {...props}>
+      <header>{props.children}</header>
+    </GenericHeader>
+  </React.Fragment>
+);
 
-export default Header;
+// The main header for the frontpage.
+export const MainHeader = (props) => (
+  <React.Fragment>
+    <HeaderSection background={props.background} textAlign={props.textAlign}>
+      <header>{props.children}</header>
+    </HeaderSection>
+  </React.Fragment>
+);

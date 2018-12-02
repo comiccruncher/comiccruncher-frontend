@@ -1,0 +1,16 @@
+version: "3.1"
+services:
+  frontend:
+    restart: always
+    image: comiccruncher/frontend:test
+    ports:
+      - "3000:3000"
+  log:
+    restart: always
+    image: gliderlabs/logspout
+    command: syslog+tls://${CC_LOG_LOCATION}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock     
+    logging:
+      options:
+        tag: "{{.Name}}/{{.ID}}"

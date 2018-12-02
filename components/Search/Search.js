@@ -1,14 +1,14 @@
 import React from 'react';
-import request from 'superagent';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import AutosuggestHighlightMatch from 'autosuggest-highlight/match';
-import AutosuggestHighlightParse from 'autosuggest-highlight/parse';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 import { CharacterSearchResult } from './CharacterSearchResult';
 import { SearchBar } from './SearchStyles';
+import { withCache } from '../emotion/cache'; /* Keep this here */
 
-const searchUrl = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
+const searchURL = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 const escapeRegexCharacters = (str) => {
@@ -19,6 +19,10 @@ const getSuggestionValue = (suggestion) => {
   return `${suggestion.name}`;
 };
 
+const renderSearchInput = (inputProps) => (
+  <DebounceInput minLength={2} debounceTimeout={300} autoFocus={false} {...inputProps} className={SearchBar} />
+);
+
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +31,6 @@ class Search extends React.Component {
       value: '',
       suggestions: [],
       error: '',
-      isLoading: false,
     };
   }
 
@@ -43,11 +46,12 @@ class Search extends React.Component {
     if (escapedValue === '') {
       return [];
     }
-    const full = searchUrl + '&query=' + encodeURIComponent(escapedValue);
-    request
-      .get(full)
+    axios
+      .get(searchURL, { params: { query: encodeURIComponent(escapedValue) } })
       .then((response) => {
-        this.setState({ suggestions: response.body.data });
+        const data = response.data.data;
+        // stupid hack for setting no suggestions...
+        this.setState({ suggestions: data && data.length === 0 ? [{ slug: 'no-suggestion' }] : data });
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -60,56 +64,54 @@ class Search extends React.Component {
     });
   };
 
+  onClick = (e) => {
+    e.preventDefault();
+  };
+
   renderSuggestion = (suggestion, { query }) => {
-    const suggestionText = `${suggestion.name}`;
-    const matches = AutosuggestHighlightMatch(suggestionText, query);
-    const parts = AutosuggestHighlightParse(suggestionText, matches);
-    // todo: fix autosuggest highlight parse match.
-    const match = parts.map((part, index) => {
-      const className = part.highlight ? 'highlight' : null;
-      return (
-        <span className={className} key={index}>
-          {part.text}
-        </span>
-      );
-    });
-    return <CharacterSearchResult {...suggestion} />;
+    return <CharacterSearchResult {...suggestion} onClick={this.onClick} />;
   };
 
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    Router.push('/characters/' + encodeURIComponent(suggestion.slug));
+    event.preventDefault();
+    Router.push(`/characters/${encodeURIComponent(suggestion.slug)}`);
   };
 
   shouldRenderSuggestions = (value) => {
-    return value.trim().length > 2;
+    return value.trim().length > 1;
   };
 
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: 'Search for a character',
+      placeholder: this.props.placeholder || 'Search for a character',
       value,
       onChange: this.onChange,
     };
-    // TODO: Why is the debounce input so freakin slow?!!?!
-    const renderSearchInput = (inputProps) => (
-      <DebounceInput minLength={1} debounceTimeout={200} autoFocus {...inputProps} className={SearchBar} />
-    );
     return (
       <Autosuggest
         suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        onSuggestionsFetchRequested={this.props.onSuggestionsFetchRequested || this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.props.onSuggestionsClearRequested || this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
         focusInputOnSuggestionClick={false}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
-        onSuggestionSelected={this.onSuggestedSelected}
+        onSuggestionSelected={this.props.onSuggestionSelected || this.onSuggestedSelected}
         renderInputComponent={renderSearchInput}
+        id={this.props.id || '1'}
       />
     );
   }
 }
+
+Search.propTypes = {
+  id: PropTypes.string,
+  onSuggestionSelected: PropTypes.func,
+  onSuggestionsClearRequested: PropTypes.func,
+  onSuggestionsFetchRequested: PropTypes.func,
+  placeholder: PropTypes.string,
+};
 
 export default Search;

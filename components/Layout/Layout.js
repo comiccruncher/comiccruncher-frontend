@@ -1,37 +1,19 @@
 import React from 'react';
 import Head from 'next/head';
-import Navigation from './Navigation';
 import { injectGlobal } from 'emotion';
-import { UI } from '../shared/styles/colors';
+import { UI, Palette } from '../shared/styles/colors';
+import Spacing from '../shared/styles/spacing';
+import Navigation from './Navigation';
+import { withCache } from '../emotion/cache';
+import Responsive from '../shared/styles/responsive';
 
-const Halftone = '/static/assets/Halftone.png';
+const CDN = 'https://flash.comiccruncher.com';
 
 injectGlobal`
   * {
     margin:0;
     padding:0;
     box-sizing:border-box;
-  }
-  html {
-    background-color: ${UI.Background.Gray};
-  }
-  body {
-    max-width: 1024px;
-    margin: 0 auto;
-    position: relative;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
-    background-color: ${UI.Background.White};
-    background-image: url('${Halftone}');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-x: center;
-    background-position-y: calc(100% + 400px);
-
-    @media (max-width: 767px) {
-      padding-bottom: 60px;
-      background-size: 180%;
-      background-position-y: calc(100% + 140px);
-    }
   }
 
   h1,
@@ -42,6 +24,17 @@ injectGlobal`
   h6 {
     font-family: inherit;
     font-size: inherit;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 1152px;
+    margin: 0 auto ${Spacing.xLarge}px;
+    border-top: 4px solid ${UI.Background.Dark};
+    border-bottom: 4px solid ${UI.Background.Dark};
+    border-right: 4px solid ${UI.Background.Dark};
+    border-left: 3px solid ${UI.Background.Dark};
+    box-shadow: 15px 10px ${UI.Background.Dark};
   }
 
   .react-autosuggest__container {
@@ -82,8 +75,9 @@ injectGlobal`
     font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
-    z-index: 2;
+    z-index: 15;
     top: 100%;
+    /*position: relative; Fix for suggestions being hidden whose parent div has overflow:hidden  */
   }
 
   .react-autosuggest__suggestions-list {
@@ -132,20 +126,22 @@ injectGlobal`
   }
 
   .Modal {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+    position:relative;
+    height: auto;
     border:0;
     outline:0;
-    margin: 50px;
+    margin: 0 auto;
+    width:100%;
+    max-width: 1152px;
+    border: 4px solid #000;
+    box-shadow: 10px 10px #1f1f1f;
+    margin: 0 auto;
   }
 
   .Overlay {
+    -webkit-overflow-scrolling: touch;
     position: fixed;
-    background: rgba(0,0,0,.7);
+    background: rgba(0,0,0,.6);
     bottom: 0;
     left: 0;
     overflow: auto;
@@ -153,7 +149,125 @@ injectGlobal`
     right: 0;
     top: 0;
     z-index: 100;
+    padding: ${Spacing.Small}px;
   }
+
+  ${Responsive.Mobile} {
+    .Overlay {
+      padding: 0;
+    }
+  }
+
+  @keyframes blowUpModal {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes blowUpModalTwo {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+
+  .ReactModal__Body--open {
+    overflow: hidden!important;
+    width: 100%;
+  }
+
+  .ReactModal__Overlay {
+    background: rgba(0,0,0,.7);
+    transition: 0.3s all ease-in-out;
+  }
+
+  .ReactModal__Content--after-open{
+    animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    opacity: 1;
+
+  }
+  .ReactModal__Content--before-close{
+    opacity: 0;
+    animation: blowUpModalTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: ${Palette.Yellow.Default};
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px ${Palette.Yellow.Default}, 0 0 5px ${Palette.Yellow.Default};
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: ${Palette.Yellow.Default};
+  border-left-color: ${Palette.Yellow.Default};
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 `;
 
 const Layout = (props) => (
@@ -163,9 +277,32 @@ const Layout = (props) => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
+      <link rel="apple-touch-icon-precomposed" sizes="57x57" href={`${CDN}/apple-touch-icon-57x57.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="114x114" href={`${CDN}/apple-touch-icon-114x114.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href={`${CDN}/apple-touch-icon-72x72.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="144x144" href={`{${CDN}/apple-touch-icon-144x144.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="60x60" href={`${CDN}/apple-touch-icon-60x60.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="120x120" href={`${CDN}/apple-touch-icon-120x120.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="76x76" href={`${CDN}/apple-touch-icon-76x76.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="152x152" href={`${CDN}/apple-touch-icon-152x152.png`} />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-196x196.png`} sizes="196x196" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-96x96.png`} sizes="96x96" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-32x32.png`} sizes="32x32" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-16x16.png`} sizes="16x16" />
+      <link rel="icon" type="image/png" href={`${CDN}/favicon-128.png`} sizes="128x128" />
+      <meta name="msapplication-TileColor" content="#FFFFFF" />
+      <meta name="msapplication-TileImage" content={`${CDN}/mstile-144x144.png`} />
+      <meta name="msapplication-square70x70logo" content={`${CDN}/mstile-70x70.png`} />
+      <meta name="msapplication-square150x150logo" content={`${CDN}/mstile-150x150.png`} />
+      <meta name="msapplication-wide310x150logo" content={`${CDN}/mstile-310x150.png`} />
+      <meta name="msapplication-square310x310logo" content={`${CDN}/mstile-310x310.png`} />
+      <link rel="canonical" href={props.canonical} />
+      <title>{props.title}</title>
     </Head>
-    <Navigation />
-    {props.children}
+    <div className="app">
+      <Navigation background={props.navBackground} />
+      {props.children}
+    </div>
   </React.Fragment>
 );
 

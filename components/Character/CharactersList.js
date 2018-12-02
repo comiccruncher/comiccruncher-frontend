@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
-import request from 'superagent';
+import axios from 'axios';
 import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
@@ -9,68 +9,64 @@ import Modal from 'react-modal';
 import { RankedCharacterProps } from './Types';
 import FullCharacter from './FullCharacter';
 import Spacing from '../shared/styles/spacing';
+import { LoadingSVG } from '../shared/components/Icons';
+import { Text } from '../shared/styles/type';
+import { withCache } from '../emotion/cache';
+import styled from 'react-emotion';
+
+const characterURL = `https://api.comiccruncher.com/characters`;
+
+const CharacterLink = styled.a({
+  textDecoration: 'none',
+});
 
 class CharactersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.characters.data, // an anti-pattern? w/e for now.
+      characters: props.characters.data,
       hasMoreItems: true,
       nextHref: null,
       error: null,
-      currentModal: null,
-      wasModalOpened: false,
-      currentCharacter: null,
+      currentCharacterData: null,
+      isNextPageLoading: false,
+      requestedCharacterSlug: null,
     };
   }
 
   componentDidMount() {
-    this.listenOnRouteChangeComplete();
+    this.listenBeforePopState();
   }
-
-  getParent = (element) => {
-    const document = typeof document === 'undefined' ? '' : document;
-    if (document) {
-      return document.querySelector(element);
-    }
-  };
 
   /**
    * Loads data for the next page.
    */
   loadData = () => {
-    let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page.link;
-    if (this.state.nextHref) {
-      link = this.state.nextHref;
-    }
-    request
-      .get(link)
-      .then((res) => {
-        const body = res.body;
-        this.setState((prevState) => ({
-          data: prevState.data.concat(body.data),
-        }));
-        const nextPage = body.meta.pagination.next_page;
-        if (nextPage) {
-          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage.link });
-        } else {
-          this.setState({ hasMoreItems: false, nextHref: null });
-        }
-      })
-      .catch((err) => {
-        this.setState({ error: 'Error loading page!! :(' });
-      });
-  };
-
-  /**
-   * Toggles the modal so that it shows the character.
-   */
-  toggleModal = (key) => (event) => {
-    event.preventDefault();
-    if (!this.state.wasModalOpened) {
-      this.setState({ wasModalOpened: true });
-    }
-    this.showCharacter(key);
+    this.setState({ isNextPageLoading: true });
+    setTimeout(() => {
+      let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
+      if (this.state.nextHref) {
+        link = this.state.nextHref;
+      }
+      axios
+        .get(link)
+        .then((res) => {
+          const body = res.data;
+          this.setState((prevState) => ({
+            characters: prevState.characters.concat(body.data),
+            isNextPageLoading: false,
+          }));
+          const nextPage = body.meta.pagination.next_page;
+          if (nextPage) {
+            this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
+          } else {
+            this.setState({ hasMoreItems: false, nextHref: null });
+          }
+        })
+        .catch((err) => {
+          this.setState({ error: err.toString() });
+        });
+    }, 300);
   };
 
   /**
@@ -86,119 +82,129 @@ class CharactersList extends React.Component {
    */
   closeModal = () => {
     this.setState({
-      currentModal: null,
+      currentCharacterData: null,
+      requestedCharacterSlug: null,
     });
   };
 
   /**
    * Shows the character modal.
    */
-  showCharacter = (slug) => {
-    slug = encodeURIComponent(slug);
-    Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
-    if (this.state.currentModal) {
+  handleModalOpenRequest(e, slug) {
+    e.preventDefault();
+    this.setState({ requestedCharacterSlug: slug });
+    if (this.state.currentCharacterData) {
       this.handleModalCloseRequest();
       return;
     }
-    this.loadCharacter(slug);
-  };
+    setTimeout(() => {
+      this.loadCharacter(slug);
+    }, 300);
+  }
 
   /**
    * Loads the character.
    */
   loadCharacter = (slug) => {
-    const link = 'https://api.comiccruncher.com/characters/' + encodeURIComponent(slug) + '?key=batmansmellsbadly';
-    request.get(link).then((res) => {
-      this.setState({ currentCharacter: res.body.data, currentModal: slug });
-    });
+    const link = `${characterURL}/${encodeURIComponent(slug)}`;
+    axios
+      .get(link, { params: { key: 'batmansmellsbadly' } })
+      .then((res) => {
+        const data = res.data.data;
+        document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+        slug = encodeURIComponent(slug);
+        Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
+        this.setState({ currentCharacterData: data });
+      })
+      .catch((error) => {
+        this.setState({ error: error.toString() });
+      });
   };
 
   /**
    * Listens on when the route changes and handles opening the modal.
    */
-  listenOnRouteChangeComplete = () => {
-    Router.onRouteChangeComplete = (route) => {
-      console.log(route);
-      if (this.state.wasModalOpened) {
-        if (route === this.props.referer) {
-          this.closeModal();
-          return;
-        }
-        const currentCharacter = Router.query.character;
-        if (currentCharacter !== this.state.currentModal) {
-          this.showCharacter(currentCharacter);
-        }
+  listenBeforePopState = () => {
+    Router.beforePopState(({ url, as, options }) => {
+      if (as === this.props.referer) {
+        this.handleModalCloseRequest();
       }
-    };
+      if (url.includes(`${this.props.referer}?character=`) || url.includes('/character?slug=')) {
+        Router.push(as);
+        return false;
+      }
+      return true;
+    });
   };
 
   render() {
-    const characters = this.state.data;
-    const currentModal = this.state.currentModal;
+    const characters = this.state.characters;
+    const currentCharacter = this.state.currentCharacterData;
+    const reqSlug = this.state.requestedCharacterSlug;
     return (
-      <div>
-        <Flex flexWrap="wrap" alignItems="center" alignContent="center">
+      <React.Fragment>
+        <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
           {characters.map((character, i) => {
             return (
-              <Box px={2} py={2} width={[1, 1 / 2, 1 / 3, 1 / 4]} key={character.slug}>
+              <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]} key={character.slug}>
                 <Modal
+                  closeTimeoutMS={500}
                   className="Modal"
                   overlayClassName="Overlay"
                   id={character.slug}
                   onRequestClose={this.handleModalCloseRequest}
-                  isOpen={currentModal === character.slug}
+                  isOpen={currentCharacter ? currentCharacter.slug === character.slug : false}
                   shouldCloseOnOverlayClick={true}
-                  parentSelector={() => document.querySelector('#__next')}
                 >
-                  <Box width={1152} bg="white" style={{ position: 'relative' }}>
-                    <Button
-                      onClick={this.closeModal}
-                      style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
-                    >
-                      Close
-                    </Button>
-                    <FullCharacter {...this.state.currentCharacter} />
-                  </Box>
+                  <Button
+                    onClick={this.handleModalCloseRequest}
+                    style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
+                  >
+                    Close
+                  </Button>
+                  {currentCharacter && <FullCharacter {...currentCharacter} />}
                 </Modal>
-                <a href={`/characters/${character.slug}`} onClick={this.toggleModal(character.slug)}>
-                  <CharacterCard {...character} />
-                </a>
+                <CharacterLink
+                  href={`/characters/${character.slug}`}
+                  onClick={(e) => this.handleModalOpenRequest(e, character.slug)}
+                >
+                  <CharacterCard {...character} isLoading={reqSlug === character.slug} />
+                </CharacterLink>
               </Box>
             );
           })}
         </Flex>
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
-            {this.state.hasMoreItems && (
-              <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
-                Load More
-              </Button>
+            {this.state.hasMoreItems &&
+              !this.state.isNextPageLoading && (
+                <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
+                  Load More
+                </Button>
+              )}
+            {!this.state.error && this.state.isNextPageLoading && <LoadingSVG />}
+            {this.state.error && (
+              <Text.Default>
+                <p>{this.state.error}.</p>
+              </Text.Default>
             )}
           </Box>
         </Flex>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-const pageProps = PropTypes.shape({
-  number: PropTypes.number,
-  link: PropTypes.string,
-});
-
 CharactersList.propTypes = {
-  onDismissModal: PropTypes.func,
-  onShowCharacter: PropTypes.func,
   referer: PropTypes.string,
   characters: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,
       error: PropTypes.string,
       pagination: PropTypes.shape({
-        per_page: PropTypes.number,
-        previous_page: pageProps,
-        current_page: pageProps,
-        next_page: pageProps,
+        previous_page: PropTypes.string,
+        current_page: PropTypes.string,
+        next_page: PropTypes.string,
       }),
     }),
     data: PropTypes.arrayOf(RankedCharacterProps),
@@ -207,5 +213,4 @@ CharactersList.propTypes = {
 
 Modal.setAppElement('#__next');
 
-// TODO: Fix modal for marvel and dc route!!!
 export default withRouter(CharactersList);

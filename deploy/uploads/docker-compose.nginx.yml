@@ -1,0 +1,46 @@
+version: "3.1"
+services:
+  letsencrypt:
+    depends_on:
+      - log
+    image: linuxserver/letsencrypt
+    environment:
+      - EMAIL=aimee@aimeelaplant.com
+      - URL=comiccruncher.com
+      - SUBDOMAINS=www
+      - TZ=America/NewYork
+      - VALIDATION=dns
+      - DNSPLUGIN=route53
+      - PUID=1001
+      - PGID=1001
+      - "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+      - "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+    volumes:
+      - ./config:/config
+      - letsencrypt:/etc/letsencrypt
+  nginx:
+    restart: always
+    image: nginx:1.15-alpine
+    depends_on:
+      - letsencrypt
+      - log
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx
+      - letsencrypt:/etc/letsencrypt
+    logging:
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+  log:
+    restart: always
+    image: gliderlabs/logspout
+    command: syslog+tls://${CC_LOG_LOCATION}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      options:
+        tag: "{{.Name}}/{{.ID}}"
+volumes:
+  letsencrypt:
