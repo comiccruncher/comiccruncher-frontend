@@ -13,9 +13,6 @@ const Card = styled.div(
     height: Spacing.xxLarge * 6.25,
     overflow: 'hidden',
     position: 'relative',
-    [Responsive.Mobile]: {
-      overflow: 'auto',
-    },
     '& .DisplayName': {
       position: 'absolute',
       color: UI.Text.White,
@@ -25,12 +22,6 @@ const Card = styled.div(
       left: 0,
       width: '80%',
       padding: Spacing.Small,
-      [Responsive.Mobile]: {
-        position: 'relative',
-        width: '100%',
-        height: '125px',
-        padding: '35px 0 0 140px',
-      },
       '&::after': {
         content: `' '`,
         width: '100%',
@@ -43,10 +34,6 @@ const Card = styled.div(
         right: '-10px',
         borderTop: '10px solid ' + UI.Background.White,
         borderRight: '10px solid ' + UI.Background.White,
-        [Responsive.Mobile]: {
-          position: 'relative',
-          border: 0,
-        },
       },
       '& *': {
         color: UI.Text.White,
@@ -58,16 +45,8 @@ const Card = styled.div(
       height: 'inherit',
       objectFit: 'cover',
       transition: '0.3s ease-in-out',
-      [Responsive.Mobile]: {
-        float: 'left',
-        height: '125px',
-        width: '125px',
-        position: 'absolute',
-        zIndex: 9,
-      },
     },
     [Responsive.Mobile]: {
-      height: Spacing.xLarge * 3.5,
       paddingBottom: 0,
     },
     [Responsive.Tablet]: {
