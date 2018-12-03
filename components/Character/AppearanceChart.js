@@ -6,6 +6,7 @@ import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
 import { UI, Brands } from '../shared/styles/colors';
 import { withCache } from '../emotion/cache';
+import { Section, Text } from '../shared/styles/type';
 
 const ChartHeight = 400;
 
@@ -180,10 +181,10 @@ export default class AppearanceChart extends React.Component {
         <SearchComponent onSuggestedSelected={this.onSuggestedSelected} />
         <FormStyle>
           <label>
-            <p>
+            <Text.Default>
               <input type="checkbox" checked={this.state.isAlternate} onChange={this.handleAlternate} />
               <span>Alternate</span>
-            </p>
+            </Text.Default>
           </label>
         </FormStyle>
         <ChartDiv>
