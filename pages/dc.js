@@ -9,7 +9,7 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
-import { Section, Text } from '../components/shared/styles/type';
+import { Title, Section, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
 
 class DC extends React.Component {
@@ -24,8 +24,7 @@ class DC extends React.Component {
           <MainHeader background={Brands.DC}>
             <Flex>
               <Box width={1152} m="0 auto" p={3}>
-                <h1>DC</h1>
-                <Search />
+                <Title.Large><h1>DC Comics</h1></Title.Large>
               </Box>
             </Flex>
           </MainHeader>

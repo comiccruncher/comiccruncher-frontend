@@ -133,6 +133,25 @@ const LabelDefault = styled.label({
   display: 'block',
 });
 
+const HeadingH1 = styled.h1((props) => ({
+  fontSize: props.fontSize || Size.Large,
+  [Responsive.Tablet]: {
+    fontSize: '1.8rem',
+  },
+  [Responsive.Mobile]: {
+    fontsize: '1.6rem',
+  },
+}));
+
+const HeadingH2 = styled.h2((props) => ({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: 1.5,
+  fontSize: props.fontSize || Size.Medium,
+  fontWeight: props.fontWeight || Weight.Medium,
+  margin: '20px 0',
+}));
+
 const Type = {};
 Type.Weight = Weight;
 Type.Size = Size;
@@ -164,25 +183,6 @@ Text.SearchResult = TextSearchResult;
 const Label = {};
 Type.Label = Label;
 Label.Default = LabelDefault;
-
-const HeadingH1 = styled.h1((props) => ({
-  fontSize: props.fontSize || Size.Large,
-  [Responsive.Tablet]: {
-    fontSize: '1.8rem',
-  },
-  [Responsive.Mobile]: {
-    fontsize: '1.6rem',
-  },
-}));
-
-const HeadingH2 = styled.h2((props) => ({
-  color: UI.Text.Default,
-  fontFamily: UIFontStack,
-  lineHeight: 1.5,
-  fontSize: props.fontSize || Size.Medium,
-  fontWeight: props.fontWeight || Weight.Medium,
-  margin: '20px 0',
-}));
 
 export {
   UIFontStack,

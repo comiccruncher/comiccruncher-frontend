@@ -71,16 +71,11 @@ export class Home extends React.Component {
       <React.Fragment>
         <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'} canonical="/">
           <MainHeader>
-            <div css={{ paddingBottom: Spacing.xxLarge * 2, paddingTop: Spacing.xxLarge }}>
-              {!error && <Stats {...stats.data} />}
-            </div>
-            <div>
-              <Flex flexWrap="wrap" alignItems="center" alignContent="center" p={3}>
-                <Box width={1124}>
-                  <Search />
-                </Box>
-              </Flex>
-            </div>
+            <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center'>
+              <Box alignSelf='center' style={{width: '100%', height: '100%', paddingBottom: Spacing.xxLarge, paddingTop: Spacing.xxLarge }}>
+                  {!error && <Stats {...stats.data} />}
+              </Box>
+            </Flex>
           </MainHeader>
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} pl={3}>

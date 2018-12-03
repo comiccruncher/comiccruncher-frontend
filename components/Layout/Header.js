@@ -5,7 +5,7 @@ import Responsive from '../shared/styles/responsive';
 import Spacing from '../shared/styles/spacing';
 import Lines from '../shared/components/Lines';
 
-const HeaderSection = styled('div')((props) => ({
+const HeaderSection = styled('header')((props) => ({
   overflow: props.overflow || 'visible',
   position: 'relative',
   background: props.background || UI.Background.RedGradient,
@@ -17,7 +17,7 @@ const HeaderSection = styled('div')((props) => ({
   },
 }));
 
-const GenericHeader = styled('div')((props) => ({
+const GenericHeader = styled('header')((props) => ({
   overflow: props.overflow || 'visible',
   background: props.background,
   position: 'relative',
@@ -29,7 +29,7 @@ const GenericHeader = styled('div')((props) => ({
 export const Header = (props) => (
   <React.Fragment>
     <GenericHeader {...props}>
-      <header>{props.children}</header>
+      {props.children}
     </GenericHeader>
   </React.Fragment>
 );
@@ -38,7 +38,7 @@ export const Header = (props) => (
 export const MainHeader = (props) => (
   <React.Fragment>
     <HeaderSection background={props.background} textAlign={props.textAlign}>
-      <header>{props.children}</header>
+      {props.children}
     </HeaderSection>
   </React.Fragment>
 );
