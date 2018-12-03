@@ -7,7 +7,7 @@ import Dimensions from '../styles/dimensions';
 import Spacing from '../styles/spacing';
 import Type, { UIFontStack, BangersFontStack } from '../styles/type';
 
-const Bang = '/static/assets/bang.svg';
+const Bang = 'https://flash.comiccruncher.com/static/assets/bang.svg';
 
 const StatBlock = css({
   backgroundImage: `url(${Bang})`,
