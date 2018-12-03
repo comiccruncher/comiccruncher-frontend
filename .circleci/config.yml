@@ -3,7 +3,10 @@ workflows:
   version: 2
   install_deps_build_and_deploy:
     jobs:
-      - install_deps
+      - install_deps:
+          filters:
+            branches:
+              only: /.*/
       - build_and_deploy:
           requires:
             - install_deps
