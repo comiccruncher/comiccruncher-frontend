@@ -41,8 +41,8 @@ const Navigation = (props) => (
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
         <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
           <Box width={[1, 2 / 5, 1 / 5]} style={{position: 'relative'}}>
-            // @TODO figure out how to toggle the state of MainNav
-            // show/hide functionality
+            {/* @TODO figure out how to toggle the state of MainNav
+            show/hide functionality */}
             <Button>Menu ▾</Button>
             <MainNav></MainNav>
           </Box>
