@@ -9,7 +9,7 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
-import { HeadingH1, Text } from '../components/shared/styles/type';
+import { Title, HeadingH1, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
 
 class Trending extends React.Component {
@@ -24,8 +24,7 @@ class Trending extends React.Component {
           <MainHeader background={Brands.Marvel}>
             <Flex>
               <Box width={1152} m="0 auto" p={3}>
-                <h1>Trending</h1>
-                <Search />
+                <Title.Large><h1>Trending Characters</h1></Title.Large>
               </Box>
             </Flex>
           </MainHeader>
