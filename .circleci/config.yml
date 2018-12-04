@@ -23,12 +23,12 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - node_modules-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node_modules-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies.
           command: yarn install
       - save_cache:
-          key: node_modules-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: node_modules-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
   build_and_deploy:
@@ -38,7 +38,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - node_modules-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node_modules-{{ checksum "yarn.lock" }}
       - run:
           name: Build the application.
           command: yarn build
