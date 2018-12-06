@@ -37,10 +37,10 @@ jobs:
       - image: circleci/node:10.12
     steps:
       - checkout
-      - restore_cache:
-          keys: 
-            - node_modules-{{ checksum "yarn.lock" }}
-            - node_modules
+      # Can't currently use cache due to fsevents on Mac and package.lock discrepancy. Fix later.
+      - run:
+          name: Install dependencies.
+          command: yarn install
       - run:
           name: Build the application.
           command: yarn build
