@@ -10,8 +10,6 @@ workflows:
             tags:
               ignore: /.*/
       - build_and_deploy:
-          requires:
-            - install_deps
           filters:
             tags:
               only: /^v.*/
