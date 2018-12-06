@@ -37,6 +37,7 @@ jobs:
       - image: circleci/node:10.12
     steps:
       - checkout
+      - setup_remote_docker
       # Can't currently use cache due to fsevents on Mac and package.lock discrepancy. Fix later.
       - run:
           name: Install dependencies.
