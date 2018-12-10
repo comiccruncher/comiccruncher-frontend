@@ -47,10 +47,10 @@ jobs:
           command: yarn build
       - run:
           name: Upload assets to S3.
-          command: make docker-upload-s3
+          command: pwd && ls && make docker-upload-s3
       - run:
           name: Login to docker.
-          command: docker login -u $CC_DOCKER_USER -p $CC_DOCKER_PASS > /dev/null
+          command: docker login -u $CC_DOCKER_USER -p $CC_DOCKER_PASSWORD > /dev/null
       - run:
           name: Build the docker image.
           command: make docker-build-pm2
