@@ -22,8 +22,8 @@ class DC extends React.Component {
       <React.Fragment>
         <Layout title={'DC Comics | Popular Characters | Comic Cruncher'} canonical="/dc">
           <MainHeader background={Brands.DC}>
-            <Flex>
-              <Box width={1152} m="0 auto" p={3}>
+          <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center' flexDirection='column' style={{height: '420px'}}>
+            <Box alignSelf='center' p={3}>
                 <Title.Large><h1>DC Comics</h1></Title.Large>
               </Box>
             </Flex>

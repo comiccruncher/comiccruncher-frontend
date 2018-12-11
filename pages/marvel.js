@@ -22,9 +22,9 @@ class Marvel extends React.Component {
       <React.Fragment>
         <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical="/marvel">
           <MainHeader background={Brands.Marvel}>
-            <Flex>
-              <Box width={1152} m="0 auto" p={3}>
-                <Title.Large><h1>Marvel</h1></Title.Large>
+          <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center' flexDirection='column' style={{height: '420px'}}>
+            <Box alignSelf='center' p={3}>
+                <Title.Large><h1>Marvel Comics</h1></Title.Large>
               </Box>
             </Flex>
           </MainHeader>

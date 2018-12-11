@@ -9,7 +9,7 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
-import { Title, HeadingH1, Text } from '../components/shared/styles/type';
+import { Title, Section, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
 
 class Trending extends React.Component {
@@ -21,17 +21,18 @@ class Trending extends React.Component {
     return (
       <React.Fragment>
         <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical={'/trending'}>
-          <MainHeader background={Brands.Marvel}>
-            <Flex>
-              <Box width={1152} m="0 auto" p={3}>
+          <MainHeader>
+            <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center' flexDirection='column' style={{height: '420px'}}>
+              <Box alignSelf='center' p={3}>
                 <Title.Large><h1>Trending Characters</h1></Title.Large>
+                <Title.Byline>Currently popular characters from Marvel and DC</Title.Byline>
               </Box>
             </Flex>
           </MainHeader>
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
               <Box width={[1]}>
-                <HeadingH1>Trending Marvel Characters</HeadingH1>
+                <Section.Title><h2>Trending Marvel Characters</h2></Section.Title>
                 <Text.Default>
                   {this.props.error ? (
                     <p>{this.props.error}</p>

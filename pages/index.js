@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
-import { Section, Text } from '../components/shared/styles/type';
+import { Title, Section, Text } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
 import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
@@ -73,6 +73,8 @@ export class Home extends React.Component {
           <MainHeader>
             <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center'>
               <Box alignSelf='center' style={{width: '100%', height: '100%', paddingBottom: Spacing.xxLarge, paddingTop: Spacing.xxLarge }}>
+                <Title.Large>Comicbook Appearances</Title.Large>
+                <Title.Byline>See popular character appearances</Title.Byline>
                   {!error && <Stats {...stats.data} />}
               </Box>
             </Flex>
