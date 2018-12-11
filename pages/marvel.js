@@ -9,7 +9,7 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
-import { Section, Text } from '../components/shared/styles/type';
+import { Title, Section, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
 
 class Marvel extends React.Component {
@@ -22,10 +22,9 @@ class Marvel extends React.Component {
       <React.Fragment>
         <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical="/marvel">
           <MainHeader background={Brands.Marvel}>
-            <Flex>
-              <Box width={1152} m="0 auto" p={3}>
-                <h1>Marvel</h1>
-                <Search />
+          <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center' flexDirection='column' style={{height: '420px'}}>
+            <Box alignSelf='center' p={3}>
+                <Title.Large><h1>Marvel Comics</h1></Title.Large>
               </Box>
             </Flex>
           </MainHeader>
