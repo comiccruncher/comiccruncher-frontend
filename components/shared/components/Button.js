@@ -29,25 +29,30 @@ const Button = styled.button(
       },
     },
   (props) =>
+    props.type === 'dark' && {
+      backgroundColor: UI.Background.Dark,
+      '&:hover': {
+        backgroundColor: UI.Background.DefaultGray,
+      },
+    },
+  (props) =>
     props.disabled && {
-      opacity: '0.3',
-      backgroundColor: UI.Background.Gray,
-      color: UI.Text.Dark,
+      backgroundColor: UI.Background.LightGray,
+      color: UI.Text.Default,
+      '&:hover': {
+        opacity: '0.8',
+        backgroundColor: UI.Background.LightGray,
+      },
     },
   (props) =>
     props.isInactive && {
-      opacity: '0.3',
-      backgroundColor: UI.Background.Gray,
-      color: UI.Text.White,
-    },
-  (props) =>
-    props.type === 'dark' && {
-      backgroundColor: UI.Text.Default,
+      backgroundColor: UI.Background.LightGray,
+      color: UI.Text.Dark,
       '&:hover': {
-        backgroundColor: UI.Background.Gray,
-        color: UI.Text.Dark,
+        opacity: '0.8',
+        backgroundColor: UI.Background.LightGray,
       },
-    }
+    },
 );
 
 export default Button;

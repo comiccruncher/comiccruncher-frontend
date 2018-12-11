@@ -96,12 +96,12 @@ injectGlobal`
   }
 
   .react-autosuggest__suggestion--highlighted {
-    background: ${UI.Background.Gray};
+    background: ${UI.Background.PaleGray};
     outline: normal;
   }
 
   .react-autosuggest__suggestion--focused {
-    background-color: ${UI.Background.Gray};
+    background-color: ${UI.Background.PaleGray};
     color: ${UI.Text.White};
   }
 
