@@ -1,0 +1,17 @@
+version: "3.1"
+services:
+  build:
+    image: node:11.4-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+  awscli:
+    image: mesosphere/aws-cli
+    working_dir: /project
+    volumes:
+      - .next/:/project/.next
+      - ./static/:/project/static
+    environment:
+      - "AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID}"
+      - "AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY}"
+      - "AWS_DEFAULT_REGION=us-east-1"

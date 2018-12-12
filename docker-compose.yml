@@ -1,22 +1,12 @@
 version: "3.1"
 services:
-  frontend1:
-    restart: always
-    image: keymetrics/pm2:10-alpine
-    volumes:
-      - .:/srv/www/comiccruncher
-    working_dir: /srv/www/comiccruncher
+  comiccruncher:
+    image: node:11.4-alpine
     ports:
       - "3000:3000"
-    command: pm2-runtime start ./deploy/uploads/pm2/config.json
-    environment:
-      NODE_ENV: development
-  nginx:
-    restart: always
-    image: nginx:1.15-alpine
-    links:
-      - frontend1
-    ports:
-      - "8002:80"
+    working_dir: /app
     volumes:
-      - ./deploy/uploads/nginx:/etc/nginx
+      - .:/app
+    environment:
+      - "NODE_ENV=${CC_NODE_ENV:-development}"
+    command: yarn dev

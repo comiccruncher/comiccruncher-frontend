@@ -2,16 +2,7 @@ CC_AWS_BUCKET = appearances-us-east-1
 
 NEXT_STATIC_DIR = _next/static
 
-DOCKER_RUN_AWSCLI = docker run --rm \
-	-e "AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID}" \
-	-e "AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY}" \
-	-e "AWS_DEFAULT_REGION=us-east-1" \
-	-v "$$(pwd):/project" \
-	mesosphere/aws-cli	
-
 NGINX_SERVER = aimee@68.183.27.114
-
-NGINX_CONTAINER_NAME = uploads_nginx_1_5a4d01086d34
 
 DOCKER_COMPOSE_NGINX = docker-compose -f ./deploy/uploads/docker-compose.nginx.yml
 
@@ -32,41 +23,65 @@ PM2_IMAGE = comiccruncher/frontend:test
 PM2_SERVER1 = aimee@167.99.157.206
 PM2_SERVER2 = aimee@68.183.143.225
 
-# Installs the S3 image.
-.PHONY: docker-pull-awscli
-docker-pull-awscli:
-	docker pull mesosphere/aws-cli
+S3_UPLOAD_STATIC = s3 cp ./static s3://${CC_AWS_BUCKET}/static --recursive
 
-# Uploads static assets to S3.
-.PHONY: docker-upload-static
-docker-upload-static:
-	${DOCKER_RUN_AWSCLI} s3 cp ./static s3://${CC_AWS_BUCKET}/static --recursive
-
-# Uploads the NextJS build to S3.
-.PHONY: docker-upload-next-build
-docker-upload-next-build:
-	${DOCKER_RUN_AWSCLI} s3 cp ./.next/static/$(shell cat ./.next/BUILD_ID) s3://$${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/$(shell cat ./.next/BUILD_ID) \
+S3_UPLOAD_NEXT_BUILD = s3 cp ./.next/static/$(shell cat ./.next/BUILD_ID) s3://$${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/$(shell cat ./.next/BUILD_ID) \
 		--recursive \
 		--content-type "application/json" \
 		--cache-control "public, max-age=86400"
+S3_UPLOAD_NEXT_CHUNKS = s3 cp ./.next/static/chunks s3://$${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/chunks \
+		--recursive \
+		--content-type "application/json"
+S3_UPLOAD_NEXT_RUNTIME = s3 cp ./.next/static/runtime s3://$${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/runtime \
+		--recursive \
+		--content-type "application/json"
 
-# Uploads the NextJS static chunks to S3.
+DOCKER_COMPOSE_DEV = docker-compose -f docker-compose.yml 
+
+DOCKER_COMPOSE_BUILD = docker-compose -f docker-compose.build.yml
+
+DOCKER_COMPOSE_BUILD_RUN = ${DOCKER_COMPOSE_BUILD} run --rm build
+
+DOCKER_COMPOSE_AWSCLI_RUN = ${DOCKER_COMPOSE_BUILD} run --rm awscli
+
+# Runs the dev environment.
+.PHONY: docker-yarn-dev
+docker-yarn-dev:
+	${DOCKER_COMPOSE_DEV} up --build --remove-orphans
+
+# Runs yarn install through the Docker container.
+.PHONY: docker-yarn-install
+docker-yarn-install:
+	CC_NODE_ENV=development ${DOCKER_COMPOSE_BUILD_RUN} yarn install
+
+# Builds the prodution build.
+.PHONY: docker-yarn-build
+docker-yarn-build:
+	${DOCKER_COMPOSE_BUILD_RUN} yarn build
+
+# Uploads the static assets to s3.
+.PHONY: docker-upload-static
+docker-upload-static:
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_STATIC}
+
+# Uploads the next build to s3.
+.PHONY: docker-upload-next-build
+docker-upload-next-build:
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_BUILD}
+
+# Uploads the next chunks to s3.
 .PHONY: docker-upload-next-chunks
 docker-upload-next-chunks:
-	${DOCKER_RUN_AWSCLI} s3 cp ./.next/static/chunks s3://$${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/chunks \
-		--recursive \
-		--content-type "application/json"
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_CHUNKS}
 
-# Uploads the NextJS static runtime to S3.
+# Uploads the next runtime to s3.
 .PHONY: docker-upload-next-runtime
 docker-upload-next-runtime:
-	${DOCKER_RUN_AWSCLI} s3 cp ./.next/static/runtime s3://$${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/runtime \
-		--recursive \
-		--content-type "application/json"
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_RUNTIME}
 
-# Uploads all the static assets to S3.
+# Uploads all the statics and next statics to s3.
 .PHONY: docker-upload-s3
-docker-upload-s3: docker-pull-awscli docker-upload-static docker-upload-next-build docker-upload-next-chunks docker-upload-next-runtime
+docker-upload-s3: docker-upload-static docker-upload-next-build docker-upload-next-chunks docker-upload-next-runtime
 
 # Builds the Docker image for PM2.
 # Make sure to build the yarn build first..
