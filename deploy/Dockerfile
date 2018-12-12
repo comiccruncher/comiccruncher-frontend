@@ -1,6 +1,8 @@
-FROM keymetrics/pm2:10-alpine
+FROM node:11.4-alpine
 
 LABEL maintainer="Aimee LaPlant <aimee@aimeelaplant.com>"
+
+RUN npm install pm2 -g
 
 ENV NODE_ENV production
 
