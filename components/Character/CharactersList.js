@@ -66,7 +66,7 @@ class CharactersList extends React.Component {
         .catch((err) => {
           this.setState({ error: err.toString() });
         });
-    }, 300);
+    }, 1);
   };
 
   /**
@@ -99,7 +99,7 @@ class CharactersList extends React.Component {
     }
     setTimeout(() => {
       this.loadCharacter(slug);
-    }, 300);
+    }, 1);
   }
 
   /**
