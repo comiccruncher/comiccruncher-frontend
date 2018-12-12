@@ -20,6 +20,7 @@ const Button = styled.button(
     paddingRight: Spacing.Large,
     cursor: 'pointer',
     transition: 'all .3s ease-in-out',
+    outline: 0,
   },
   (props) =>
     props.type === 'primary' && {
