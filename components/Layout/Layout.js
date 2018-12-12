@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { injectGlobal } from 'emotion';
 import { UI, Palette } from '../shared/styles/colors';
@@ -270,7 +271,7 @@ injectGlobal`
 
 `;
 
-const Layout = (props) => (
+const Layout = ({ canonical, children, title, navBackground }) => (
   <React.Fragment>
     <Head>
       <meta charSet="utf-8" />
@@ -296,14 +297,21 @@ const Layout = (props) => (
       <meta name="msapplication-square150x150logo" content={`${CDN}/mstile-150x150.png`} />
       <meta name="msapplication-wide310x150logo" content={`${CDN}/mstile-310x150.png`} />
       <meta name="msapplication-square310x310logo" content={`${CDN}/mstile-310x310.png`} />
-      <link rel="canonical" href={props.canonical} />
-      <title>{props.title}</title>
+      <link rel="canonical" href={canonical} />
+      <title>{title}</title>
     </Head>
     <div className="app">
-      <Navigation background={props.navBackground} />
-      {props.children}
+      <Navigation background={navBackground} activeHref={canonical} />
+      {children}
     </div>
   </React.Fragment>
 );
+
+Layout.propTypes = {
+  canonical: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  navBackground: PropTypes.string,
+  children: PropTypes.node,
+};
 
 export default Layout;
