@@ -16,6 +16,9 @@ const HalftoneBG = css({
   [Responsive.Desktop]: {
     'background-size': 'inherit !important',
   },
+  [Responsive.TabletAndBelow]: {
+    'background-size': 'unset',
+  },
 });
 
 // A content block for <main> content with a <footer> at the end.
