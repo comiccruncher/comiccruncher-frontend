@@ -30,6 +30,11 @@ const Nav = styled('nav')({
   paddingTop: Spacing.Tiny,
   paddingBottom: Spacing.Tiny,
   minWidth: Spacing.xxLarge * 4,
+  borderTop: `2px solid ${UI.Text.Dark}`,
+  borderBottom: `2px solid ${UI.Text.Dark}`,
+  borderRight: `2px solid ${UI.Text.Dark}`,
+  borderLeft: `2px solid ${UI.Text.Dark}`,
+  boxShadow: `-4px 4px ${UI.Text.Dark}`,
   '> ul': {
     'list-style-type': 'none',
     ' > li': {
