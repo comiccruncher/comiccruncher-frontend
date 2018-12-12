@@ -15,3 +15,4 @@ services:
       - "AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID}"
       - "AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY}"
       - "AWS_DEFAULT_REGION=us-east-1"
+      - "CC_AWS_BUCKET=${CC_AWS_BUCKET:-appearances-us-east-1}"
