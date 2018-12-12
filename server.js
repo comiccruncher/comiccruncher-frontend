@@ -11,6 +11,15 @@ app
 
     server.disable('x-powered-by');
 
+    server.use((req, res, next) => {
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('X-Frame-Options', 'sameorigin');
+      res.setHeader('Referrer-Policy', 'origin');
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+      res.setHeader('x-xss-protection', '1; mode=block');
+      next();
+    });
+
     server.get('/marvel', (req, res) => {
       // `/marvel` is the filename of `/pages/marvel.js
       // * must pass in req.params for back button to work:
