@@ -24,6 +24,6 @@ export const MainContent = (props) =>
   withCache(
     <div css={props.style || HalftoneBG}>
       {props.children}
-      <Footer />
+      <Footer {...props} />
     </div>
   );

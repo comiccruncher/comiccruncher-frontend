@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { Box, Flex } from 'rebass/emotion';
 import { Section, Text } from '../shared/styles/type';
@@ -17,19 +18,19 @@ const Year = new Date().getFullYear();
 
 class FullCharacter extends React.Component {
   render() {
-    const c = this.props;
-    // clean markup
-    const bio = c.vendor_description;
+    const { showFooterText, character } = this.props;
+    const bio = character.vendor_description;
+    const publisherSlug = character.publisher.slug;
     return (
       <React.Fragment>
         <Wrapper>
-          <CharacterHeader {...c} />
-          <MainContent>
-            <CharacterStats {...c} />
+          <CharacterHeader {...character} />
+          <MainContent showFooterText={showFooterText}>
+            <CharacterStats {...character} />
             <Flex flexWrap={'wrap'}>
               <Box p={30} width={[1]}>
-                <AppearancesSection {...c} />
-                {c.publisher.slug === 'marvel' &&
+                <AppearancesSection {...character} />
+                {publisherSlug === 'marvel' &&
                   bio && (
                     <React.Fragment>
                       <Section.Title>
@@ -40,8 +41,8 @@ class FullCharacter extends React.Component {
                       </Text.Default>
                     </React.Fragment>
                   )}
-                {c.publisher.slug === 'marvel' &&
-                  (bio || (c.vendor_image && !c.image)) && (
+                {publisherSlug === 'marvel' &&
+                  (bio || (character.vendor_image && !character.image)) && (
                     <Text.Default>
                       <p>
                         <small>
@@ -60,7 +61,9 @@ class FullCharacter extends React.Component {
     );
   }
 }
-
-FullCharacter.propTypes = FullCharacterProps;
+FullCharacter.propTypes = {
+  showFooterText: PropTypes.bool,
+  character: FullCharacterProps,
+};
 
 export default withCache(FullCharacter);
