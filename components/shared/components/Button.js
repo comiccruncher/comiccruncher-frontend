@@ -2,7 +2,7 @@ import styled from 'react-emotion';
 import { UI } from '../styles/colors';
 import Dimensions from '../styles/dimensions';
 import Spacing from '../styles/spacing';
-import Type, { UIFontStack, BangersFontStack } from '../styles/type';
+import Type, { UIFontStack } from '../styles/type';
 
 const Button = styled.button(
   {

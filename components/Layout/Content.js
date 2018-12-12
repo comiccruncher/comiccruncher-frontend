@@ -1,5 +1,4 @@
 import React from 'react';
-import { Flex, Box } from 'rebass/emotion';
 import { css } from 'react-emotion';
 import Footer from './Footer';
 import Responsive from '../shared/styles/responsive';
