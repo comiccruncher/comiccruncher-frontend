@@ -17,7 +17,7 @@ COPY .next ./.next
 
 COPY ./deploy/uploads/pm2/config.json ./deploy/uploads/pm2/config.json
 
-RUN yarn install --production=true
+RUN NODE_ENV=production yarn install --production --frozen-lockfile
 
 CMD pm2-runtime start ./deploy/uploads/pm2/config.json
 
