@@ -33,7 +33,7 @@ export class AppearancesSection extends React.Component {
           newIssues: newIssues,
           totalIssues: mainCounts + altCounts,
         }),
-      600
+      100
     );
   }
 

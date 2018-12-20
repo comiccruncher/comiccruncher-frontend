@@ -54,6 +54,9 @@ docker-yarn-dev:
 docker-yarn-install:
 	CC_NODE_ENV=development ${DOCKER_COMPOSE_BUILD_RUN} yarn install
 
+docker-yarn-install-circleci:
+	CC_NODE_ENV=development ${DOCKER_COMPOSE_BUILD_RUN} yarn install --frozen-lockfile
+
 # Builds the prodution build.
 .PHONY: docker-yarn-build
 docker-yarn-build:

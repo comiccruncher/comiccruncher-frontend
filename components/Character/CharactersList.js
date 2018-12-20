@@ -66,7 +66,7 @@ class CharactersList extends React.Component {
         .catch((err) => {
           this.setState({ error: err.toString() });
         });
-    }, 300);
+    }, 1);
   };
 
   /**
@@ -99,7 +99,7 @@ class CharactersList extends React.Component {
     }
     setTimeout(() => {
       this.loadCharacter(slug);
-    }, 300);
+    }, 1);
   }
 
   /**
@@ -162,7 +162,7 @@ class CharactersList extends React.Component {
                   >
                     Close
                   </Button>
-                  {currentCharacter && <FullCharacter {...currentCharacter} />}
+                  {currentCharacter && <FullCharacter character={currentCharacter} showFooterText={false} />}
                 </Modal>
                 <CharacterLink
                   href={`/characters/${character.slug}`}

@@ -2,14 +2,11 @@ import React from 'react';
 import styled from 'react-emotion';
 import Link from 'next/link';
 import { Box, Flex } from 'rebass/emotion';
-import { UI } from '../shared/styles/colors';
 import Dimensions from '../shared/styles/dimensions';
-import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Spacing from '../shared/styles/spacing';
 import Logo from '../shared/components/Logo';
 import Responsive from '../shared/styles/responsive';
 import Search from '../Search/Search';
-import Button from '../shared/components/Button';
 import MainNav from '../shared/components/MainNav';
 import { withCache } from '../emotion/cache';
 
@@ -28,6 +25,29 @@ const LogoContainer = styled.div({
   },
 });
 
+const NavItems = [
+  {
+    href: '/trending',
+    displayText: 'Trending',
+    prefetch: true,
+  },
+  {
+    href: '/marvel',
+    displayText: 'Marvel',
+    prefetch: true,
+  },
+  {
+    href: '/dc',
+    displayText: 'DC',
+    prefetch: true,
+  },
+  {
+    href: '/faq',
+    displayText: 'FAQ',
+    prefetch: true,
+  },
+];
+
 const Navigation = (props) => (
   <Container background={props.background}>
     <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
@@ -40,11 +60,8 @@ const Navigation = (props) => (
       </Box>
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
         <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
-          <Box width={[1, 2 / 5, 1 / 5]} style={{position: 'relative'}}>
-            {/* @TODO figure out how to toggle the state of MainNav
-            show/hide functionality */}
-            <Button>Menu ▾</Button>
-            <MainNav></MainNav>
+          <Box width={[1, 2 / 5, 1 / 5]} style={{ position: 'relative' }}>
+            <MainNav items={NavItems} activeHref={props.activeHref} />
           </Box>
           <Box width={[1, 3 / 5, 4 / 5]}>
             <Search id="navsearch" />

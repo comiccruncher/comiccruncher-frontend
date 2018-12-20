@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
@@ -33,37 +34,45 @@ const IconsContainer = styled('div')({
   margin: '10px auto',
 });
 
-const Footer = (props) => (
+const Footer = ({ showFooterText = true }) => (
   <React.Fragment>
     <Flex>
       <Box width={1}>
         <FooterContainer>
-          <ul>
-            <li>
-              <Link href={`/`}>
-                <a>Comic Cruncher</a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`https://twitter.com/aimeelaplant`}>
-                <a>@aimeelaplant</a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`https://twitter.com/ghanbak`}>
-                <a>@ghanbak</a>
-              </Link>
-            </li>
-          </ul>
-          <IconsContainer>
-            <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
-              <Github width="32" height="32" />
-            </a>
-          </IconsContainer>
+          {showFooterText && (
+            <React.Fragment>
+              <ul>
+                <li>
+                  <Link href={`/`}>
+                    <a>Comic Cruncher</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`https://twitter.com/aimeelaplant`}>
+                    <a>@aimeelaplant</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`https://twitter.com/ghanbak`}>
+                    <a>@ghanbak</a>
+                  </Link>
+                </li>
+              </ul>
+              <IconsContainer>
+                <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
+                  <Github width="32" height="32" />
+                </a>
+              </IconsContainer>
+            </React.Fragment>
+          )}
         </FooterContainer>
       </Box>
     </Flex>
   </React.Fragment>
 );
+
+Footer.propTypes = {
+  showFooterText: PropTypes.bool,
+};
 
 export default Footer;

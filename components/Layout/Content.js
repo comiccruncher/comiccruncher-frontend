@@ -1,5 +1,4 @@
 import React from 'react';
-import { Flex, Box } from 'rebass/emotion';
 import { css } from 'react-emotion';
 import Footer from './Footer';
 import Responsive from '../shared/styles/responsive';
@@ -17,6 +16,9 @@ const HalftoneBG = css({
   [Responsive.Desktop]: {
     'background-size': 'inherit !important',
   },
+  [Responsive.TabletAndBelow]: {
+    'background-size': 'unset',
+  },
 });
 
 // A content block for <main> content with a <footer> at the end.
@@ -24,6 +26,6 @@ export const MainContent = (props) =>
   withCache(
     <div css={props.style || HalftoneBG}>
       {props.children}
-      <Footer />
+      <Footer {...props} />
     </div>
   );

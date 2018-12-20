@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { PublisherProps, CharacterThumbnailsProps } from './Types';
 import { Box, Flex } from 'rebass/emotion';
 import styled, { css } from 'react-emotion';
 import { Header } from '../Layout/Header';
@@ -54,30 +56,34 @@ const CharacterImg = styled('img')((props) => ({
   },
 }));
 
-export const CharacterHeader = (props) => {
-  const c = props;
+export const CharacterHeader = ({ name, other_name, publisher, image, vendor_image, thumbnails }) => {
   return (
     <React.Fragment>
       <Header background="#fff" overflow="hidden">
         <Flex flexWrap="wrap" justifyContent="space-between" alignContent="center">
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
-            <CharacterImg src={c.image || c.vendor_image} alt={`${c.name} profile image`} />
+            {(image || vendor_image) && (
+              <CharacterImg
+                src={image ? thumbnails.image.large : thumbnails.vendor_image.large}
+                alt={`${name} profile image`}
+              />
+            )}
           </Box>
           <Box
             flex="1 0 auto"
             width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
             className={AngledBox}
-            bg={c.publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
+            bg={publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
           >
             <Flex justifyContent="space-between" alignItems="center" alignContent="center">
               <Box flex="1 0 auto">
                 <HeaderTitle>
                   <Title.Large>
-                    <h1>{c.name}</h1>
+                    <h1>{name}</h1>
                   </Title.Large>
-                  {c.other_name && (
+                  {other_name && (
                     <Title.Byline>
-                      <h2>{c.other_name}</h2>
+                      <h2>{other_name}</h2>
                     </Title.Byline>
                   )}
                 </HeaderTitle>
@@ -88,4 +94,13 @@ export const CharacterHeader = (props) => {
       </Header>
     </React.Fragment>
   );
+};
+
+CharacterHeader.propTypes = {
+  name: PropTypes.string,
+  other_name: PropTypes.string,
+  publisher: PublisherProps,
+  image: PropTypes.string,
+  vendor_image: PropTypes.string,
+  thumbnails: CharacterThumbnailsProps,
 };

@@ -26,7 +26,7 @@ jobs:
             - node_modules
       - run:
           name: Install dependencies.
-          command: make docker-yarn-install
+          command: make docker-yarn-install-circleci
       - save_cache:
           key: node_modules-{{ checksum "yarn.lock" }}
           paths:

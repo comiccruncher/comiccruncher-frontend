@@ -10,20 +10,19 @@ import { Text } from '../components/shared/styles/type';
 class Character extends React.Component {
   render() {
     const c = this.props.character ? this.props.character.data : null;
+    const error = this.props.error;
     return (
       <Layout
         title={
-          this.props.error
-            ? `${this.props.error} | Comic Cruncher`
-            : `${c.name} ${c.other_name && `(${c.other_name})`} | Comic Cruncher`
+          error ? `${error} | Comic Cruncher` : `${c.name} ${c.other_name && `(${c.other_name})`} | Comic Cruncher`
         }
         canonical={`/characters/${c.slug}`}
       >
-        {!this.props.error ? (
-          <FullCharacter {...c} />
+        {!error ? (
+          <FullCharacter character={c} showFooterText={true} />
         ) : (
           <Text.Default>
-            <p>{this.props.error}</p>
+            <p>{error}</p>
           </Text.Default>
         )}
       </Layout>

@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.2"
 services:
   comiccruncher:
     image: node:11.4-alpine
@@ -10,3 +10,11 @@ services:
     environment:
       - "NODE_ENV=${CC_NODE_ENV:-development}"
     command: yarn dev
+  production_test:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - "NODE_ENV=${CC_NODE_ENV:-production}"
