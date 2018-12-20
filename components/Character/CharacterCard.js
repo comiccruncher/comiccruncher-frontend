@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
-import { CharacterProps } from './Types';
+import { CharacterThumbnailsProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
@@ -104,6 +105,17 @@ const SVGStyle = css({
   },
 });
 
+const CharacterImage = ({ name, image, vendor_image, thumbnails }) => {
+  return <img src={image ? thumbnails.image.large : thumbnails.vendor_image.large} alt={name} title={name} />;
+};
+
+CharacterImage.propTypes = {
+  name: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  vendor_image: PropTypes.string.isRequired,
+  thumbnails: CharacterThumbnailsProps.isRequired,
+};
+
 export const CharacterCard = (props) => (
   <React.Fragment>
     <Card {...props}>
@@ -112,7 +124,7 @@ export const CharacterCard = (props) => (
           <LoadingSVG className={SVGStyle} color={props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
         </LoadingBG>
       )}
-      <img src={props.image || props.vendor_image} alt={props.name} title={props.name} />
+      {(props.image || props.vendor_image) && <CharacterImage {...props} />}
       <DisplayName {...props} />
     </Card>
   </React.Fragment>

@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
 import { Text } from '../shared/styles/type';
 import { withCache } from '../emotion/cache';
+import { CharacterThumbnailsProps } from '../Character/Types';
 
 const SearchResult = styled('div')`
   display: flex;
@@ -22,17 +24,31 @@ const SearchLink = styled('a')({
   textDecoration: 'none',
 });
 
-const DisplayName = (props) => (
+const CharacterSearchProps = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  other_name: PropTypes.string,
+  image: PropTypes.string,
+  vendor_image: PropTypes.string,
+  thumbnails: CharacterThumbnailsProps,
+});
+
+const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
   <React.Fragment>
-    {(props.image || props.vendor_image) && <SearchImg src={props.image || props.vendor_image} alt={props.name} />}
+    {(image || vendor_image) && (
+      <SearchImg src={image ? thumbnails.image.small : thumbnails.vendor_image.small} alt={name} />
+    )}
     <Text.SearchResult>
       <p>
-        <strong>{props.name}</strong>
+        <strong>{name}</strong>
       </p>
-      {props.other_name && <p>{props.other_name}</p>}
+      {other_name && <p>{other_name}</p>}
     </Text.SearchResult>
   </React.Fragment>
 );
+
+DisplayName.propTypes = {
+  CharacterSearchProps,
+};
 
 export const CharacterSearchResult = (props) => (
   <div>
@@ -50,3 +66,9 @@ export const CharacterSearchResult = (props) => (
     </span>
   </div>
 );
+
+CharacterSearchResult.propTypes = {
+  slug: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  CharacterSearchProps,
+};
