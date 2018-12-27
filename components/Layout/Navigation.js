@@ -33,21 +33,25 @@ const MainNavLinks = [
     href: '/trending',
     displayText: 'Trending',
     prefetch: true,
+    tabIndex: 3,
   },
   {
     href: '/marvel',
     displayText: 'Marvel',
     prefetch: true,
+    tabIndex: 4,
   },
   {
     href: '/dc',
     displayText: 'DC',
     prefetch: true,
+    tabIndex: 5,
   },
   {
     href: '/faq',
     displayText: 'FAQ',
     prefetch: true,
+    tabIndex: 6,
   },
 ];
 
@@ -111,24 +115,22 @@ const NavLink = styled.a((props) => ({
 
 const NavItems = ({ showMenu, items, activeHref }) => (
   <React.Fragment>
-    {showMenu && (
-      <Nav>
-        <ul>
-          {items &&
-            items.map((item, i) => {
-              return (
-                <li key={item.href}>
-                  <Link href={item.href} prefetch={item.prefetch || false}>
-                    <NavLink isActive={activeHref === item.href} href={item.href}>
-                      {item.displayText}
-                    </NavLink>
-                  </Link>
-                </li>
-              );
-            })}
-        </ul>
-      </Nav>
-    )}
+    <Nav style={{ display: showMenu ? 'block' : 'none' }}>
+      <ul>
+        {items &&
+          items.map((item, i) => {
+            return (
+              <li key={item.href}>
+                <Link href={item.href} prefetch={item.prefetch || false}>
+                  <NavLink isActive={activeHref === item.href} href={item.href} tabIndex={item.tabIndex}>
+                    {item.displayText}
+                  </NavLink>
+                </Link>
+              </li>
+            );
+          })}
+      </ul>
+    </Nav>
   </React.Fragment>
 );
 
@@ -144,15 +146,15 @@ class MainNav extends React.Component {
   };
 
   handleClick = (e) => {
-    e.preventDefault();
     this.setState((prevState) => ({ showMenu: !prevState.showMenu }));
   };
 
   render() {
     return (
       <NavContainer>
-        <Button onClick={this.handleClick}>Menu &#9662;</Button>
-        <NavItems showMenu={this.state.showMenu} items={this.props.items} activeHref={this.props.activeHref} />
+        <Button onClick={this.handleClick} tabIndex="2">Menu &#9662;
+          <NavItems showMenu={this.state.showMenu} items={this.props.items} activeHref={this.props.activeHref} />
+        </Button>
       </NavContainer>
     );
   }
@@ -169,7 +171,9 @@ const Navigation = (props) => (
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
         <LogoContainer>
           <Link href={'/'} prefetch>
-            <Logo href="/">Comic Cruncher</Logo>
+            <Logo href="/" tabIndex="1">
+              Comic Cruncher
+            </Logo>
           </Link>
         </LogoContainer>
       </Box>
