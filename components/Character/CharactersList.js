@@ -7,15 +7,13 @@ import styled from 'react-emotion';
 import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
-import Modal from 'react-modal';
 import { RankedCharacterProps } from './Types';
-import FullCharacter from './FullCharacter';
-import Spacing from '../shared/styles/spacing';
+import CharacterModal from './CharacterModal';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
 import { withCache } from '../emotion/cache';
 
-const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
+const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
 
 const CharacterLink = styled.a({
   textDecoration: 'none',
@@ -25,11 +23,11 @@ class CharactersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      characters: props.characters.data,
+      characters: props && props.hasOwnProperty('characters') ? props.characters.data : null,
       hasMoreItems: true,
       nextHref: null,
       error: null,
-      currentCharacterData: null,
+      characterModal: null,
       isNextPageLoading: false,
       requestedCharacterSlug: null,
     };
@@ -44,7 +42,7 @@ class CharactersList extends React.Component {
    */
   loadData = () => {
     this.setState({ isNextPageLoading: true });
-    let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
+    let link = baseURL + this.props.characters.meta.pagination.next_page;
     if (this.state.nextHref) {
       link = this.state.nextHref;
     }
@@ -58,7 +56,7 @@ class CharactersList extends React.Component {
         }));
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
-          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
+          this.setState({ nextHref: baseURL + nextPage });
         } else {
           this.setState({ hasMoreItems: false, nextHref: null });
         }
@@ -74,7 +72,7 @@ class CharactersList extends React.Component {
   handleModalCloseRequest = () => {
     this.setState(
       {
-        currentCharacterData: null,
+        characterModal: null,
         requestedCharacterSlug: null,
       },
       () => {
@@ -93,22 +91,22 @@ class CharactersList extends React.Component {
     });
   }
 
-  resetCurrentCharacterData() {
-    this.setState({ currentCharacterData: null });
+  resetCharacterModal() {
+    this.setState({ characterModal: null });
   }
 
   /**
    * Loads the character.
    */
   loadCharacter = (slug) => {
-    this.resetCurrentCharacterData();
+    this.resetCharacterModal();
     slug = encodeURIComponent(slug);
     const link = `${charactersURL}/${slug}`;
     axios
       .get(link, { params: { key: 'batmansmellsbadly' } })
       .then((res) => {
         const data = res.data.data;
-        this.setState({ currentCharacterData: data }, () => {
+        this.setState({ characterModal: data }, () => {
           // todo: fix document.title and <Layout> so we get a dynamic title.
           document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
           Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
@@ -124,7 +122,6 @@ class CharactersList extends React.Component {
    */
   listenBeforePopState = () => {
     Router.beforePopState(({ url, as, options }) => {
-      console.log('listenBeforePopState');
       if (as === this.props.referer) {
         this.handleModalCloseRequest();
       }
@@ -137,37 +134,18 @@ class CharactersList extends React.Component {
   };
 
   render() {
-    const characters = this.state.characters;
-    const currentCharacter = this.state.currentCharacterData;
-    const reqSlug = this.state.requestedCharacterSlug;
+    const { characters, characterModal, requestedCharacterSlug } = this.state;
     return (
       <React.Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
           {characters.map((character, i) => {
             return (
               <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]} key={character.slug}>
-                <Modal
-                  closeTimeoutMS={500}
-                  className="Modal"
-                  overlayClassName="Overlay"
-                  id={character.slug}
-                  onRequestClose={this.handleModalCloseRequest}
-                  isOpen={currentCharacter ? currentCharacter.slug === character.slug : false}
-                  shouldCloseOnOverlayClick={true}
-                >
-                  <Button
-                    onClick={this.handleModalCloseRequest}
-                    style={{ position: 'absolute', top: Spacing.Small, right: Spacing.Small, zIndex: 20 }}
-                  >
-                    Close
-                  </Button>
-                  {currentCharacter && <FullCharacter character={currentCharacter} showFooterText={false} />}
-                </Modal>
                 <CharacterLink
                   href={`/characters/${character.slug}`}
                   onClick={(e) => this.handleModalOpenRequest(e, character.slug)}
                 >
-                  <CharacterCard {...character} isLoading={reqSlug === character.slug} />
+                  <CharacterCard {...character} isLoading={requestedCharacterSlug === character.slug} />
                 </CharacterLink>
               </Box>
             );
@@ -189,6 +167,11 @@ class CharactersList extends React.Component {
             )}
           </Box>
         </Flex>
+        <CharacterModal
+          handleModalCloseRequest={this.handleModalCloseRequest}
+          character={characterModal}
+          isOpen={characterModal ? true : false}
+        />
       </React.Fragment>
     );
   }
@@ -209,7 +192,5 @@ CharactersList.propTypes = {
     data: PropTypes.arrayOf(RankedCharacterProps),
   }),
 };
-
-Modal.setAppElement('#__next');
 
 export default withRouter(CharactersList);

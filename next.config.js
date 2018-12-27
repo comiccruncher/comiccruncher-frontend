@@ -14,6 +14,7 @@ module.exports = {
     cdnURL: CDN,
     gaID: 'UA-4951063-15',
     API: {
+      baseURL: API,
       statsURL: API + '/stats',
       charactersURL: API + '/characters',
       publishersURL: API + '/publishers',
