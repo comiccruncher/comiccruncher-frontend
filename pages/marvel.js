@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import getConfig from 'next/config';
+import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Layout from '../components/Layout/Layout';
@@ -84,4 +85,4 @@ Marvel.propTypes = {
   }),
 };
 
-export default Marvel;
+export default withRouter(Marvel);

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { withRouter } from 'next/router';
 import getConfig from 'next/config';
 import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
@@ -55,4 +56,4 @@ Character.getInitialProps = async ({ req }) => {
   };
 };
 
-export default Character;
+export default withRouter(Character);

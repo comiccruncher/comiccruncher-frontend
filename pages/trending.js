@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import getConfig from 'next/config';
+import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Layout from '../components/Layout/Layout';
@@ -22,9 +23,18 @@ class Trending extends React.Component {
       <React.Fragment>
         <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical={'/trending'}>
           <MainHeader>
-            <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center' flexDirection='column' style={{height: '420px'}}>
-              <Box alignSelf='center' p={3}>
-                <Title.Large><h1>Trending Characters</h1></Title.Large>
+            <Flex
+              flexWrap="wrap"
+              alignItems="center"
+              alignContent="center"
+              justifyContent="center"
+              flexDirection="column"
+              style={{ height: '420px' }}
+            >
+              <Box alignSelf="center" p={3}>
+                <Title.Large>
+                  <h1>Trending Characters</h1>
+                </Title.Large>
                 <Title.Byline>Currently popular characters from Marvel and DC</Title.Byline>
               </Box>
             </Flex>
@@ -32,7 +42,9 @@ class Trending extends React.Component {
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
               <Box width={[1]}>
-                <Section.Title><h2>Trending Marvel Characters</h2></Section.Title>
+                <Section.Title>
+                  <h2>Trending Marvel Characters</h2>
+                </Section.Title>
                 <Text.Default>
                   {this.props.error ? (
                     <p>{this.props.error}</p>
@@ -76,4 +88,4 @@ Trending.propTypes = {
   }),
 };
 
-export default Trending;
+export default withRouter(Trending);

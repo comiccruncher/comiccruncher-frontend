@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import getConfig from 'next/config';
+import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import { Title, Section, Text } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
@@ -134,4 +135,4 @@ Home.propTypes = {
   }),
 };
 
-export default Home;
+export default withRouter(Home);
