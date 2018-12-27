@@ -5,6 +5,9 @@ const CDN = 'https://flash.comiccruncher.com';
 const API = 'https://api.comiccruncher.com';
 
 module.exports = {
+  resolve: {
+    aliasFields: ['browser'],
+  },
   useFileSystemPublicRoutes: false,
   poweredByHeader: false,
   assetPrefix: isProd ? CDN : '',

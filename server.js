@@ -1,8 +1,12 @@
 const express = require('express');
 const next = require('next');
+const winston = require('winston');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const logger = winston.createLogger({
+  transports: [new winston.transports.Console()],
+});
 
 app
   .prepare()
@@ -61,10 +65,12 @@ app
 
     server.listen(3000, (err) => {
       if (err) throw err;
+      logger.info('winston logger ready!');
       console.log('> Ready on http://localhost:3000');
     });
   })
   .catch((ex) => {
-    console.error(ex.stack);
+    logger.error(ex);
+    // console.error(ex.stack);
     process.exit(1);
   });
