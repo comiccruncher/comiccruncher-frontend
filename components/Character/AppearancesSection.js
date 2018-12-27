@@ -24,17 +24,13 @@ export class AppearancesSection extends React.Component {
       appearances && appearances[1] ? appearances[1].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
     const lastSyncs = c.last_syncs ? c.last_syncs.slice(0, 2) : [];
     const newIssues = lastSyncs.length == 2 ? lastSyncs[0].num_issues - lastSyncs[1].num_issues : 0;
-    setTimeout(
-      () =>
-        this.setState({
-          isLoading: false,
-          mainCounts: mainCounts,
-          altCounts: altCounts,
-          newIssues: newIssues,
-          totalIssues: mainCounts + altCounts,
-        }),
-      100
-    );
+    this.setState({
+      isLoading: false,
+      mainCounts: mainCounts,
+      altCounts: altCounts,
+      newIssues: newIssues,
+      totalIssues: mainCounts + altCounts,
+    });
   }
 
   render() {

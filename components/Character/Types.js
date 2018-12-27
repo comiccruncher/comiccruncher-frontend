@@ -21,7 +21,7 @@ export const CharacterStats = PropTypes.shape({
 });
 
 export const CharacterSyncLogs = PropTypes.shape({
-  synced_at: PropTypes.instanceOf(Date),
+  synced_at: PropTypes.string,
   num_issues: PropTypes.number,
 });
 

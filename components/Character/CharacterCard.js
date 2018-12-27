@@ -87,9 +87,6 @@ const LoadingBG = styled.div({
   height: '100%',
   position: 'absolute',
   zIndex: 10,
-  [Responsive.Mobile]: {
-    width: '134px',
-  },
 });
 
 const SVGStyle = css({

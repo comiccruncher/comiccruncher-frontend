@@ -43,30 +43,28 @@ class CharactersList extends React.Component {
    */
   loadData = () => {
     this.setState({ isNextPageLoading: true });
-    setTimeout(() => {
-      let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
-      if (this.state.nextHref) {
-        link = this.state.nextHref;
-      }
-      axios
-        .get(link)
-        .then((res) => {
-          const body = res.data;
-          this.setState((prevState) => ({
-            characters: prevState.characters.concat(body.data),
-            isNextPageLoading: false,
-          }));
-          const nextPage = body.meta.pagination.next_page;
-          if (nextPage) {
-            this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
-          } else {
-            this.setState({ hasMoreItems: false, nextHref: null });
-          }
-        })
-        .catch((err) => {
-          this.setState({ error: err.toString() });
-        });
-    }, 1);
+    let link = 'https://api.comiccruncher.com' + this.props.characters.meta.pagination.next_page;
+    if (this.state.nextHref) {
+      link = this.state.nextHref;
+    }
+    axios
+      .get(link)
+      .then((res) => {
+        const body = res.data;
+        this.setState((prevState) => ({
+          characters: prevState.characters.concat(body.data),
+          isNextPageLoading: false,
+        }));
+        const nextPage = body.meta.pagination.next_page;
+        if (nextPage) {
+          this.setState({ nextHref: 'https://api.comiccruncher.com' + nextPage });
+        } else {
+          this.setState({ hasMoreItems: false, nextHref: null });
+        }
+      })
+      .catch((err) => {
+        this.setState({ error: err.toString() });
+      });
   };
 
   /**
@@ -92,20 +90,18 @@ class CharactersList extends React.Component {
    */
   handleModalOpenRequest(e, slug) {
     e.preventDefault();
-    this.setState({ requestedCharacterSlug: slug });
-    if (this.state.currentCharacterData) {
-      this.handleModalCloseRequest();
-      return;
-    }
-    setTimeout(() => {
+    this.setState({ requestedCharacterSlug: slug }, () => {
       this.loadCharacter(slug);
-    }, 1);
+    });
   }
 
   /**
    * Loads the character.
    */
   loadCharacter = (slug) => {
+    this.setState({
+      currentCharacterData: null,
+    });
     const link = `${characterURL}/${encodeURIComponent(slug)}`;
     axios
       .get(link, { params: { key: 'batmansmellsbadly' } })
