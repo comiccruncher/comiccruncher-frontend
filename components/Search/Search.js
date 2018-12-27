@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import getConfig from 'next/config';
 import PropTypes from 'prop-types';
+import ReactGA from 'react-ga';
 import Autosuggest from 'react-autosuggest';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
@@ -8,7 +10,7 @@ import { CharacterSearchResult } from './CharacterSearchResult';
 import { SearchBar } from './SearchStyles';
 import { withCache } from '../emotion/cache'; /* Keep this here */
 
-const searchURL = `https://api.comiccruncher.com/search/characters?key=batmansmellsbadly`;
+const searchURL = getConfig().publicRuntimeConfig.API.searchCharactersURL;
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 const escapeRegexCharacters = (str) => {
@@ -42,20 +44,32 @@ class Search extends React.Component {
 
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({ isLoading: true });
-    const escapedValue = escapeRegexCharacters(value.trim());
+    value = value.trim();
+    const escapedValue = escapeRegexCharacters(value);
     if (escapedValue === '') {
       return [];
     }
-    axios
-      .get(searchURL, { params: { query: encodeURIComponent(escapedValue) } })
-      .then((response) => {
-        const data = response.data.data;
-        // stupid hack for setting no suggestions...
-        this.setState({ suggestions: data && data.length === 0 ? [{ slug: 'no-suggestion' }] : data });
-      })
-      .catch((error) => {
-        this.setState({ error: error });
-      });
+    const promise = new Promise((resolve, reject) => {
+      resolve(
+        ReactGA.event({
+          category: `Search:${this.props.id}`,
+          action: 'typeahead',
+          label: value,
+        })
+      );
+    });
+    promise.then(() => {
+      axios
+        .get(searchURL, { params: { query: encodeURIComponent(escapedValue), key: 'batmansmellsbadly' } })
+        .then((response) => {
+          const data = response.data.data;
+          // stupid hack for setting no suggestions...
+          this.setState({ suggestions: data && data.length === 0 ? [{ slug: 'no-suggestion' }] : data });
+        })
+        .catch((error) => {
+          this.setState({ error: error });
+        });
+    });
   };
 
   onSuggestionsClearRequested = () => {
@@ -74,7 +88,17 @@ class Search extends React.Component {
 
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     event.preventDefault();
-    Router.push(`/characters/${encodeURIComponent(suggestion.slug)}`);
+    const slug = encodeURIComponent(suggestion.slug);
+    const promise = new Promise((resolve, reject) => {
+      resolve(
+        ReactGA.event({
+          category: `Search:${this.props.id}`,
+          action: 'click',
+          label: slug,
+        })
+      );
+    });
+    promise.then(() => Router.push(`/characters/${slug}`));
   };
 
   shouldRenderSuggestions = (value) => {
@@ -100,7 +124,7 @@ class Search extends React.Component {
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionSelected={this.props.onSuggestionSelected || this.onSuggestedSelected}
         renderInputComponent={renderSearchInput}
-        id={this.props.id || '1'}
+        id={this.props.id || 'search'}
       />
     );
   }

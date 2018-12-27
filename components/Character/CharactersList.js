@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
 import getConfig from 'next/config';
+import ReactGA from 'react-ga';
 import axios from 'axios';
 import styled from 'react-emotion';
 import { Flex, Box } from 'rebass/emotion';
@@ -23,7 +24,7 @@ class CharactersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      characters: props && props.hasOwnProperty('characters') ? props.characters.data : null,
+      characters: props && props.hasOwnProperty('characters') ? props.characters.data : [],
       hasMoreItems: true,
       nextHref: null,
       error: null,
@@ -50,10 +51,17 @@ class CharactersList extends React.Component {
       .get(link)
       .then((res) => {
         const body = res.data;
-        this.setState((prevState) => ({
-          characters: prevState.characters.concat(body.data),
-          isNextPageLoading: false,
-        }));
+        this.setState(
+          (prevState) => ({
+            characters: prevState.characters.concat(body.data),
+            isNextPageLoading: false,
+          }),
+          ReactGA.event({
+            category: `CharacterList:LoadMore`,
+            action: 'click',
+            label: link,
+          })
+        );
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
           this.setState({ nextHref: baseURL + nextPage });
@@ -70,12 +78,18 @@ class CharactersList extends React.Component {
    * Closes the modal and propagates the history change.
    */
   handleModalCloseRequest = () => {
+    const slug = this.state.characterModal.slug;
     this.setState(
       {
         characterModal: null,
         requestedCharacterSlug: null,
       },
       () => {
+        ReactGA.event({
+          category: `CharacterList:Modal:${this.props.referer}`,
+          action: 'close',
+          label: slug,
+        });
         Router.push(this.props.referer);
       }
     );
@@ -110,6 +124,11 @@ class CharactersList extends React.Component {
           // todo: fix document.title and <Layout> so we get a dynamic title.
           document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
           Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
+          ReactGA.event({
+            category: `CharacterList:Modal:${this.props.referer}`,
+            action: 'open',
+            label: slug,
+          });
         });
       })
       .catch((error) => {

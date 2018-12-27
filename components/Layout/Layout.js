@@ -17,6 +17,9 @@ ReactGA.initialize(gaID, {
   debug: !isProd,
   titleCase: false,
 });
+if (!isProd) {
+  ReactGA.set({ sendHitTask: null });
+}
 
 injectGlobal`
   * {

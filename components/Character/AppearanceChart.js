@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'react-emotion';
+import getConfig from 'next/config';
 import axios from 'axios';
+import ReactGA from 'react-ga';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
@@ -34,8 +36,7 @@ const FormStyle = styled.form({
     marginLeft: '10px',
   },
 });
-const charactersURL = 'https://api.comiccruncher.com/characters';
-
+const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
 const getMainKey = (slug) => `main-${slug}`;
 const getAltKey = (slug) => `alt-${slug}`;
 const mainFilter = (item) => item.category === 'main';
@@ -127,43 +128,16 @@ export default class AppearanceChart extends React.Component {
     this.setState({ data: data, color: publisher === 'dc' ? Brands.DC : Brands.Marvel });
   }
 
-  renderComparisonData = (comparison) => {
-    const character = res.data.data;
-    const comparisonData = getAppearanceCounts(comparison.slug, comparison.appearances);
-    const minYearHere = comparisonData[0].year;
-    const originalData = this.state.data;
-    const currentMinYear = originalData[0].year;
-    if (currentMinYear > minYearHere) {
-      const filled = getMissingYears(this.props.character.slug, currentMinYear, minYearHere);
-      const newData = originalData.map((item) => item);
-      newData.unshift(...filled);
-      const newComparisonData = [];
-      newData.forEach((item, i) => newComparisonData.push(Object.assign({}, item, counts[i])));
-      this.setState((prevState) => ({
-        comparison: character,
-        comparisonData: newComparisonData,
-      }));
-    } else {
-      const filled = getMissingYears(comparison.slug, minYearHere, currentMinYear);
-      const newData = comparisonData.map((item) => item);
-      newData.unshift(...filled);
-      const newComparisonData = [];
-      newData.forEach((item, i) => newComparisonData.push(Object.assign({}, item, counts[i])));
-      this.setState((prevState) => ({
-        comparison: character,
-        comparisonData: newComparisonData,
-      }));
-    }
-  };
-
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     event.preventDefault();
     const { comparison } = this.state;
     if (comparison && comparison.slug == suggestion.slug) {
       return;
     }
+    const suggestionSlug = suggestion.slug;
+
     axios
-      .get(`${charactersURL}/${suggestion.slug}`, { params: { key: 'batmansmellsbadly' } })
+      .get(`${charactersURL}/${suggestionSlug}`, { params: { key: 'batmansmellsbadly' } })
       .then((res) => {
         this.setState({ error: null });
         const meta = res.data.meta;
@@ -187,7 +161,14 @@ export default class AppearanceChart extends React.Component {
             originalIsGreater ? counts : originalData,
             originalIsGreater ? originalData : counts
           ),
-        }));
+        })),
+          () => {
+            ReactGA.event({
+              category: `Compare:character`,
+              action: 'click',
+              label: `${this.props.character.slug}:${suggestionSlug}`,
+            });
+          };
       })
       .catch((error) => {
         this.setState({ error: error });

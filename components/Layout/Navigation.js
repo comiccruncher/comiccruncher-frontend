@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import Link from 'next/link';
 import { Box, Flex } from 'rebass/emotion';
+import ReactGA from 'react-ga';
 import Dimensions from '../shared/styles/dimensions';
 import Spacing from '../shared/styles/spacing';
 import Logo from '../shared/components/Logo';
@@ -158,7 +159,15 @@ class MainNav extends React.Component {
   };
 
   handleClick = (e) => {
-    this.setState((prevState) => ({ showMenu: !prevState.showMenu }));
+    this.setState(
+      (prevState) => ({ showMenu: !prevState.showMenu }),
+      () => {
+        ReactGA.event({
+          category: 'Menu',
+          action: this.state.showMenu ? 'open' : 'close',
+        });
+      }
+    );
   };
 
   render() {
