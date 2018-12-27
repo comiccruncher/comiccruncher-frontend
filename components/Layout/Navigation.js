@@ -16,7 +16,7 @@ const Container = styled.div((props) => ({
   background: props.background || '#fff',
   [Responsive.Mobile]: {
     padding: Spacing.Small,
-  }
+  },
 }));
 
 const LogoContainer = styled.div({
@@ -54,7 +54,7 @@ const Navigation = (props) => (
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
         <LogoContainer>
           <Link href={'/'} prefetch>
-            <Logo>Comic Cruncher</Logo>
+            <Logo href="/">Comic Cruncher</Logo>
           </Link>
         </LogoContainer>
       </Box>

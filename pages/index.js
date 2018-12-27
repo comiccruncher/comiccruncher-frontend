@@ -71,17 +71,20 @@ export class Home extends React.Component {
       <React.Fragment>
         <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'} canonical="/">
           <MainHeader>
-            <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center'>
-              <Box alignSelf='center' style={{width: '100%', height: '100%', paddingBottom: Spacing.xxLarge, paddingTop: Spacing.xxLarge }}>
+            <Flex flexWrap="wrap" alignItems="center" alignContent="center" justifyContent="center">
+              <Box
+                alignSelf="center"
+                style={{ width: '100%', height: '100%', paddingBottom: Spacing.xxLarge, paddingTop: Spacing.xxLarge }}
+              >
                 <Title.Large>Comicbook Appearances</Title.Large>
                 <Title.Byline>See popular character appearances</Title.Byline>
-                  {!error && <Stats {...stats.data} />}
+                {!error && <Stats {...stats.data} />}
               </Box>
             </Flex>
           </MainHeader>
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} pl={3}>
-              <Box width={[1, 2 / 4, 2 / 4, 2 / 4]}>
+              <Box width={[1]}>
                 <Section.Title>
                   <h1>Popular Characters</h1>
                 </Section.Title>
@@ -90,26 +93,6 @@ export class Home extends React.Component {
                     <p>{error}</p>
                   </Text.Default>
                 )}
-                {this.state.isMain && !this.state.isAlternate && <Section.Byline>Main Appearances Only</Section.Byline>}
-                {this.state.isAlternate &&
-                  !this.state.isMain && <Section.Byline>Alternate Appearances Only</Section.Byline>}
-              </Box>
-              <Box width={[1, 2 / 4, 2 / 4, 2 / 4]} css={buttonDiv} pr={3}>
-                <Button
-                  isInactive={!this.state.isMain}
-                  style={{ marginRight: '10px' }}
-                  type={'dark'}
-                  onClick={(e) => this.handleButton(e, 'main')}
-                >
-                  Main
-                </Button>
-                <Button
-                  isInactive={!this.state.isAlternate}
-                  type={'dark'}
-                  onClick={(e) => this.handleButton(e, 'alternate')}
-                >
-                  Alternate
-                </Button>
               </Box>
             </Flex>
             {!error && <CharactersList characters={this.state.characters || characters} referer="/" />}

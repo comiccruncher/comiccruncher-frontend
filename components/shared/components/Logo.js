@@ -6,19 +6,20 @@ import Type, { BangersFontStack } from '../styles/type';
 
 const Logo = styled('a')(
   {
-    color: UI.Text.Yellow,
+    color: UI.Text.Dark,
     fontFamily: BangersFontStack,
     fontSize: Type.Size.Large,
-    letterSpacing: 6,
+    letterSpacing: 3,
     fontWeight: Type.Weight.Normal,
     marginTop: Spacing.Large,
     marginBottom: Spacing.Large,
-    textShadow: `${Type.TextOutline}`,
+    //textShadow: `${Type.TextOutline}`,
     transform: 'rotate(-3deg)',
     position: 'relative',
     zIndex: '1',
     cursor: 'pointer',
     display: 'inline-block',
+    textDecoration: 'none',
     '&::before': {
       position: 'absolute',
       color: UI.Text.Blue,
@@ -27,17 +28,18 @@ const Logo = styled('a')(
       letterSpacing: 'inherit',
       fontWeight: 'inherit',
       marginBottom: Spacing.Large,
-      textShadow: `${Type.TextOutline}`,
+      //textShadow: `${Type.TextOutline}`,
       top: '3px',
       left: '-4px',
       zIndex: '-1',
     },
   },
-  (props) => props.content && {
-    '&::before': {
-      content: `'${props.content}'`
+  (props) =>
+    props.content && {
+      '&::before': {
+        content: `'${props.content}'`,
+      },
     }
-  }
 );
 
 export default Logo;
