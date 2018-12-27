@@ -1,16 +1,17 @@
 import React from 'react';
 import axios from 'axios';
-import { withRouter } from 'next/router';
+import getConfig from 'next/config';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Layout from '../components/Layout/Layout';
-import Search from '../components/Search/Search';
 import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
 import { Title, Section, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
+
+const marvelURL = getConfig().publicRuntimeConfig.API.publishersURL + '/marvel';
 
 class Marvel extends React.Component {
   state = {
@@ -22,9 +23,18 @@ class Marvel extends React.Component {
       <React.Fragment>
         <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical="/marvel">
           <MainHeader background={Brands.Marvel}>
-          <Flex flexWrap='wrap' alignItems='center' alignContent='center' justifyContent='center' flexDirection='column' style={{height: '420px'}}>
-            <Box alignSelf='center' p={3}>
-                <Title.Large><h1>Marvel Comics</h1></Title.Large>
+            <Flex
+              flexWrap="wrap"
+              alignItems="center"
+              alignContent="center"
+              justifyContent="center"
+              flexDirection="column"
+              style={{ height: '420px' }}
+            >
+              <Box alignSelf="center" p={3}>
+                <Title.Large>
+                  <h1>Marvel Comics</h1>
+                </Title.Large>
               </Box>
             </Flex>
           </MainHeader>
@@ -54,11 +64,9 @@ class Marvel extends React.Component {
 }
 
 Marvel.getInitialProps = async ({ req }) => {
-  const res = await axios
-    .get('https://api.comiccruncher.com/publishers/marvel?key=batmansmellsbadly')
-    .catch((error) => {
-      return { error: error.toString() };
-    });
+  const res = await axios.get(`${marvelURL}?key=batmansmellsbadly`).catch((error) => {
+    return { error: error.toString() };
+  });
   return {
     error: res.hasOwnProperty('error') ? res.error : null,
     characters: res.hasOwnProperty('data') ? res.data : [],
@@ -76,4 +84,4 @@ Marvel.propTypes = {
   }),
 };
 
-export default withRouter(Marvel);
+export default Marvel;

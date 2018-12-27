@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
+import getConfig from 'next/config';
 import axios from 'axios';
+import styled from 'react-emotion';
 import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
@@ -12,9 +14,8 @@ import Spacing from '../shared/styles/spacing';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
 import { withCache } from '../emotion/cache';
-import styled from 'react-emotion';
 
-const characterURL = `https://api.comiccruncher.com/characters`;
+const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
 
 const CharacterLink = styled.a({
   textDecoration: 'none',
@@ -71,18 +72,15 @@ class CharactersList extends React.Component {
    * Closes the modal and propagates the history change.
    */
   handleModalCloseRequest = () => {
-    this.closeModal();
-    Router.push(this.props.referer);
-  };
-
-  /**
-   * Closes the modal.
-   */
-  closeModal = () => {
-    this.setState({
-      currentCharacterData: null,
-      requestedCharacterSlug: null,
-    });
+    this.setState(
+      {
+        currentCharacterData: null,
+        requestedCharacterSlug: null,
+      },
+      () => {
+        Router.push(this.props.referer);
+      }
+    );
   };
 
   /**
@@ -95,22 +93,26 @@ class CharactersList extends React.Component {
     });
   }
 
+  resetCurrentCharacterData() {
+    this.setState({ currentCharacterData: null });
+  }
+
   /**
    * Loads the character.
    */
   loadCharacter = (slug) => {
-    this.setState({
-      currentCharacterData: null,
-    });
-    const link = `${characterURL}/${encodeURIComponent(slug)}`;
+    this.resetCurrentCharacterData();
+    slug = encodeURIComponent(slug);
+    const link = `${charactersURL}/${slug}`;
     axios
       .get(link, { params: { key: 'batmansmellsbadly' } })
       .then((res) => {
         const data = res.data.data;
-        document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-        slug = encodeURIComponent(slug);
-        Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
-        this.setState({ currentCharacterData: data });
+        this.setState({ currentCharacterData: data }, () => {
+          // todo: fix document.title and <Layout> so we get a dynamic title.
+          document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+          Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
+        });
       })
       .catch((error) => {
         this.setState({ error: error.toString() });
@@ -122,6 +124,7 @@ class CharactersList extends React.Component {
    */
   listenBeforePopState = () => {
     Router.beforePopState(({ url, as, options }) => {
+      console.log('listenBeforePopState');
       if (as === this.props.referer) {
         this.handleModalCloseRequest();
       }

@@ -1,16 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-import { withRouter } from 'next/router';
+import getConfig from 'next/config';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Layout from '../components/Layout/Layout';
-import Search from '../components/Search/Search';
 import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
 import { Title, Section, Text } from '../components/shared/styles/type';
-import { Brands } from '../components/shared/styles/colors';
+
+const trendingURL = getConfig().publicRuntimeConfig.API.trendingURL;
 
 class Trending extends React.Component {
   state = {
@@ -56,7 +56,7 @@ class Trending extends React.Component {
 }
 
 Trending.getInitialProps = async ({ req }) => {
-  const res = await axios.get('https://api.comiccruncher.com/trending/marvel?key=batmansmellsbadly').catch((error) => {
+  const res = await axios.get(`${trendingURL}/marvel?key=batmansmellsbadly`).catch((error) => {
     return { error: error.toString() };
   });
   return {

@@ -1,15 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+import getConfig from 'next/config';
 import { injectGlobal } from 'emotion';
+import ReactGA from 'react-ga';
+import Responsive from '../shared/styles/responsive';
 import { UI, Palette } from '../shared/styles/colors';
 import { UIFontStack } from '../shared/styles/type';
 import Spacing from '../shared/styles/spacing';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
-import Responsive from '../shared/styles/responsive';
 
-const CDN = 'https://flash.comiccruncher.com';
+const { cdnURL, gaID, isProd } = getConfig().publicRuntimeConfig;
+
+ReactGA.initialize(gaID, {
+  debug: !isProd,
+  titleCase: false,
+});
 
 injectGlobal`
   * {
@@ -277,25 +284,25 @@ const Layout = ({ canonical, children, title, navBackground }) => (
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
       <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
-      <link rel="apple-touch-icon-precomposed" sizes="57x57" href={`${CDN}/apple-touch-icon-57x57.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="114x114" href={`${CDN}/apple-touch-icon-114x114.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href={`${CDN}/apple-touch-icon-72x72.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="144x144" href={`{${CDN}/apple-touch-icon-144x144.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="60x60" href={`${CDN}/apple-touch-icon-60x60.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="120x120" href={`${CDN}/apple-touch-icon-120x120.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="76x76" href={`${CDN}/apple-touch-icon-76x76.png`} />
-      <link rel="apple-touch-icon-precomposed" sizes="152x152" href={`${CDN}/apple-touch-icon-152x152.png`} />
-      <link rel="icon" type="image/png" href={`${CDN}/favicon-196x196.png`} sizes="196x196" />
-      <link rel="icon" type="image/png" href={`${CDN}/favicon-96x96.png`} sizes="96x96" />
-      <link rel="icon" type="image/png" href={`${CDN}/favicon-32x32.png`} sizes="32x32" />
-      <link rel="icon" type="image/png" href={`${CDN}/favicon-16x16.png`} sizes="16x16" />
-      <link rel="icon" type="image/png" href={`${CDN}/favicon-128.png`} sizes="128x128" />
+      <link rel="apple-touch-icon-precomposed" sizes="57x57" href={`${cdnURL}/apple-touch-icon-57x57.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="114x114" href={`${cdnURL}/apple-touch-icon-114x114.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href={`${cdnURL}/apple-touch-icon-72x72.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="144x144" href={`{${cdnURL}/apple-touch-icon-144x144.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="60x60" href={`${cdnURL}/apple-touch-icon-60x60.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="120x120" href={`${cdnURL}/apple-touch-icon-120x120.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="76x76" href={`${cdnURL}/apple-touch-icon-76x76.png`} />
+      <link rel="apple-touch-icon-precomposed" sizes="152x152" href={`${cdnURL}/apple-touch-icon-152x152.png`} />
+      <link rel="icon" type="image/png" href={`${cdnURL}/favicon-196x196.png`} sizes="196x196" />
+      <link rel="icon" type="image/png" href={`${cdnURL}/favicon-96x96.png`} sizes="96x96" />
+      <link rel="icon" type="image/png" href={`${cdnURL}/favicon-32x32.png`} sizes="32x32" />
+      <link rel="icon" type="image/png" href={`${cdnURL}/favicon-16x16.png`} sizes="16x16" />
+      <link rel="icon" type="image/png" href={`${cdnURL}/favicon-128.png`} sizes="128x128" />
       <meta name="msapplication-TileColor" content="#FFFFFF" />
-      <meta name="msapplication-TileImage" content={`${CDN}/mstile-144x144.png`} />
-      <meta name="msapplication-square70x70logo" content={`${CDN}/mstile-70x70.png`} />
-      <meta name="msapplication-square150x150logo" content={`${CDN}/mstile-150x150.png`} />
-      <meta name="msapplication-wide310x150logo" content={`${CDN}/mstile-310x150.png`} />
-      <meta name="msapplication-square310x310logo" content={`${CDN}/mstile-310x310.png`} />
+      <meta name="msapplication-TileImage" content={`${cdnURL}/mstile-144x144.png`} />
+      <meta name="msapplication-square70x70logo" content={`${cdnURL}/mstile-70x70.png`} />
+      <meta name="msapplication-square150x150logo" content={`${cdnURL}/mstile-150x150.png`} />
+      <meta name="msapplication-wide310x150logo" content={`${cdnURL}/mstile-310x150.png`} />
+      <meta name="msapplication-square310x310logo" content={`${cdnURL}/mstile-310x310.png`} />
       <link rel="canonical" href={canonical} />
       <title>{title}</title>
     </Head>

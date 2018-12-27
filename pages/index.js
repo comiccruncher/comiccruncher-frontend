@@ -1,30 +1,19 @@
 import React from 'react';
 import axios from 'axios';
-import { withRouter } from 'next/router';
+import getConfig from 'next/config';
 import { Flex, Box } from 'rebass/emotion';
 import { Title, Section, Text } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
 import PropTypes from 'prop-types';
-import Search from '../components/Search/Search';
 import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { Stats } from '../components/Stats/Stats';
 import { MainHeader } from '../components/Layout/Header';
 import { MainContent } from '../components/Layout/Content';
-import Button from '../components/shared/components/Button';
 import Layout from '../components/Layout/Layout';
-import { css } from 'react-emotion';
 import { withCache } from '../components/emotion/cache';
 
-const buttonDiv = css({
-  'text-align': 'right',
-  '@media (max-width: 640px)': {
-    'text-align': 'left',
-  },
-});
-
-const charactersURL = 'https://api.comiccruncher.com/characters';
-const statsURL = 'https://api.comiccruncher.com/stats';
+const { charactersURL, statsURL } = getConfig().publicRuntimeConfig.API;
 
 export class Home extends React.Component {
   state = {
@@ -145,4 +134,4 @@ Home.propTypes = {
   }),
 };
 
-export default withRouter(Home);
+export default Home;

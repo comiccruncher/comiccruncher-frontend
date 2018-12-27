@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import getConfig from 'next/config';
 import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
 import FullCharacter from '../components/Character/FullCharacter';
-import { withCache } from '../components/emotion/cache';
 import { Text } from '../components/shared/styles/type';
+import { withCache } from '../components/emotion/cache';
+
+const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
 
 class Character extends React.Component {
   render() {
@@ -31,22 +34,21 @@ class Character extends React.Component {
 }
 
 Character.propTypes = {
-  error: FullCharacterProps.string,
-  character: {
+  error: PropTypes.string,
+  character: PropTypes.shape({
     meta: PropTypes.shape({
       status_code: PropTypes.number,
       error: PropTypes.string,
     }),
     data: FullCharacterProps,
-  },
+  }),
 };
 
 Character.getInitialProps = async ({ req }) => {
-  const res = await axios
-    .get(`https://api.comiccruncher.com/characters/${encodeURIComponent(req.params.slug)}?key=batmansmellsbadly`)
-    .catch((error) => {
-      return { error: error.toString() };
-    });
+  const params = { params: { key: 'batmansmellsbadly' } };
+  const res = await axios.get(`${charactersURL}/${encodeURIComponent(req.params.slug)}`, params).catch((error) => {
+    return { error: error.toString() };
+  });
   return {
     error: res.hasOwnProperty('error') ? res.error : null,
     character: res.hasOwnProperty('data') ? res.data : null,
