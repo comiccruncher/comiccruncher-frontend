@@ -8,7 +8,7 @@ const Logo = styled('a')(
   {
     color: UI.Text.Dark,
     fontFamily: BangersFontStack,
-    fontSize: Type.Size.Large,
+    fontSize: Type.Size.Large + 4,
     letterSpacing: 3,
     fontWeight: Type.Weight.Normal,
     marginTop: Spacing.Large,

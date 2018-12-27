@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { injectGlobal } from 'emotion';
 import { UI, Palette } from '../shared/styles/colors';
+import { UIFontStack } from '../shared/styles/type';
 import Spacing from '../shared/styles/spacing';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
@@ -40,16 +41,16 @@ injectGlobal`
 
   .react-autosuggest__container {
     position: relative;
+    font-family: ${UIFontStack};
+    font-weight: 300;
+    font-size: 14px;
   }
 
   .react-autosuggest__input {
     width: 240px;
     height: 30px;
     padding: 10px 20px;
-    font-family: Helvetica, sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-    border: 1px solid #aaa;
+    border: 1px solid ${UI.Border.Dark};
     border-radius: 0;
   }
 
@@ -73,12 +74,8 @@ injectGlobal`
     border: 2px solid ${UI.Border.Dark};
     border-radius: 0;
     background-color: ${UI.Background.White};
-    font-family: Helvetica, sans-serif;
-    font-weight: 300;
-    font-size: 16px;
     z-index: 15;
     top: 100%;
-    /*position: relative; Fix for suggestions being hidden whose parent div has overflow:hidden  */
   }
 
   .react-autosuggest__suggestions-list {
@@ -110,6 +107,11 @@ injectGlobal`
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
+  }
+
+  .suggestion-content p {
+    font-size: 14px;
+    line-height: 1.4;
   }
 
   .name {
@@ -185,7 +187,6 @@ injectGlobal`
 
   .ReactModal__Overlay {
     background: rgba(0,0,0,.7);
-    transition: 0.3s all ease-in-out;
   }
 
   .ReactModal__Content--after-open{
@@ -195,7 +196,6 @@ injectGlobal`
   }
   .ReactModal__Content--before-close{
     opacity: 0;
-    animation: blowUpModalTwo 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
   }
 
 #nprogress {
@@ -221,7 +221,6 @@ injectGlobal`
   height: 100%;
   box-shadow: 0 0 10px ${Palette.Yellow.Default}, 0 0 5px ${Palette.Yellow.Default};
   opacity: 1.0;
-
   -webkit-transform: rotate(3deg) translate(0px, -4px);
       -ms-transform: rotate(3deg) translate(0px, -4px);
           transform: rotate(3deg) translate(0px, -4px);

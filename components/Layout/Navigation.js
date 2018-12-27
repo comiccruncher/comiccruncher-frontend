@@ -28,6 +28,12 @@ const LogoContainer = styled.div({
   },
 });
 
+const SearchContainer = styled.div({
+  [Responsive.Mobile]: {
+    marginTop: '20px',
+  },
+});
+
 const MainNavLinks = [
   {
     href: '/trending',
@@ -66,12 +72,18 @@ const NavItemProps = PropTypes.arrayOf(
 
 const NavContainer = styled('div')({
   display: 'block',
+  textAlign: 'right',
+  marginRight: '20px',
+  [Responsive.Mobile]: {
+    textAlign: 'center',
+    marginRight: 0,
+  },
 });
 
 const Nav = styled('nav')({
   position: 'absolute',
   top: '100%',
-  left: 0,
+  right: 0,
   zIndex: 100,
   backgroundColor: UI.Background.White,
   paddingTop: Spacing.Tiny,
@@ -152,9 +164,10 @@ class MainNav extends React.Component {
   render() {
     return (
       <NavContainer>
-        <Button onClick={this.handleClick} tabIndex="2">Menu &#9662;
-          <NavItems showMenu={this.state.showMenu} items={this.props.items} activeHref={this.props.activeHref} />
+        <Button onClick={this.handleClick} tabIndex="2">
+          Menu &#9662;
         </Button>
+        <NavItems showMenu={this.state.showMenu} items={this.props.items} activeHref={this.props.activeHref} />
       </NavContainer>
     );
   }
@@ -179,11 +192,13 @@ const Navigation = (props) => (
       </Box>
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
         <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
-          <Box width={[1, 2 / 5, 1 / 5]} style={{ position: 'relative' }}>
+          <Box width={[1, 2 / 5]} style={{ position: 'relative' }}>
             <MainNav items={MainNavLinks} activeHref={props.activeHref} />
           </Box>
-          <Box width={[1, 3 / 5, 4 / 5]}>
-            <Search id="navsearch" />
+          <Box width={[1, 3 / 5]}>
+            <SearchContainer>
+              <Search id="navsearch" />
+            </SearchContainer>
           </Box>
         </Flex>
       </Box>

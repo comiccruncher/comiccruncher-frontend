@@ -13,11 +13,10 @@ const HalftoneBG = css({
   'background-size': 'contain',
   'background-position-x': 'center',
   'background-position-y': 'calc(100% + 400px)',
-  [Responsive.Desktop]: {
-    'background-size': 'inherit !important',
-  },
   [Responsive.TabletAndBelow]: {
-    'background-size': 'unset',
+    'background-size': 'initial',
+    'background-position-y': 'calc(100% + 600px)',
+    'background-position-x': 'center',
   },
 });
 

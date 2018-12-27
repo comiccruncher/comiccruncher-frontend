@@ -47,6 +47,8 @@ const Footer = ({ showFooterText = true }) => (
                     <a>Comic Cruncher</a>
                   </Link>
                 </li>
+              </ul>
+              <ul>
                 <li>
                   <Link href={`https://twitter.com/aimeelaplant`}>
                     <a>@aimeelaplant</a>
