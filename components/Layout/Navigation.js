@@ -14,6 +14,7 @@ import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Button from '../shared/components/Button';
 import { Event, TrackEvent } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
+import {withOuterClick} from '../shared/enhancers/withOuterClick';
 
 const Container = styled.div((props) => ({
   paddingRight: Spacing.Small,
@@ -199,6 +200,8 @@ MainNav.propTypes = {
   items: NavItemProps,
 };
 
+const EnhancedMainNav = withOuterClick(MainNav);
+
 const TrackNav = (e) => {
   e.preventDefault();
   TrackEvent('Logo', 'click', 'Comic Cruncher').then(() => Router.push('/'));
@@ -219,7 +222,7 @@ const Navigation = (props) => (
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
         <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
           <Box width={[1, 2 / 5]} style={{ position: 'relative' }}>
-            <MainNav items={MainNavLinks} activeHref={props.activeHref} />
+            <EnhancedMainNav items={MainNavLinks} activeHref={props.activeHref} />
           </Box>
           <Box width={[1, 3 / 5]}>
             <SearchContainer>
