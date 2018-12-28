@@ -14,6 +14,7 @@ import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Button from '../shared/components/Button';
 import { Event, TrackEvent } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
+import Toggle from '../shared/enhancers/Toggle';
 import {withOuterClick} from '../shared/enhancers/withOuterClick';
 
 const Container = styled.div((props) => ({
@@ -137,9 +138,9 @@ const NavLink = styled.a((props) => ({
   },
 }));
 
-const NavItems = ({ showMenu, items, activeHref }) => (
+const NavItems = ({items, activeHref }) => (
   <React.Fragment>
-    <Nav style={{ display: showMenu ? 'block' : 'none' }}>
+    <Nav style={{ display: 'block'}}>
       <ul>
         {items &&
           items.map((item, i) => {
@@ -169,28 +170,31 @@ NavItems.propTypes = {
   items: NavItemProps,
 };
 
-class MainNav extends React.Component {
-  state = {
-    showMenu: false,
-  };
+const EnhancedNavItems = withOuterClick(NavItems);
 
-  handleClick = (e) => {
-    this.setState(
-      (prevState) => ({ showMenu: !prevState.showMenu }),
-      () => {
-        Event('menu', this.state.showMenu ? 'open' : 'close', null);
-      }
-    );
+class MainNav extends React.Component {
+  handleClick = (showMenu) => {
+    Event('menu', showMenu ? 'open' : 'close', null);
   };
 
   render() {
     return (
-      <NavContainer>
-        <Button onClick={this.handleClick} tabIndex="2">
-          Menu &#9662;
-        </Button>
-        <NavItems showMenu={this.state.showMenu} items={this.props.items} activeHref={this.props.activeHref} />
-      </NavContainer>
+      <Toggle>
+        {({hide, isOpen, toggle}) => (
+          <NavContainer>
+            <Button onClick={() => this.handleClick(!isOpen) || toggle()} tabIndex="2">
+              Menu &#9662;
+            </Button>
+            {isOpen && (
+              <EnhancedNavItems
+                onOuterClick={() => this.handleClick(!isOpen) || hide()}
+                items={this.props.items}
+                activeHref={this.props.activeHref}
+              />
+            )}
+          </NavContainer>
+        )}
+      </Toggle>
     );
   }
 }
@@ -199,8 +203,6 @@ MainNav.propTypes = {
   activeHref: PropTypes.string,
   items: NavItemProps,
 };
-
-const EnhancedMainNav = withOuterClick(MainNav);
 
 const TrackNav = (e) => {
   e.preventDefault();
@@ -222,7 +224,7 @@ const Navigation = (props) => (
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
         <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
           <Box width={[1, 2 / 5]} style={{ position: 'relative' }}>
-            <EnhancedMainNav items={MainNavLinks} activeHref={props.activeHref} />
+            <MainNav items={MainNavLinks} activeHref={props.activeHref} />
           </Box>
           <Box width={[1, 3 / 5]}>
             <SearchContainer>
