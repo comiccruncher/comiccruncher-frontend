@@ -90,7 +90,7 @@ class CharactersList extends React.Component {
           action: 'close',
           label: slug,
         });
-        Router.push(this.props.referer);
+        Router.push(this.props.referer, this.props.referer, { shallow: true });
       }
     );
   };
@@ -122,8 +122,9 @@ class CharactersList extends React.Component {
         const data = res.data.data;
         this.setState({ characterModal: data }, () => {
           // todo: fix document.title and <Layout> so we get a dynamic title.
-          document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-          Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`);
+          //document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+          // Must use `{ shallow: true }` so modals load for other pages.
+          Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`, { shallow: true });
           ReactGA.event({
             category: `CharacterList:Modal:${this.props.referer}`,
             action: 'open',
@@ -145,7 +146,8 @@ class CharactersList extends React.Component {
         this.handleModalCloseRequest();
       }
       if (url.includes(`${this.props.referer}?character=`) || url.includes('/character?slug=')) {
-        Router.push(as);
+        // Force SSR refresh so it doesn't try loading a character page JS.
+        window.location.href = as;
         return false;
       }
       return true;
