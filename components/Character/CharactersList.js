@@ -73,16 +73,18 @@ class CharactersList extends React.Component {
    * Closes the modal and propagates the history change.
    */
   handleModalCloseRequest = () => {
-    const slug = this.state.characterModal.slug;
+    const modal = this.state.characterModal;
+    if (modal === null) {
+      return;
+    }
     this.setState(
       {
         characterModal: null,
         requestedCharacterSlug: null,
       },
       () => {
-        TrackEvent('modal', 'close', slug).then(() =>
-          Router.push(this.props.referer, this.props.referer, { shallow: true })
-        );
+        const referer = this.props.referer;
+        TrackEvent('modal', 'close', modal.slug).then(() => Router.push(referer, referer, { shallow: true }));
       }
     );
   };
@@ -116,8 +118,8 @@ class CharactersList extends React.Component {
         this.setState({ characterModal: data }, () => {
           // todo: fix document.title and <Layout> so we get a dynamic title.
           const title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-          // Must use `{ shallow: true }` so modals load for other pages.
           Promise.all([TrackEvent('modal', 'open', slug), TrackPageviewP(localUrl, title)]).then(() => {
+            // Must use `{ shallow: true }` so modals load for other pages.
             Router.push(`${this.props.referer}?character=${slug}`, localUrl, { shallow: true });
           });
         });
