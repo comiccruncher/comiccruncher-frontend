@@ -11,7 +11,7 @@ import { RankedCharacterProps } from './Types';
 import CharacterModal from './CharacterModal';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
-import { TrackEvent } from '../ga/Tracker';
+import { Event, TrackEvent, TrackError, TrackPageviewP } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
 
 const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
@@ -51,12 +51,11 @@ class CharactersList extends React.Component {
       .get(link)
       .then((res) => {
         const body = res.data;
-        TrackEvent('LoadMore', 'click', link).then(() => {
-          this.setState((prevState) => ({
-            characters: prevState.characters.concat(body.data),
-            isNextPageLoading: false,
-          }));
-        });
+        Event('LoadMore', 'click', link);
+        this.setState((prevState) => ({
+          characters: prevState.characters.concat(body.data),
+          isNextPageLoading: false,
+        }));
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
           this.setState({ nextHref: baseURL + nextPage });
@@ -65,6 +64,7 @@ class CharactersList extends React.Component {
         }
       })
       .catch((err) => {
+        TrackError(err.toString(), false);
         this.setState({ error: err.toString() });
       });
   };
@@ -112,16 +112,18 @@ class CharactersList extends React.Component {
       .get(link, { params: { key: 'batmansmellsbadly' } })
       .then((res) => {
         const data = res.data.data;
+        const localUrl = `/characters/${slug}`;
         this.setState({ characterModal: data }, () => {
           // todo: fix document.title and <Layout> so we get a dynamic title.
-          //document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
+          const title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
           // Must use `{ shallow: true }` so modals load for other pages.
-          TrackEvent('modal', 'open', slug).then(() =>
-            Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`, { shallow: true })
-          );
+          Promise.all([TrackEvent('modal', 'open', slug), TrackPageviewP(localUrl, title)]).then(() => {
+            Router.push(`${this.props.referer}?character=${slug}`, localUrl, { shallow: true });
+          });
         });
       })
       .catch((error) => {
+        TrackError(error.toString(), false);
         this.setState({ error: error.toString() });
       });
   };

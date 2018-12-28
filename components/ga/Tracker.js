@@ -18,3 +18,33 @@ export const TrackExternalClick = (e, category, href) => {
   e.preventDefault();
   TrackEvent(category, 'click', href).then(() => (window.location.href = href));
 };
+
+export const TrackError = (description, isFatal) => {
+  return ReactGA.exception({ description: description, fatal: isFatal });
+};
+
+export const TrackErrorP = (description, isFatal) => {
+  return new Promise((resolve, reject) => {
+    resolve(TrackError(description, isFatal));
+  });
+};
+
+export const TrackModal = (href) => {
+  ReactGA.modalview(href);
+};
+
+export const TrackModalP = (href) => {
+  return new Promise((resolve, reject) => {
+    resolve(TrackModal(href));
+  });
+};
+
+export const TrackPageview = (href, title) => {
+  ReactGA.pageview(href, null, title);
+};
+
+export const TrackPageviewP = (href, title) => {
+  return new Promise((resolve, reject) => {
+    resolve(TrackPageview(href, title));
+  });
+};
