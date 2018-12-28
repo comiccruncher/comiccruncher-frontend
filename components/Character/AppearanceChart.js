@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
-import ReactGA from 'react-ga';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
 import { Brands } from '../shared/styles/colors';
-import { withCache } from '../emotion/cache';
 import { Text } from '../shared/styles/type';
+import { Event } from '../ga/Tracker';
+import { withCache } from '../emotion/cache';
 
 const ChartHeight = 400;
 
@@ -152,7 +152,6 @@ export default class AppearanceChart extends React.Component {
         const originalMinYear = originalData[0].year;
         const originalIsGreater = originalMinYear > comparisonMinYear;
         this.setState((prevState) => ({
-          ...prevState,
           comparison: reqCharacter,
           comparisonData: getComparisonData(
             originalIsGreater ? originalCharacter.slug : reqCharacter.slug,
@@ -163,11 +162,7 @@ export default class AppearanceChart extends React.Component {
           ),
         })),
           () => {
-            ReactGA.event({
-              category: `Compare:character`,
-              action: 'click',
-              label: `${this.props.character.slug}:${suggestionSlug}`,
-            });
+            Event('search:appearances', 'click', `${this.props.character.slug}:${suggestionSlug}`);
           };
       })
       .catch((error) => {

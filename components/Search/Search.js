@@ -2,12 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import getConfig from 'next/config';
 import PropTypes from 'prop-types';
-import ReactGA from 'react-ga';
 import Autosuggest from 'react-autosuggest';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 import { CharacterSearchResult } from './CharacterSearchResult';
 import { SearchBar } from './SearchStyles';
+import { TrackEvent } from '../ga/Tracker';
 import { withCache } from '../emotion/cache'; /* Keep this here */
 
 const searchURL = getConfig().publicRuntimeConfig.API.searchCharactersURL;
@@ -49,16 +49,7 @@ class Search extends React.Component {
     if (escapedValue === '') {
       return [];
     }
-    const promise = new Promise((resolve, reject) => {
-      resolve(
-        ReactGA.event({
-          category: `Search:${this.props.id}`,
-          action: 'typeahead',
-          label: value,
-        })
-      );
-    });
-    promise.then(() => {
+    TrackEvent(`search`, `typeahead:${this.props.id}`, value).then(() => {
       axios
         .get(searchURL, { params: { query: encodeURIComponent(escapedValue), key: 'batmansmellsbadly' } })
         .then((response) => {
@@ -89,16 +80,9 @@ class Search extends React.Component {
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     event.preventDefault();
     const slug = encodeURIComponent(suggestion.slug);
-    const promise = new Promise((resolve, reject) => {
-      resolve(
-        ReactGA.event({
-          category: `Search:${this.props.id}`,
-          action: 'click',
-          label: slug,
-        })
-      );
-    });
-    promise.then(() => Router.push(`/characters/${slug}`));
+    TrackEvent('search', `click:${this.props.id}`, slug).then(() =>
+      Router.push(`/characters?slug=${slug}`, `/characters/${slug}`)
+    );
   };
 
   shouldRenderSuggestions = (value) => {

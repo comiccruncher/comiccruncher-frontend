@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from 'react-emotion';
 import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
 import { Flex, Box } from 'rebass/emotion';
 import { Github } from '../shared/components/Icons';
+import { TrackEvent, TrackExternalClick } from '../ga/Tracker';
 
 const FooterContainer = styled('footer')({
   textAlign: 'center',
@@ -34,6 +36,16 @@ const IconsContainer = styled('div')({
   margin: '10px auto',
 });
 
+const aimeelaplant = 'https://twitter.com/aimeelaplant';
+const ghanbak = 'https://twitter.com/ghanbak';
+const github = 'https://github.com/aimeelaplant/comiccruncher';
+
+const gaCategory = 'footer';
+const TrackCC = (e) => {
+  e.preventDefault();
+  TrackEvent(gaCategory, 'click', 'Comic Cruncher').then(() => Router.push('/'));
+};
+
 const Footer = ({ showFooterText = true }) => (
   <React.Fragment>
     <Flex>
@@ -44,24 +56,24 @@ const Footer = ({ showFooterText = true }) => (
               <ul>
                 <li>
                   <Link href={`/`}>
-                    <a>Comic Cruncher</a>
+                    <a onClick={(e) => TrackCC(e)}>Comic Cruncher</a>
                   </Link>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <Link href={`https://twitter.com/aimeelaplant`}>
-                    <a>@aimeelaplant</a>
-                  </Link>
+                  <a href={aimeelaplant} onClick={(e) => TrackExternalClick(e, gaCategory, aimeelaplant)}>
+                    @aimeelaplant
+                  </a>
                 </li>
                 <li>
-                  <Link href={`https://twitter.com/ghanbak`}>
-                    <a>@ghanbak</a>
-                  </Link>
+                  <a href={ghanbak} onClick={(e) => TrackExternalClick(e, gaCategory, ghanbak)}>
+                    @ghanbak
+                  </a>
                 </li>
               </ul>
               <IconsContainer>
-                <a href="https://github.com/aimeelaplant/comiccruncher" rel="noopener noreferer" target="_blank">
+                <a href={github} onClick={(e) => TrackExternalClick(e, gaCategory, github)}>
                   <Github width="32" height="32" />
                 </a>
               </IconsContainer>

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Link from 'next/link';
+import Router from 'next/router';
 import { Box, Flex } from 'rebass/emotion';
-import ReactGA from 'react-ga';
 import Dimensions from '../shared/styles/dimensions';
 import Spacing from '../shared/styles/spacing';
 import Logo from '../shared/components/Logo';
@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import { UI } from '../shared/styles/colors';
 import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Button from '../shared/components/Button';
+import { Event, TrackEvent } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
 
 const Container = styled.div((props) => ({
@@ -35,30 +36,39 @@ const SearchContainer = styled.div({
   },
 });
 
+const TrackNavClick = (e, label, href) => {
+  e.preventDefault();
+  TrackEvent('menu', 'click', label).then(() => Router.push(href));
+};
+
 const MainNavLinks = [
   {
     href: '/trending',
     displayText: 'Trending',
     prefetch: true,
     tabIndex: 3,
+    onClick: (e) => TrackNavClick(e, 'trending', '/trending'),
   },
   {
     href: '/marvel',
     displayText: 'Marvel',
     prefetch: true,
     tabIndex: 4,
+    onClick: (e) => TrackNavClick(e, 'marvel', '/marvel'),
   },
   {
     href: '/dc',
     displayText: 'DC',
     prefetch: true,
     tabIndex: 5,
+    onClick: (e) => TrackNavClick(e, 'dc', '/dc'),
   },
   {
     href: '/faq',
     displayText: 'FAQ',
     prefetch: true,
     tabIndex: 6,
+    onClick: (e) => TrackNavClick(e, 'faq', '/faq'),
   },
 ];
 
@@ -135,7 +145,12 @@ const NavItems = ({ showMenu, items, activeHref }) => (
             return (
               <li key={item.href}>
                 <Link href={item.href} prefetch={item.prefetch || false}>
-                  <NavLink isActive={activeHref === item.href} href={item.href} tabIndex={item.tabIndex}>
+                  <NavLink
+                    isActive={activeHref === item.href}
+                    href={item.href}
+                    tabIndex={item.tabIndex}
+                    onClick={item.onClick}
+                  >
                     {item.displayText}
                   </NavLink>
                 </Link>
@@ -162,10 +177,7 @@ class MainNav extends React.Component {
     this.setState(
       (prevState) => ({ showMenu: !prevState.showMenu }),
       () => {
-        ReactGA.event({
-          category: 'Menu',
-          action: this.state.showMenu ? 'open' : 'close',
-        });
+        Event('menu', this.state.showMenu ? 'open' : 'close', null);
       }
     );
   };
@@ -187,13 +199,18 @@ MainNav.propTypes = {
   items: NavItemProps,
 };
 
+const TrackNav = (e) => {
+  e.preventDefault();
+  TrackEvent('Logo', 'click', 'Comic Cruncher').then(() => Router.push('/'));
+};
+
 const Navigation = (props) => (
   <Container background={props.background}>
     <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
         <LogoContainer>
           <Link href={'/'} prefetch>
-            <Logo href="/" tabIndex="1">
+            <Logo href="/" tabIndex="1" onClick={(e) => TrackNav(e)}>
               Comic Cruncher
             </Logo>
           </Link>

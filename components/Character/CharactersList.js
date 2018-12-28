@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Router, { withRouter } from 'next/router';
 import getConfig from 'next/config';
-import ReactGA from 'react-ga';
 import axios from 'axios';
 import styled from 'react-emotion';
 import { Flex, Box } from 'rebass/emotion';
@@ -12,6 +11,7 @@ import { RankedCharacterProps } from './Types';
 import CharacterModal from './CharacterModal';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
+import { TrackEvent } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
 
 const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
@@ -51,17 +51,12 @@ class CharactersList extends React.Component {
       .get(link)
       .then((res) => {
         const body = res.data;
-        this.setState(
-          (prevState) => ({
+        TrackEvent('LoadMore', 'click', link).then(() => {
+          this.setState((prevState) => ({
             characters: prevState.characters.concat(body.data),
             isNextPageLoading: false,
-          }),
-          ReactGA.event({
-            category: `CharacterList:LoadMore`,
-            action: 'click',
-            label: link,
-          })
-        );
+          }));
+        });
         const nextPage = body.meta.pagination.next_page;
         if (nextPage) {
           this.setState({ nextHref: baseURL + nextPage });
@@ -85,12 +80,9 @@ class CharactersList extends React.Component {
         requestedCharacterSlug: null,
       },
       () => {
-        ReactGA.event({
-          category: `CharacterList:Modal:${this.props.referer}`,
-          action: 'close',
-          label: slug,
-        });
-        Router.push(this.props.referer, this.props.referer, { shallow: true });
+        TrackEvent('modal', 'close', slug).then(() =>
+          Router.push(this.props.referer, this.props.referer, { shallow: true })
+        );
       }
     );
   };
@@ -124,12 +116,9 @@ class CharactersList extends React.Component {
           // todo: fix document.title and <Layout> so we get a dynamic title.
           //document.title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
           // Must use `{ shallow: true }` so modals load for other pages.
-          Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`, { shallow: true });
-          ReactGA.event({
-            category: `CharacterList:Modal:${this.props.referer}`,
-            action: 'open',
-            label: slug,
-          });
+          TrackEvent('modal', 'open', slug).then(() =>
+            Router.push(`${this.props.referer}?character=${slug}`, `/characters/${slug}`, { shallow: true })
+          );
         });
       })
       .catch((error) => {

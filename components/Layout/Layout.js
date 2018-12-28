@@ -20,6 +20,9 @@ ReactGA.initialize(gaID, {
 if (!isProd) {
   ReactGA.set({ sendHitTask: null });
 }
+if (!isProd) {
+  ReactGA.set({ sendHitTask: null });
+}
 
 injectGlobal`
   * {
