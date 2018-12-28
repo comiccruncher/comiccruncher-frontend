@@ -28,24 +28,19 @@ app
     });
 
     server.get('/dc', (req, res) => {
-      // `/dc` is the filename of `/pages/dc.js
-      // * must pass in req.params for back button to work:
-      // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
       app.render(req, res, '/dc', req.params);
     });
 
     server.get('/trending', (req, res) => {
-      // `/trending` is the filename of `/pages/marvel.js
-      // * must pass in req.params for back button to work:
-      // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
       app.render(req, res, '/trending', req.params);
     });
 
     server.get('/characters/:slug', (req, res) => {
-      // `/character` is the filename of `/pages/character.js
-      // * must pass in req.params for back button to work:
-      // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
       app.render(req, res, '/character', req.params);
+    });
+
+    server.get('/faq', (req, res) => {
+      app.render(req, res, '/faq', req.params);
     });
 
     server.get('/', (req, res) => {
