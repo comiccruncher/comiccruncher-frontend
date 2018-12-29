@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Head from 'next/head';
 import getConfig from 'next/config';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
@@ -21,7 +22,10 @@ class Trending extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'Marvel Comics | Popular Characters | Comic Cruncher'} canonical={'/trending'}>
+        <Layout canonical={'/trending'}>
+          <Head>
+            <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
+          </Head>
           <MainHeader>
             <Flex
               flexWrap="wrap"

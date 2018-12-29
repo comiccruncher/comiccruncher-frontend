@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Head from 'next/head';
 import getConfig from 'next/config';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
@@ -59,7 +60,10 @@ export class Home extends React.Component {
     const characters = this.props.characters;
     return (
       <React.Fragment>
-        <Layout title={'Home | All-Time Popular Characters | Comic Cruncher'} canonical="/">
+        <Layout canonical="/">
+          <Head>
+            <title>Home | All-Time Popular Characters | Comic Cruncher</title>
+          </Head>
           <MainHeader>
             <Flex flexWrap="wrap" alignItems="center" alignContent="center" justifyContent="center">
               <Box

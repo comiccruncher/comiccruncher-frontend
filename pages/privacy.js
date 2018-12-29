@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import { Flex, Box } from 'rebass/emotion';
 import Layout from '../components/Layout/Layout';
 import { MainContent } from '../components/Layout/Content';
@@ -8,7 +9,10 @@ export default class Privacy extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'Privacy Policy | Comic Cruncher'} canonical="/privacy">
+        <Layout canonical="/privacy">
+          <Head>
+            <title>Privacy Policy | Comic Cruncher</title>
+          </Head>
           <MainContent>
             <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
               <Box width={[1]}>

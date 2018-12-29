@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import getConfig from 'next/config';
+import Head from 'next/head';
 import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
@@ -22,7 +23,10 @@ class DC extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Layout title={'DC Comics | Popular Characters | Comic Cruncher'} canonical="/dc">
+        <Layout canonical="/dc">
+          <Head>
+            <title>{`DC Comics | Popular Characters | Comic Cruncher`}</title>
+          </Head>
           <MainHeader background={Brands.DC}>
             <Flex
               flexWrap="wrap"

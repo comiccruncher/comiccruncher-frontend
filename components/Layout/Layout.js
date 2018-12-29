@@ -318,7 +318,7 @@ const Layout = ({ canonical, children, title, navBackground }) => (
 
 Layout.propTypes = {
   canonical: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   navBackground: PropTypes.string,
   children: PropTypes.node,
 };

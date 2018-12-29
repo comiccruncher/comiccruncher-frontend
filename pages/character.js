@@ -21,7 +21,6 @@ class Character extends React.Component {
     const error = this.props.error;
     return (
       <Layout
-        title={error ? `${error} | Comic Cruncher` : title(c.name, c.other_name)}
         canonical={`/characters/${c.slug}`}
       >
         {!error ? (
