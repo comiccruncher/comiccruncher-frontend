@@ -42,8 +42,9 @@ const FullCharacter = ({ showFooterText, character }) => {
           <Flex flexWrap={'wrap'}>
             <Box p={30} width={[1]}>
               <AppearancesSection character={character} />
-              <Biography description={description} vendor_description={vendor_description} title="Biography" />
-              {publisher.slug === 'marvel' &&
+              {publisher.slug === 'marvel' && (
+                  <Biography description={description} vendor_description={vendor_description} title="Biography" />
+                ) &&
                 (vendor_description || (vendor_image && !image)) && (
                   <Text.Default>
                     <p>
