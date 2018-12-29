@@ -115,14 +115,14 @@ CharacterImage.propTypes = {
 
 export const CharacterCard = ({ character, isLoading }) => (
   <React.Fragment>
-    <Card {...character}>
+    <Card publisher={character.publisher}>
       {isLoading && (
         <LoadingBG>
           <LoadingSVG className={SVGStyle} color={character.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
         </LoadingBG>
       )}
       {(character.image || character.vendor_image) && <CharacterImage {...character} />}
-      <DisplayName {...character} />
+      <DisplayName stats={character.stats} name={character.name} />
     </Card>
   </React.Fragment>
 );
