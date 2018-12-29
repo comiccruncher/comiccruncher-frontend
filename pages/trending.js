@@ -14,62 +14,50 @@ import { Title, Section, Text } from '../components/shared/styles/type';
 
 const trendingURL = getConfig().publicRuntimeConfig.API.trendingURL;
 
-class Trending extends React.Component {
-  state = {
-    isLoading: false,
-  };
-
-  render() {
-    return (
-      <React.Fragment>
-        <Layout canonical={'/trending'}>
-          <Head>
-            <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
-          </Head>
-          <MainHeader>
-            <Flex
-              flexWrap="wrap"
-              alignItems="center"
-              alignContent="center"
-              justifyContent="center"
-              flexDirection="column"
-              style={{ height: '420px' }}
-            >
-              <Box alignSelf="center" p={3}>
-                <Title.Large>
-                  <h1>Trending Characters</h1>
-                </Title.Large>
-                <Title.Byline>Currently popular characters from Marvel and DC</Title.Byline>
-              </Box>
-            </Flex>
-          </MainHeader>
-          <MainContent>
-            <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
-              <Box width={[1]}>
-                <Section.Title>
-                  <h2>Trending Marvel Characters</h2>
-                </Section.Title>
-                <Text.Default>
-                  {this.props.error ? (
-                    <p>{this.props.error}</p>
-                  ) : (
-                    <p>
-                      This page shows trending Marvel characters by <strong>main</strong> appearances only (no alternate
-                      realities)!
-                    </p>
-                  )}
-                </Text.Default>
-              </Box>
-            </Flex>
-            {!this.props.error && (
-              <CharactersList characters={this.state.characters || this.props.characters} referer="/trending" />
+const Trending = ({ characters, error }) => (
+  <Layout canonical={'/trending'}>
+    <Head>
+      <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
+    </Head>
+    <MainHeader>
+      <Flex
+        flexWrap="wrap"
+        alignItems="center"
+        alignContent="center"
+        justifyContent="center"
+        flexDirection="column"
+        style={{ height: '420px' }}
+      >
+        <Box alignSelf="center" p={3}>
+          <Title.Large>
+            <h1>Trending Characters</h1>
+          </Title.Large>
+          <Title.Byline>Currently popular characters from Marvel and DC</Title.Byline>
+        </Box>
+      </Flex>
+    </MainHeader>
+    <MainContent>
+      <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
+        <Box width={[1]}>
+          <Section.Title>
+            <h2>Trending Marvel Characters</h2>
+          </Section.Title>
+          <Text.Default>
+            {error ? (
+              <p>{error}</p>
+            ) : (
+              <p>
+                This page shows trending Marvel characters by <strong>main</strong> appearances only (no alternate
+                realities)!
+              </p>
             )}
-          </MainContent>
-        </Layout>
-      </React.Fragment>
-    );
-  }
-}
+          </Text.Default>
+        </Box>
+      </Flex>
+      {!error && <CharactersList characters={characters} referer="/trending" />}
+    </MainContent>
+  </Layout>
+);
 
 Trending.getInitialProps = async ({ req }) => {
   const res = await axios.get(`${trendingURL}/marvel?key=batmansmellsbadly`).catch((error) => {

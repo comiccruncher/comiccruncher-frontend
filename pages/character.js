@@ -11,29 +11,17 @@ import { withCache } from '../components/emotion/cache';
 
 const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
 
-const title = (name, other_name = null) => {
-  return `${name} ${other_name && `(${other_name})`} | Comic Cruncher`;
-};
-
-class Character extends React.Component {
-  render() {
-    const c = this.props.character ? this.props.character.data : null;
-    const error = this.props.error;
-    return (
-      <Layout
-        canonical={`/characters/${c.slug}`}
-      >
-        {!error ? (
-          <FullCharacter character={c} showFooterText={true} />
-        ) : (
-          <Text.Default>
-            <p>{error}</p>
-          </Text.Default>
-        )}
-      </Layout>
-    );
-  }
-}
+const Character = ({ character, error }) => (
+  <Layout canonical={`/characters/${character.slug}`}>
+    {!error ? (
+      <FullCharacter character={character.data} showFooterText={true} />
+    ) : (
+      <Text.Default>
+        <p>{error}</p>
+      </Text.Default>
+    )}
+  </Layout>
+);
 
 Character.propTypes = {
   error: PropTypes.string,

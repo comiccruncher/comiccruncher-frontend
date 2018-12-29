@@ -15,58 +15,46 @@ import { Brands } from '../components/shared/styles/colors';
 
 const marvelURL = getConfig().publicRuntimeConfig.API.publishersURL + '/marvel';
 
-class Marvel extends React.Component {
-  state = {
-    isLoading: false,
-  };
-
-  render() {
-    return (
-      <React.Fragment>
-        <Layout canonical="/marvel">
-          <Head>
-            <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
-          </Head>
-          <MainHeader background={Brands.Marvel}>
-            <Flex
-              flexWrap="wrap"
-              alignItems="center"
-              alignContent="center"
-              justifyContent="center"
-              flexDirection="column"
-              style={{ height: '420px' }}
-            >
-              <Box alignSelf="center" p={3}>
-                <Title.Large>
-                  <h1>Marvel Comics</h1>
-                </Title.Large>
-              </Box>
-            </Flex>
-          </MainHeader>
-          <MainContent>
-            <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
-              <Box width={[1]}>
-                <Section.Title>
-                  <h1>Popular Marvel Characters</h1>
-                </Section.Title>
-                <Text.Default>
-                  <p>
-                    This page shows most popular Marvel characters by <strong>main</strong> appearances only (no
-                    alternate realities)!
-                  </p>
-                  {this.props.error && <p>{this.props.error}</p>}
-                </Text.Default>
-              </Box>
-            </Flex>
-            {!this.props.error && (
-              <CharactersList characters={this.state.characters || this.props.characters} referer="/marvel" />
-            )}
-          </MainContent>
-        </Layout>
-      </React.Fragment>
-    );
-  }
-}
+const Marvel = ({ characters, error }) => (
+  <Layout canonical="/marvel">
+    <Head>
+      <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
+    </Head>
+    <MainHeader background={Brands.Marvel}>
+      <Flex
+        flexWrap="wrap"
+        alignItems="center"
+        alignContent="center"
+        justifyContent="center"
+        flexDirection="column"
+        style={{ height: '420px' }}
+      >
+        <Box alignSelf="center" p={3}>
+          <Title.Large>
+            <h1>Marvel Comics</h1>
+          </Title.Large>
+        </Box>
+      </Flex>
+    </MainHeader>
+    <MainContent>
+      <Flex flexWrap={'wrap'} m={'30px auto'} p={3}>
+        <Box width={[1]}>
+          <Section.Title>
+            <h1>Popular Marvel Characters</h1>
+          </Section.Title>
+          <Text.Default>
+            <p>
+              This page shows most popular Marvel characters by <strong>main</strong> appearances only (no alternate
+              realities)!
+            </p>
+            {error && <p>{error}</p>}
+          </Text.Default>
+        </Box>
+      </Flex>
+      {!error && <CharactersList characters={characters} referer="/marvel" />}
+    </MainContent>
+  </Layout>
+);
 
 Marvel.getInitialProps = async ({ req }) => {
   const res = await axios.get(`${marvelURL}?key=batmansmellsbadly`).catch((error) => {
