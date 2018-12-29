@@ -17,6 +17,13 @@ const Wrapper = styled.div({
   background: '#fff',
 });
 
+const getHeaderImg = (image, vendor_image, thumbnails) => {
+  if (thumbnails && (thumbnails.image || thumbnails.vendor_image)) {
+    return thumbnails.image ? thumbnails.image.large : thumbnails.vendor_image.large;
+  }
+  return image || vendor_image;
+};
+
 const FullCharacter = ({ showFooterText, character }) => {
   const { name, other_name, vendor_image, image, thumbnails, publisher, vendor_description, description } = character;
   return (
@@ -28,13 +35,7 @@ const FullCharacter = ({ showFooterText, character }) => {
         <CharacterHeader
           name={character.name}
           other_name={character.other_name}
-          image={
-            thumbnails.image
-              ? thumbnails.image
-                ? thumbnails.image.large
-                : thumbnails.vendor_image.large
-              : image || vendor_image
-          }
+          image={getHeaderImg(image, vendor_image, thumbnails)}
           background={publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}
         />
         <MainContent showFooterText={showFooterText}>
