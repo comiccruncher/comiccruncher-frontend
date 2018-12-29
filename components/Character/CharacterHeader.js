@@ -56,6 +56,7 @@ const CharacterImg = styled(ImgContainer.withComponent('img'))((props) => ({
   height: props.height || '100%',
   objectFit: 'cover',
   objectPosition: props.objectPosition || 'center',
+  maxHeight: '400px',
 }));
 
 const BlankImg = styled(ImgContainer)({
