@@ -37,18 +37,11 @@ export const PublisherProps = PropTypes.shape({
 // PropTypes for a ranked character for the characters list.
 export const RankedCharacterProps = PropTypes.shape({
   publisher: PublisherProps.isRequired,
-  average_per_year_rank: PropTypes.number,
-  average_per_year: PropTypes.number,
-  issue_count_rank: PropTypes.number.isRequired,
-  issue_count: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   other_name: PropTypes.string,
-  description: PropTypes.string,
   image: PropTypes.string,
   slug: PropTypes.string.isRequired,
   vendor_image: PropTypes.string,
-  vendor_url: PropTypes.string,
-  vendor_description: PropTypes.string,
   thumbnails: CharacterThumbnailsProps,
   stats: CharacterStatProps.isRequired,
 });
