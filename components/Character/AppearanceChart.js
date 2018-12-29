@@ -171,9 +171,14 @@ export default class AppearanceChart extends React.Component {
   };
 
   handleAlternate = () => {
-    this.setState((prevState) => ({
-      isAlternate: !prevState.isAlternate,
-    }));
+    this.setState(
+      (prevState) => ({
+        isAlternate: !prevState.isAlternate,
+      }),
+      () => {
+        Event('appearances', `alternate ${this.state.isAlternate ? 'on' : 'off'}`, this.props.character.slug);
+      }
+    );
   };
 
   render() {
