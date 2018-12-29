@@ -121,7 +121,14 @@ export const CharacterCard = ({ character, isLoading }) => (
           <LoadingSVG className={SVGStyle} color={character.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
         </LoadingBG>
       )}
-      {(character.image || character.vendor_image) && <CharacterImage {...character} />}
+      {(character.image || character.vendor_image) && (
+        <CharacterImage
+          name={character.name}
+          image={character.image}
+          vendor_image={character.vendor_image}
+          thumbnails={character.thumbnails}
+        />
+      )}
       <DisplayName stats={character.stats} name={character.name} />
     </Card>
   </React.Fragment>

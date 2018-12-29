@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PublisherProps, CharacterThumbnailsProps } from './Types';
 import { Box, Flex } from 'rebass/emotion';
 import styled, { css } from 'react-emotion';
 import { Header } from '../Layout/Header';
 import Responsive from '../shared/styles/responsive';
-import { UI, Brands } from '../shared/styles/colors';
+import { UI } from '../shared/styles/colors';
 import { Title } from '../shared/styles/type';
 import Dimensions from '../shared/styles/dimensions';
 
@@ -69,17 +68,14 @@ const BlankImg = styled(ImgContainer)({
   },
 });
 
-export const CharacterHeader = ({ name, other_name, publisher, image, vendor_image, thumbnails }) => {
+export const CharacterHeader = ({ name, other_name, image, background }) => {
   return (
     <React.Fragment>
       <Header background="#fff" overflow="hidden">
         <Flex flexWrap="wrap" justifyContent="space-between" alignContent="center">
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
-            {image || vendor_image ? (
-              <CharacterImg
-                src={image ? thumbnails.image.large : thumbnails.vendor_image.large}
-                alt={`${name} profile image`}
-              />
+            {image ? (
+              <CharacterImg src={image} alt={`${name} profile image`} />
             ) : (
               // Show blank div. TODO: Replace with placeholder!
               <BlankImg />
@@ -89,7 +85,7 @@ export const CharacterHeader = ({ name, other_name, publisher, image, vendor_ima
             flex="1 0 auto"
             width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
             className={AngledBox}
-            bg={publisher.slug == 'marvel' ? Brands.Marvel : Brands.DC}
+            bg={background}
           >
             <Flex justifyContent="space-between" alignItems="center" alignContent="center">
               <Box flex="1 0 auto">
@@ -115,8 +111,6 @@ export const CharacterHeader = ({ name, other_name, publisher, image, vendor_ima
 CharacterHeader.propTypes = {
   name: PropTypes.string.isRequired,
   other_name: PropTypes.string,
-  publisher: PublisherProps.isRequired,
   image: PropTypes.string,
-  vendor_image: PropTypes.string,
-  thumbnails: CharacterThumbnailsProps,
+  background: PropTypes.string.isRequired,
 };

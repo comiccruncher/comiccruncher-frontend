@@ -1,5 +1,22 @@
 import ReactGA from 'react-ga';
 
+export const Categories = {
+  Appearances: 'appearances',
+  Modal: 'modal',
+  CharacterList: 'character-list',
+  Footer: 'footer',
+  Menu: 'menu',
+  Logo: 'logo',
+  Search: 'search',
+};
+
+export const Actions = {
+  Click: 'click',
+  Open: 'open',
+  Close: 'close',
+  Typeahead: 'typeahead',
+};
+
 export const Event = (category, action, label) => {
   return ReactGA.event({
     category: category,

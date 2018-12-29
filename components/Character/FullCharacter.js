@@ -2,50 +2,50 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { Box, Flex } from 'rebass/emotion';
-import { Section, Text } from '../shared/styles/type';
+import { Text } from '../shared/styles/type';
+import { Brands } from '../shared/styles/colors';
 import { FullCharacterProps } from './Types';
 import { MainContent } from '../Layout/Content';
 import { withCache } from '../emotion/cache';
 import { CharacterHeader } from './CharacterHeader';
 import { CharacterStats } from './CharacterStats';
 import { AppearancesSection } from './AppearancesSection';
+import { Biography } from './Biography';
 
 const Wrapper = styled.div({
   background: '#fff',
 });
 
-const Year = new Date().getFullYear();
-
 const FullCharacter = ({ showFooterText, character }) => {
-  const bio = character.vendor_description;
-  const publisherSlug = character.publisher.slug;
+  const { vendor_image, image, thumbnails, publisher, vendor_description, description } = character;
   return (
     <Wrapper>
-      <CharacterHeader {...character} />
+      <CharacterHeader
+        name={character.name}
+        other_name={character.other_name}
+        image={
+          thumbnails.image
+            ? thumbnails.image
+              ? thumbnails.image.large
+              : thumbnails.vendor_image.large
+            : image || vendor_image
+        }
+        background={publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}
+      />
       <MainContent showFooterText={showFooterText}>
         <CharacterStats publisher={character.publisher} stats={character.stats} />
         <Flex flexWrap={'wrap'}>
           <Box p={30} width={[1]}>
             <AppearancesSection character={character} />
-            {publisherSlug === 'marvel' &&
-              bio && (
-                <React.Fragment>
-                  <Section.Title>
-                    <h3>Bio</h3>
-                  </Section.Title>
-                  <Text.Default>
-                    <p>{bio}</p>
-                  </Text.Default>
-                </React.Fragment>
-              )}
-            {publisherSlug === 'marvel' &&
-              (bio || (character.vendor_image && !character.image)) && (
+            <Biography description={description} vendor_description={vendor_description} title="Biography" />
+            {publisher.slug === 'marvel' &&
+              (vendor_description || (vendor_image && !image)) && (
                 <Text.Default>
                   <p>
                     <small>
-                      Data ({bio && `biography`}
-                      {bio && ` and `}
-                      image) provided by Marvel. &copy; {Year} Marvel
+                      Data ({vendor_description && `biography`}
+                      {vendor_description && ` and `}
+                      image) provided by Marvel. &copy; 2019 Marvel
                     </small>
                   </p>
                 </Text.Default>
