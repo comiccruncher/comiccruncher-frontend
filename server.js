@@ -43,6 +43,10 @@ app
       app.render(req, res, '/faq', req.params);
     });
 
+    server.get('/privacy', (req, res) => {
+      app.render(req, res, '/privacy', req.params);
+    });
+
     server.get('/', (req, res) => {
       // `/index` is the filename of `/pages/index.js
       // * must pass in req.params for back button to work:
