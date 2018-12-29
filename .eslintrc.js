@@ -26,5 +26,7 @@ module.exports = {
         'prettier/prettier': 'error',
         'react/no-unused-prop-types': 0,
         'semi': 'error',
+        'react/no-array-index-key': 1,
+        'react/prefer-stateless-function': [2, { ignorePureComponents: true }],
     },
 };
