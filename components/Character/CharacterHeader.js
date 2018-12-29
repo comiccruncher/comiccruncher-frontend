@@ -45,16 +45,29 @@ const HeaderTitle = styled('div')((props) => ({
   },
 }));
 
-const CharacterImg = styled('img')((props) => ({
-  width: props.width || '100%',
-  height: props.height || '100%',
-  objectFit: 'cover',
-  objectPosition: props.objectPosition || 'center',
+const ImgContainer = styled.div({
   height: '400px',
   [Responsive.TabletAndBelow]: {
     height: '300px',
   },
+});
+
+const CharacterImg = styled(ImgContainer.withComponent('img'))((props) => ({
+  width: props.width || '100%',
+  height: props.height || '100%',
+  objectFit: 'cover',
+  objectPosition: props.objectPosition || 'center',
 }));
+
+const BlankImg = styled(ImgContainer)({
+  height: '400px',
+  [Responsive.TabletAndBelow]: {
+    height: '300px',
+  },
+  [Responsive.Mobile]: {
+    height: '0',
+  },
+});
 
 export const CharacterHeader = ({ name, other_name, publisher, image, vendor_image, thumbnails }) => {
   return (
@@ -62,11 +75,14 @@ export const CharacterHeader = ({ name, other_name, publisher, image, vendor_ima
       <Header background="#fff" overflow="hidden">
         <Flex flexWrap="wrap" justifyContent="space-between" alignContent="center">
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
-            {(image || vendor_image) && (
+            {image || vendor_image ? (
               <CharacterImg
                 src={image ? thumbnails.image.large : thumbnails.vendor_image.large}
                 alt={`${name} profile image`}
               />
+            ) : (
+              // Show blank div. TODO: Replace with placeholder!
+              <BlankImg />
             )}
           </Box>
           <Box
@@ -97,9 +113,9 @@ export const CharacterHeader = ({ name, other_name, publisher, image, vendor_ima
 };
 
 CharacterHeader.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   other_name: PropTypes.string,
-  publisher: PublisherProps,
+  publisher: PublisherProps.isRequired,
   image: PropTypes.string,
   vendor_image: PropTypes.string,
   thumbnails: CharacterThumbnailsProps,
