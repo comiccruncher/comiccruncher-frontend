@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
@@ -90,18 +91,14 @@ const getComparisonData = (slug, originalMinYear, comparisonMinYear, comparisonD
   return newComparisonData;
 };
 
-const SearchComponent = (props) => (
+const SearchComponent = ({ onSuggestedSelected, isAlternate, handleAlternate }) => (
   <React.Fragment>
     <SearchDiv>
-      <Search
-        id="compare"
-        placeholder="Compare to another character."
-        onSuggestionSelected={props.onSuggestedSelected}
-      />
+      <Search id="compare" placeholder="Compare to another character." onSuggestionSelected={onSuggestedSelected} />
       <FormStyle>
         <label>
           <Text.Default>
-            <input type="checkbox" checked={props.isAlternate} onChange={props.handleAlternate} />
+            <input type="checkbox" checked={isAlternate} onChange={handleAlternate} />
             <span>Alternate Realities</span>
           </Text.Default>
         </label>
@@ -110,7 +107,17 @@ const SearchComponent = (props) => (
   </React.Fragment>
 );
 
+SearchComponent.propTypes = {
+  onSuggestedSelected: PropTypes.func.isRequired,
+  isAlternate: PropTypes.bool.isRequired,
+  handleAlternate: PropTypes.func.isRequired,
+};
+
 export default class AppearanceChart extends React.Component {
+  static propTypes = {
+    character: FullCharacterProps,
+  };
+
   state = {
     comparison: null,
     data: [],
@@ -286,7 +293,3 @@ export default class AppearanceChart extends React.Component {
     );
   }
 }
-
-AppearanceChart.propTypes = {
-  character: FullCharacterProps,
-};

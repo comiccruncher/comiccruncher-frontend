@@ -16,51 +16,47 @@ const Wrapper = styled.div({
 
 const Year = new Date().getFullYear();
 
-class FullCharacter extends React.Component {
-  render() {
-    const { showFooterText, character } = this.props;
-    const bio = character.vendor_description;
-    const publisherSlug = character.publisher.slug;
-    return (
-      <React.Fragment>
-        <Wrapper>
-          <CharacterHeader {...character} />
-          <MainContent showFooterText={showFooterText}>
-            <CharacterStats {...character} />
-            <Flex flexWrap={'wrap'}>
-              <Box p={30} width={[1]}>
-                <AppearancesSection {...character} />
-                {publisherSlug === 'marvel' &&
-                  bio && (
-                    <React.Fragment>
-                      <Section.Title>
-                        <h3>Bio</h3>
-                      </Section.Title>
-                      <Text.Default>
-                        <p>{bio}</p>
-                      </Text.Default>
-                    </React.Fragment>
-                  )}
-                {publisherSlug === 'marvel' &&
-                  (bio || (character.vendor_image && !character.image)) && (
-                    <Text.Default>
-                      <p>
-                        <small>
-                          Data ({bio && `biography`}
-                          {bio && ` and `}
-                          image) provided by Marvel. &copy; {Year} Marvel
-                        </small>
-                      </p>
-                    </Text.Default>
-                  )}
-              </Box>
-            </Flex>
-          </MainContent>
-        </Wrapper>
-      </React.Fragment>
-    );
-  }
-}
+const FullCharacter = ({ showFooterText, character }) => {
+  const bio = character.vendor_description;
+  const publisherSlug = character.publisher.slug;
+  return (
+    <Wrapper>
+      <CharacterHeader {...character} />
+      <MainContent showFooterText={showFooterText}>
+        <CharacterStats publisher={character.publisher} stats={character.stats} />
+        <Flex flexWrap={'wrap'}>
+          <Box p={30} width={[1]}>
+            <AppearancesSection character={character} />
+            {publisherSlug === 'marvel' &&
+              bio && (
+                <React.Fragment>
+                  <Section.Title>
+                    <h3>Bio</h3>
+                  </Section.Title>
+                  <Text.Default>
+                    <p>{bio}</p>
+                  </Text.Default>
+                </React.Fragment>
+              )}
+            {publisherSlug === 'marvel' &&
+              (bio || (character.vendor_image && !character.image)) && (
+                <Text.Default>
+                  <p>
+                    <small>
+                      Data ({bio && `biography`}
+                      {bio && ` and `}
+                      image) provided by Marvel. &copy; {Year} Marvel
+                    </small>
+                  </p>
+                </Text.Default>
+              )}
+          </Box>
+        </Flex>
+      </MainContent>
+    </Wrapper>
+  );
+};
+
 FullCharacter.propTypes = {
   showFooterText: PropTypes.bool,
   character: FullCharacterProps,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
-import { CharacterThumbnailsProps } from './Types';
+import { CharacterProps, CharacterThumbnailsProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
@@ -113,16 +113,21 @@ CharacterImage.propTypes = {
   thumbnails: CharacterThumbnailsProps.isRequired,
 };
 
-export const CharacterCard = (props) => (
+export const CharacterCard = ({ character, isLoading }) => (
   <React.Fragment>
-    <Card {...props}>
-      {props.isLoading && (
+    <Card {...character}>
+      {isLoading && (
         <LoadingBG>
-          <LoadingSVG className={SVGStyle} color={props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
+          <LoadingSVG className={SVGStyle} color={character.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
         </LoadingBG>
       )}
-      {(props.image || props.vendor_image) && <CharacterImage {...props} />}
-      <DisplayName {...props} />
+      {(character.image || character.vendor_image) && <CharacterImage {...character} />}
+      <DisplayName {...character} />
     </Card>
   </React.Fragment>
 );
+
+CharacterCard.propTypes = {
+  character: CharacterProps.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};

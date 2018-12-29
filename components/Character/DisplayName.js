@@ -1,12 +1,21 @@
 import React from 'react';
 import { Text } from '../shared/styles/type';
+import PropTypes from 'prop-types';
 
 // Shows the display name of the character.
-export const DisplayName = (props) => (
+export const DisplayName = ({ stats, name }) => (
   <div className="DisplayName">
     <Text.Default>
-      {props.stats && props.stats.issue_count_rank && `#${props.stats.issue_count_rank}.`} <strong>{props.name}</strong>
+      {stats && stats.issue_count_rank && `#${stats.issue_count_rank}.`} <strong>{name}</strong>
     </Text.Default>
-    {props.stats && props.stats.issue_count && <Text.Default>{props.stats.issue_count} issues </Text.Default>}
+    {stats && stats.issue_count && <Text.Default>{stats.issue_count} issues </Text.Default>}
   </div>
 );
+
+DisplayName.propTypes = {
+  name: PropTypes.string,
+  stats: PropTypes.shape({
+    issue_count_rank: PropTypes.number.isRequired,
+    issue_count: PropTypes.number.isRequired,
+  }),
+};

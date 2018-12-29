@@ -1,79 +1,53 @@
 import React from 'react';
-import { Box, Flex } from 'rebass/emotion';
 import { Section, Text } from '../shared/styles/type';
+import { AppearancesProps, CharacterSyncLogsProps, FullCharacterProps } from './Types';
 import AppearanceChart from './AppearanceChart';
-import { LoadingDC, LoadingMarvel } from '../shared/components/Icons';
 
 const aggregateCountMap = (aggregate) => aggregate.count;
 const prevNextReduce = (prev, next) => prev + next;
 
-export class AppearancesSection extends React.Component {
-  state = {
-    isLoading: true,
-    mainCounts: 0,
-    altCounts: 0,
-    newIssues: 0,
-  };
+export const AppearancesSection = ({ character }) => {
+  const { appearances, last_syncs } = character;
+  const mainCounts =
+    appearances && appearances[0] ? appearances[0].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
+  const altCounts =
+    appearances && appearances[1] ? appearances[1].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
+  const lastSyncs = last_syncs ? last_syncs.slice(0, 2) : [];
+  const newIssues = lastSyncs.length == 2 ? lastSyncs[0].num_issues - lastSyncs[1].num_issues : 0;
+  return (
+    <React.Fragment>
+      {appearances &&
+        appearances.length > 0 && (
+          <React.Fragment>
+            <Section.Title>
+              <h3>Appearances per year</h3>
+            </Section.Title>
+            <Section.Byline>
+              <Text.Default>
+                <p>
+                  <strong>{mainCounts + altCounts}</strong> total appearances
+                </p>
+                <p>
+                  <strong>{mainCounts}</strong> main appearances
+                </p>
+                <p>
+                  <strong>{altCounts}</strong> alternate appearances
+                </p>
+                {lastSyncs && (
+                  <p>
+                    Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
+                    {`with ${newIssues} new issues`}
+                  </p>
+                )}
+              </Text.Default>
+            </Section.Byline>
+            <AppearanceChart character={character} />
+          </React.Fragment>
+        )}
+    </React.Fragment>
+  );
+};
 
-  componentDidMount() {
-    const c = this.props;
-    const appearances = c.appearances;
-    const mainCounts =
-      appearances && appearances[0] ? appearances[0].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
-    const altCounts =
-      appearances && appearances[1] ? appearances[1].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
-    const lastSyncs = c.last_syncs ? c.last_syncs.slice(0, 2) : [];
-    const newIssues = lastSyncs.length == 2 ? lastSyncs[0].num_issues - lastSyncs[1].num_issues : 0;
-    this.setState({
-      isLoading: false,
-      mainCounts: mainCounts,
-      altCounts: altCounts,
-      newIssues: newIssues,
-      totalIssues: mainCounts + altCounts,
-    });
-  }
-
-  render() {
-    const c = this.props;
-    const lastSyncs = c.last_syncs ? c.last_syncs.slice(0, 2) : [];
-    if (this.state.isLoading) {
-      return (
-        <Flex flexWrap="wrap" alignItems="center" alignContent="center">
-          <Box width={1}>{c.publisher.slug === 'marvel' ? <LoadingMarvel /> : <LoadingDC />}</Box>
-        </Flex>
-      );
-    }
-    return (
-      <React.Fragment>
-        {c.appearances &&
-          c.appearances.length > 0 && (
-            <React.Fragment>
-              <Section.Title>
-                <h3>Appearances per year</h3>
-              </Section.Title>
-              <Section.Byline>
-                <Text.Default>
-                  <p>
-                    <strong>{this.state.totalIssues}</strong> total appearances
-                  </p>
-                  <p>
-                    <strong>{this.state.mainCounts}</strong> main appearances
-                  </p>
-                  <p>
-                    <strong>{this.state.altCounts}</strong> alternate appearances
-                  </p>
-                  {lastSyncs && (
-                    <p>
-                      Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
-                      {`with ${this.state.newIssues} new issues`}
-                    </p>
-                  )}
-                </Text.Default>
-              </Section.Byline>
-              <AppearanceChart character={c} />
-            </React.Fragment>
-          )}
-      </React.Fragment>
-    );
-  }
-}
+AppearancesSection.propTypes = {
+  character: FullCharacterProps.isRequired,
+};

@@ -21,6 +21,22 @@ const CharacterLink = styled.a({
 });
 
 class CharactersList extends React.Component {
+  static propTypes = {
+    referer: PropTypes.string,
+    characters: PropTypes.shape({
+      meta: PropTypes.shape({
+        status_code: PropTypes.number,
+        error: PropTypes.string,
+        pagination: PropTypes.shape({
+          previous_page: PropTypes.string,
+          current_page: PropTypes.string,
+          next_page: PropTypes.string,
+        }),
+      }),
+      data: PropTypes.arrayOf(RankedCharacterProps),
+    }),
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -159,7 +175,7 @@ class CharactersList extends React.Component {
                   href={`/characters/${character.slug}`}
                   onClick={(e) => this.handleModalOpenRequest(e, character.slug)}
                 >
-                  <CharacterCard {...character} isLoading={requestedCharacterSlug === character.slug} />
+                  <CharacterCard character={character} isLoading={requestedCharacterSlug === character.slug} />
                 </CharacterLink>
               </Box>
             );
@@ -190,21 +206,5 @@ class CharactersList extends React.Component {
     );
   }
 }
-
-CharactersList.propTypes = {
-  referer: PropTypes.string,
-  characters: PropTypes.shape({
-    meta: PropTypes.shape({
-      status_code: PropTypes.number,
-      error: PropTypes.string,
-      pagination: PropTypes.shape({
-        previous_page: PropTypes.string,
-        current_page: PropTypes.string,
-        next_page: PropTypes.string,
-      }),
-    }),
-    data: PropTypes.arrayOf(RankedCharacterProps),
-  }),
-};
 
 export default withRouter(CharactersList);

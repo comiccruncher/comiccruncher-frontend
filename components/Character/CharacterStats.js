@@ -3,11 +3,11 @@ import CountUp from 'react-countup';
 import { Box, Flex } from 'rebass/emotion';
 import { Title, Text } from '../shared/styles/type';
 import { StatBlock } from '../Stats/Stats';
+import { CharacterStatsProps, PublisherProps } from './Types';
 
-export const CharacterStats = (props) => {
-  const c = props;
-  const allTime = c.stats ? c.stats.find((stat) => stat.category === 'all_time') : null;
-  const main = c.stats ? c.stats.find((stat) => stat.category === 'main') : null;
+export const CharacterStats = ({ publisher, stats }) => {
+  const allTime = stats ? stats.find((stat) => stat.category === 'all_time') : null;
+  const main = stats ? stats.find((stat) => stat.category === 'main') : null;
   return (
     <React.Fragment>
       {allTime &&
@@ -27,7 +27,7 @@ export const CharacterStats = (props) => {
                   <Title.Red>
                     #<CountUp end={main.issue_count_rank} />
                   </Title.Red>
-                  <Text.Default bold>{c.publisher.name}</Text.Default>
+                  <Text.Default bold>{publisher.name}</Text.Default>
                 </div>
               </Box>
               <Box width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
@@ -51,4 +51,9 @@ export const CharacterStats = (props) => {
         )}
     </React.Fragment>
   );
+};
+
+CharacterStats.propTypes = {
+  publisher: PublisherProps.isRequired,
+  stats: CharacterStatsProps.isRequired,
 };

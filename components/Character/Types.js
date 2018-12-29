@@ -12,7 +12,7 @@ export const CharacterThumbnailsProps = PropTypes.shape({
   vendor_image: ThumbnailSizesProps,
 });
 
-export const CharacterStats = PropTypes.shape({
+export const CharacterStatProps = PropTypes.shape({
   category: PropTypes.string,
   issue_count_rank: PropTypes.number,
   issue_count: PropTypes.number,
@@ -20,10 +20,14 @@ export const CharacterStats = PropTypes.shape({
   average_issues_per_year_rank: PropTypes.number,
 });
 
-export const CharacterSyncLogs = PropTypes.shape({
+export const CharacterStatsProps = PropTypes.arrayOf(CharacterStatProps);
+
+export const CharacterSyncLogProps = PropTypes.shape({
   synced_at: PropTypes.string,
   num_issues: PropTypes.number,
 });
+
+export const CharacterSyncLogsProps = PropTypes.arrayOf(CharacterSyncLogProps);
 
 export const PublisherProps = PropTypes.shape({
   name: PropTypes.string,
@@ -47,7 +51,7 @@ export const RankedCharacterProps = PropTypes.shape({
   vendor_description: PropTypes.string,
   thumbnails: CharacterThumbnailsProps,
   appearances: AppearancesProps,
-  stats: CharacterStats,
+  stats: CharacterStatProps,
 });
 
 // PropTypes for a character.
@@ -84,7 +88,7 @@ export const AppearancesProps = PropTypes.arrayOf(
 export const FullCharacterProps = PropTypes.shape({
   CharacterProps,
   thumbnails: CharacterThumbnailsProps,
-  last_syncs: PropTypes.arrayOf(CharacterSyncLogs),
-  stats: PropTypes.arrayOf(CharacterStats),
+  last_syncs: CharacterSyncLogsProps,
+  stats: CharacterStatsProps,
   appearances: AppearancesProps,
 });
