@@ -280,7 +280,7 @@ injectGlobal`
 
 `;
 
-const Layout = ({ canonical, children, title, navBackground }) => (
+const Layout = ({ canonical, children, navBackground }) => (
   <React.Fragment>
     <Head>
       <meta charSet="utf-8" />
@@ -306,8 +306,7 @@ const Layout = ({ canonical, children, title, navBackground }) => (
       <meta name="msapplication-square150x150logo" content={`${cdnURL}/mstile-150x150.png`} />
       <meta name="msapplication-wide310x150logo" content={`${cdnURL}/mstile-310x150.png`} />
       <meta name="msapplication-square310x310logo" content={`${cdnURL}/mstile-310x310.png`} />
-      <link rel="canonical" href={canonical} />
-      <title>{title}</title>
+      {canonical && <link rel="canonical" href={canonical} />}
     </Head>
     <div className="app">
       <Navigation background={navBackground} activeHref={canonical} />
@@ -317,7 +316,7 @@ const Layout = ({ canonical, children, title, navBackground }) => (
 );
 
 Layout.propTypes = {
-  canonical: PropTypes.string.isRequired,
+  canonical: PropTypes.string,
   title: PropTypes.string,
   navBackground: PropTypes.string,
   children: PropTypes.node,

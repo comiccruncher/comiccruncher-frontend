@@ -2,46 +2,49 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { withRouter } from 'next/router';
+import Error from './_error';
 import getConfig from 'next/config';
 import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
 import FullCharacter from '../components/Character/FullCharacter';
-import { Text } from '../components/shared/styles/type';
 import { withCache } from '../components/emotion/cache';
 
 const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
 
-const Character = ({ character, error }) => (
-  <Layout canonical={`/characters/${character.slug}`}>
-    {!error ? (
-      <FullCharacter character={character.data} showFooterText={true} />
+const Character = ({ character, error, url }) => (
+  <React.Fragment>
+    {error ? (
+      <Error status_code={error.status_code} url={url} />
     ) : (
-      <Text.Default>
-        <p>{error}</p>
-      </Text.Default>
+      <Layout canonical={url}>
+        <FullCharacter character={character.data} showFooterText={true} />
+      </Layout>
     )}
-  </Layout>
+  </React.Fragment>
 );
 
 Character.propTypes = {
-  error: PropTypes.string,
+  error: PropTypes.shape({
+    status_code: PropTypes.number.isRequired,
+  }),
   character: PropTypes.shape({
-    meta: PropTypes.shape({
-      status_code: PropTypes.number,
-      error: PropTypes.string,
-    }),
     data: FullCharacterProps,
   }),
+  url: PropTypes.string.isRequired,
 };
 
 Character.getInitialProps = async ({ req }) => {
-  const params = { params: { key: 'batmansmellsbadly' } };
-  const res = await axios.get(`${charactersURL}/${encodeURIComponent(req.params.slug)}`, params).catch((error) => {
-    return { error: error.toString() };
+  const key = { params: { key: 'batmansmellsbadly' } };
+  const slug = encodeURIComponent(req.params.slug);
+  const url = `/characters/${slug}`;
+  const res = await axios.get(`${charactersURL}/${slug}`, key).catch((error) => {
+    const statusCode = error && error.response ? error.response.status : 500;
+    return { error: { status_code: statusCode }, url: url };
   });
   return {
     error: res.hasOwnProperty('error') ? res.error : null,
     character: res.hasOwnProperty('data') ? res.data : null,
+    url: url,
   };
 };
 

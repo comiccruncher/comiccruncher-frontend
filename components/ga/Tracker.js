@@ -1,20 +1,21 @@
 import ReactGA from 'react-ga';
 
 export const Categories = {
-  Appearances: 'appearances',
-  Modal: 'modal',
-  CharacterList: 'character-list',
-  Footer: 'footer',
-  Menu: 'menu',
-  Logo: 'logo',
-  Search: 'search',
+  APPEARANCES: 'appearances',
+  MODAL: 'modal',
+  CHARACTERLIST: 'character-list',
+  FOOTER: 'footer',
+  MENU: 'menu',
+  LOGO: 'logo',
+  SEARCH: 'search',
+  ERROR: 'error',
 };
 
 export const Actions = {
-  Click: 'click',
-  Open: 'open',
-  Close: 'close',
-  Typeahead: 'typeahead',
+  CLICK: 'click',
+  OPEN: 'open',
+  CLOSE: 'close',
+  TYPEAHEAD: 'typeahead',
 };
 
 export const Event = (category, action, label) => {
@@ -37,6 +38,7 @@ export const TrackExternalClick = (e, category, href) => {
 };
 
 export const TrackError = (description, isFatal) => {
+  console.log(description, isFatal);
   return ReactGA.exception({ description: description, fatal: isFatal });
 };
 
@@ -44,6 +46,10 @@ export const TrackErrorP = (description, isFatal) => {
   return new Promise((resolve, reject) => {
     resolve(TrackError(description, isFatal));
   });
+};
+
+export const TrackErrorWithEvent = (status_code, url, ...message) => {
+  Event(Categories.ERROR, status_code ? status_code.toString() : 'undefined', url);
 };
 
 export const TrackModal = (href) => {
