@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import Head from 'next/head';
 import { Box, Flex } from 'rebass/emotion';
 import { Text } from '../shared/styles/type';
 import { Brands } from '../shared/styles/colors';
@@ -12,6 +11,7 @@ import { CharacterHeader } from './CharacterHeader';
 import { CharacterStats } from './CharacterStats';
 import { AppearancesSection } from './AppearancesSection';
 import { Biography } from './Biography';
+import HTMLTitle from './HTMLTitle';
 
 const Wrapper = styled.div({
   background: '#fff',
@@ -28,13 +28,11 @@ const FullCharacter = ({ showFooterText, character }) => {
   const { name, other_name, vendor_image, image, thumbnails, publisher, vendor_description, description } = character;
   return (
     <React.Fragment>
-      <Head>
-        <title>{`${name} ${other_name && `(${other_name})`} | Comic Cruncher`}</title>
-      </Head>
+      <HTMLTitle name={character.name} other_name={character.other_name} />
       <Wrapper>
         <CharacterHeader
-          name={character.name}
-          other_name={character.other_name}
+          name={name}
+          other_name={other_name}
           image={getHeaderImg(image, vendor_image, thumbnails)}
           background={publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}
         />
