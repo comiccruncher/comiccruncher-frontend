@@ -7,11 +7,9 @@ const handle = app.getRequestHandler();
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
 
-const getToken = () => {
+const getToken = async () => {
   try {
-    return axios({
-      method: 'get',
-      url: 'http://localhost:8001/authenticate',
+    return axios.get('http://localhost:8001/authenticate', {
       headers: {
         Authorization: `Bearer ${authSecret}`,
       },
@@ -28,7 +26,7 @@ const jwtMiddleware = async (req, res, next) => {
     //  WHY? I CAUGHT THE ERROR!!!!!!!!
     if (data) {
       const t = data.data.token;
-      res.cookie('cc_session_id', t, { httpOnly: !dev, secure: !dev });
+      res.cookie('cc_session_id', t, { httpOnly: !dev, secure: !dev, expires: new Date() });
     }
   }
 };
