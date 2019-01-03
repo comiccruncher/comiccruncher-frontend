@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box } from 'rebass/emotion';
 import { Section, Text } from '../shared/styles/type';
-import { AppearancesProps, CharacterSyncLogsProps, FullCharacterProps } from './Types';
+import { FullCharacterProps } from './Types';
 import AppearanceChart from './AppearanceChart';
 
 const aggregateCountMap = (aggregate) => aggregate.count;
@@ -9,10 +9,9 @@ const prevNextReduce = (prev, next) => prev + next;
 
 export const AppearancesSection = ({ character }) => {
   const { appearances, last_syncs } = character;
-  const mainCounts =
-    appearances && appearances[0] ? appearances[0].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
-  const altCounts =
-    appearances && appearances[1] ? appearances[1].aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
+  const [mainApps, altApps] = appearances;
+  const mainCounts = mainApps.aggregates ? mainApps.aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
+  const altCounts = altApps.aggregates ? altApps.aggregates.map(aggregateCountMap).reduce(prevNextReduce) : 0;
   const lastSyncs = last_syncs ? last_syncs.slice(0, 2) : [];
   const newIssues = lastSyncs.length == 2 ? lastSyncs[0].num_issues - lastSyncs[1].num_issues : 0;
   return (
