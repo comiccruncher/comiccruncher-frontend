@@ -58,4 +58,9 @@ Error.propTypes = {
   status_code: PropTypes.number.isRequired,
 };
 
+Error.getInitialProps = async ({ req, res, err }) => {
+  const status_code = res ? res.statusCode : err ? err.statusCode : null;
+  return { status_code: status_code };
+};
+
 export default Error;
