@@ -4,6 +4,7 @@ import getConfig from 'next/config';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import Router from 'next/router';
+import cookies from 'react-cookies';
 import { DebounceInput } from 'react-debounce-input';
 import { CharacterSearchResult } from './CharacterSearchResult';
 import { SearchBar } from './SearchStyles';
@@ -51,7 +52,12 @@ class Search extends React.Component {
     }
     TrackEvent(`search`, `typeahead:${this.props.id}`, value).then(() => {
       axios
-        .get(searchURL, { params: { query: encodeURIComponent(escapedValue), key: 'batmansmellsbadly' } })
+        .get(searchURL, {
+          params: {
+            query: encodeURIComponent(escapedValue),
+          },
+          headers: { Authorization: `Bearer ${cookies.load('cc_session_id')}` },
+        })
         .then((response) => {
           const data = response.data.data;
           // stupid hack for setting no suggestions...

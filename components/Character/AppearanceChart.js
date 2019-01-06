@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
+import cookies from 'react-cookies';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
@@ -144,7 +145,9 @@ export default class AppearanceChart extends React.Component {
     const suggestionSlug = suggestion.slug;
 
     axios
-      .get(`${charactersURL}/${suggestionSlug}`, { params: { key: 'batmansmellsbadly' } })
+      .get(`${charactersURL}/${suggestionSlug}`, {
+        headers: { Authorization: `Bearer ${cookies.load('cc_session_id')}` },
+      })
       .then((res) => {
         this.setState({ error: null });
         const meta = res.data.meta;
