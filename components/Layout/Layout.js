@@ -4,6 +4,7 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import { injectGlobal } from 'emotion';
 import ReactGA from 'react-ga';
+import cookie from 'react-cookies';
 import Responsive from '../shared/styles/responsive';
 import { UI, Palette } from '../shared/styles/colors';
 import { UIFontStack } from '../shared/styles/type';
@@ -19,6 +20,13 @@ ReactGA.initialize(gaID, {
 });
 if (!isProd) {
   ReactGA.set({ sendHitTask: null });
+}
+const visitorId = cookie.load('cc_visitor_id');
+if (visitorId) {
+  ReactGA.set({ userId: visitorId });
+  ReactGA.event({ category: 'cookie', action: 'hit userId', label: visitorId });
+} else {
+  ReactGA.event({ category: 'cookie', action: 'miss userId' });
 }
 
 injectGlobal`
