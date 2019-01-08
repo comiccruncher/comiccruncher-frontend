@@ -156,6 +156,9 @@ export const getCharacterProps = (req, res) => {
       if (err.response) {
         // Copy response back to server.
         res.statusCode = err.response.status;
+      } else {
+        // this is really bad..no server response at all.
+        res.statusCode = 500;
       }
       return handleError(req, res, err);
     });
