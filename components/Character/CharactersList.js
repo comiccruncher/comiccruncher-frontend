@@ -47,7 +47,7 @@ const getNextPage = async (url) => {
     })
     .catch((error) => {
       TrackError(error.toString(), false);
-      return error;
+      throw new Error(error.toString());
     });
 };
 
@@ -59,7 +59,7 @@ const getCharacter = async (slug) => {
     })
     .catch((error) => {
       TrackError(error.toString(), false);
-      return error;
+      throw new Error(error.toString());
     });
 };
 
@@ -180,7 +180,7 @@ class CharactersList extends React.Component {
         });
       })
       .catch((err) => {
-        this.setState({ error: err.toString() });
+        this.setState({ error: err.toString(), requestedCharacterSlug: null });
       });
   };
 

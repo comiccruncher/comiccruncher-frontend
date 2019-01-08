@@ -24,7 +24,7 @@ const searchCharacter = async (query) => {
       return resp.data;
     })
     .catch((err) => {
-      return err.toString();
+      throw new Error(err.toString());
     });
 };
 
