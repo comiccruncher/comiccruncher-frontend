@@ -122,7 +122,7 @@ export const getMarvelProps = (req, res) => {
 };
 
 export const getDCProps = (req, res) => {
-  const opts = getRequiredHeaders(req, res);
+  const opts = isomorphicGetHeaders(req, res);
   return axios
     .get(`${publishersURL}/dc`, opts)
     .then((result) => {
