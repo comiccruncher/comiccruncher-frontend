@@ -4,7 +4,7 @@ import Router, { withRouter } from 'next/router';
 import getConfig from 'next/config';
 import axios from 'axios';
 import styled from 'react-emotion';
-import cookies from 'react-cookies';
+import Cookies from 'universal-cookie';
 import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
@@ -13,8 +13,10 @@ import CharacterModal from './CharacterModal';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
 import { Event, TrackEvent, TrackError, TrackPageviewP } from '../ga/Tracker';
+import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache';
 
+const cookie = new Cookies();
 const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
 
 const CharacterLink = styled.a({
@@ -37,9 +39,33 @@ CharacterItem.propTypes = {
   handleModalOpenRequest: PropTypes.func.isRequired,
 };
 
+const getNextPage = async (url) => {
+  return await axios
+    .get(url, getCookieHeaders(cookie))
+    .then((resp) => {
+      return resp;
+    })
+    .catch((error) => {
+      TrackError(error.toString(), false);
+      return error;
+    });
+};
+
+const getCharacter = async (slug) => {
+  return await axios
+    .get(`${charactersURL}/${encodeURIComponent(slug)}`, getCookieHeaders(cookie))
+    .then((resp) => {
+      return resp.data;
+    })
+    .catch((error) => {
+      TrackError(error.toString(), false);
+      return error;
+    });
+};
+
 class CharactersList extends React.Component {
   static propTypes = {
-    referer: PropTypes.string,
+    router: PropTypes.instanceOf(Router),
     characters: PropTypes.shape({
       meta: PropTypes.shape({
         status_code: PropTypes.number,
@@ -77,12 +103,7 @@ class CharactersList extends React.Component {
     if (this.state.nextHref) {
       link = this.state.nextHref;
     }
-    axios
-      .get(link, {
-        headers: {
-          Authorization: `Bearer ${cookies.load('cc_session_id')}`,
-        },
-      })
+    getNextPage(link)
       .then((res) => {
         const body = res.data;
         Event('LoadMore', 'click', link);
@@ -98,7 +119,6 @@ class CharactersList extends React.Component {
         }
       })
       .catch((err) => {
-        TrackError(err.toString(), false);
         this.setState({ error: err.toString() });
       });
   };
@@ -117,8 +137,10 @@ class CharactersList extends React.Component {
         requestedCharacterSlug: null,
       },
       () => {
-        const referer = this.props.referer;
-        TrackEvent('modal', 'close', modal.slug).then(() => Router.push(referer, referer, { shallow: true }));
+        const { router } = this.props;
+        // Check if it's the `/index` page...we want to push it as `/`. Otherwise, use normally.
+        const pushAs = router.route === '/index' ? '/' : router.route;
+        TrackEvent('modal', 'close', modal.slug).then(() => router.push(pushAs, pushAs, { shallow: true }));
       }
     );
   };
@@ -143,26 +165,22 @@ class CharactersList extends React.Component {
   loadCharacter = (slug) => {
     this.resetCharacterModal();
     slug = encodeURIComponent(slug);
-    const link = `${charactersURL}/${slug}`;
-    axios
-      .get(link, {
-        headers: { Authorization: `Bearer ${cookies.load('cc_session_id')}` },
-      })
-      .then((res) => {
-        const data = res.data.data;
+    getCharacter(slug)
+      .then((resp) => {
+        const data = resp.data;
         const localUrl = `/characters/${slug}`;
         this.setState({ characterModal: data }, () => {
           // todo: fix document.title and <Layout> so we get a dynamic title.
           const title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
           Promise.all([TrackEvent('modal', 'open', slug), TrackPageviewP(localUrl, title)]).then(() => {
+            const router = this.props.router;
             // Must use `{ shallow: true }` so modals load for other pages.
-            Router.push(`${this.props.referer}?character=${slug}`, localUrl, { shallow: true });
+            router.push(`${router.route}?character=${slug}`, localUrl, { shallow: true });
           });
         });
       })
-      .catch((error) => {
-        TrackError(error.toString(), false);
-        this.setState({ error: error.toString() });
+      .catch((err) => {
+        this.setState({ error: err.toString() });
       });
   };
 
@@ -170,11 +188,15 @@ class CharactersList extends React.Component {
    * Listens on when the route changes and handles opening the modal.
    */
   listenBeforePopState = () => {
-    Router.beforePopState(({ url, as, options }) => {
-      if (as === this.props.referer) {
+    const router = this.props.router;
+    const route = router.route;
+    router.beforePopState(({ url, as, options }) => {
+      // If current page or we're on the index page. Above, if it's the index page
+      // we pushed it as `/` and not `/index`.
+      if (as === route || (as === '/' && route === '/index')) {
         this.handleModalCloseRequest();
       }
-      if (url.includes(`${this.props.referer}?character=`) || url.includes('/character?slug=')) {
+      if (url.includes(`${route}?character=`) || url.includes('/character?slug=')) {
         // Force SSR refresh so it doesn't try loading a character page JS.
         window.location.href = as;
         return false;
@@ -207,7 +229,7 @@ class CharactersList extends React.Component {
                 <CharacterItem
                   character={character}
                   requestedSlug={requestedCharacterSlug}
-                  handleModalOpenRequest={this.handleModalOpenRequest}
+                  handleModalOpenRequest={(e) => this.handleModalOpenRequest(e, character.slug)}
                   key={character.slug}
                 />
               );

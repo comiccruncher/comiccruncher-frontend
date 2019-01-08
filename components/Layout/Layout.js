@@ -4,7 +4,7 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import { injectGlobal } from 'emotion';
 import ReactGA from 'react-ga';
-import cookie from 'react-cookies';
+import Cookies from 'universal-cookie';
 import Responsive from '../shared/styles/responsive';
 import { UI, Palette } from '../shared/styles/colors';
 import { UIFontStack } from '../shared/styles/type';
@@ -13,6 +13,7 @@ import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
 
 const { cdnURL, gaID, isProd } = getConfig().publicRuntimeConfig;
+const cookies = new Cookies();
 
 ReactGA.initialize(gaID, {
   debug: !isProd,
@@ -21,7 +22,7 @@ ReactGA.initialize(gaID, {
 if (!isProd) {
   ReactGA.set({ sendHitTask: null });
 }
-const visitorId = cookie.load('cc_visitor_id');
+const visitorId = cookies.get('cc_visitor_id');
 if (visitorId) {
   ReactGA.set({ userId: visitorId });
   ReactGA.event({ category: 'cookie', action: 'hit userId', label: visitorId });

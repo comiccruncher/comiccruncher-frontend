@@ -4,14 +4,29 @@ import getConfig from 'next/config';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import Router from 'next/router';
-import cookies from 'react-cookies';
+import Cookies from 'universal-cookie';
 import { DebounceInput } from 'react-debounce-input';
 import { CharacterSearchResult } from './CharacterSearchResult';
 import { SearchBar } from './SearchStyles';
 import { TrackEvent } from '../ga/Tracker';
+import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache'; /* Keep this here */
 
+const cookie = new Cookies();
 const searchURL = getConfig().publicRuntimeConfig.API.searchCharactersURL;
+
+const searchCharacter = async (query) => {
+  let opts = getCookieHeaders(cookie);
+  opts = Object.assign({ params: { query: encodeURIComponent(query) } }, opts);
+  return await axios
+    .get(searchURL, opts)
+    .then((resp) => {
+      return resp.data;
+    })
+    .catch((err) => {
+      return err.toString();
+    });
+};
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 const escapeRegexCharacters = (str) => {
@@ -51,20 +66,14 @@ class Search extends React.Component {
       return [];
     }
     TrackEvent(`search`, `typeahead:${this.props.id}`, value).then(() => {
-      axios
-        .get(searchURL, {
-          params: {
-            query: encodeURIComponent(escapedValue),
-          },
-          headers: { Authorization: `Bearer ${cookies.load('cc_session_id')}` },
+      searchCharacter(escapedValue)
+        .then((resp) => {
+          const chars = resp.data;
+          // dumb hack for no suggestions.
+          this.setState({ suggestions: chars && chars.length === 0 ? [{ slug: 'no-suggestion' }] : chars });
         })
-        .then((response) => {
-          const data = response.data.data;
-          // stupid hack for setting no suggestions...
-          this.setState({ suggestions: data && data.length === 0 ? [{ slug: 'no-suggestion' }] : data });
-        })
-        .catch((error) => {
-          this.setState({ error: error });
+        .catch((err) => {
+          this.setState({ error: err });
         });
     });
   };

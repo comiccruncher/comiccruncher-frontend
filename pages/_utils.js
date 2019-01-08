@@ -1,12 +1,15 @@
 /**
  * All these methods are supposed to work client + server side for NextJS.
  */
-import cookies from 'cookie';
 import getConfig from 'next/config';
 import axios from 'axios';
-import rcookies from 'react-cookies';
+import Cookies from 'universal-cookie';
+import cookieParser from 'cookie';
 
 const { charactersURL, statsURL, publishersURL } = getConfig().publicRuntimeConfig.API;
+
+const visitorFilt = (item) => item.hasOwnProperty('cc_visitor_id');
+const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
 
 /**
  * Gets the cc_session_id cookie from the request if set.
@@ -16,40 +19,39 @@ const { charactersURL, statsURL, publishersURL } = getConfig().publicRuntimeConf
  * @param {*} req The client's request
  * @param {*} res The server's response
  * @returns string
- * @throws Error if the cookie isn't found.
  */
-const getSessionCookie = (req, res) => {
+const isomorphicGetHeaders = (req, res) => {
   // Check for server-side render if the cookies are set in the request.
-  if (req && req.cookies && req.cookies.cc_session_id) {
-    return encodeURIComponent(req.cookies.cc_session_id);
+  if (req && req.headers && req.headers.cookie) {
+    const cookie = new Cookies(req.headers.cookie);
+    return getCookieHeaders(cookie);
   }
   // Check for server-side render if no cookie found in request above...
   if (res && res._headers && res._headers['set-cookie']) {
-    const setCookies = res._headers['set-cookie'];
-    const parsed = setCookies.map((item) => cookies.parse(item)).filter((item) => item.hasOwnProperty('cc_session_id'));
-    if (!parsed || parsed.length !== 1) {
-      throw new Error('cc_session_id cookie not set');
-    }
-    return encodeURIComponent(parsed[0].cc_session_id);
+    const parsed = res._headers['set-cookie'].map((item) => cookieParser.parse(item));
+    const session = parsed.filter(sessionFilt);
+    const visitor = parsed.filter(visitorFilt);
+    return getRequestHeaders(
+      session ? session[0].cc_session_id : 'UNDEFINED',
+      visitor ? visitor[0].cc_visitor_id : 'UNDEFINED'
+    );
   }
   // This would be a client-side request.
-  return encodeURIComponent(rcookies.load('cc_session_id'));
+  const cookie = new Cookies();
+  return getCookieHeaders(cookie);
 };
 
-const getRequestHeaders = (session) => {
+const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
   return {
-    headers: { Authorization: `Bearer ${session}` },
+    headers: {
+      Authorization: `Bearer ${cc_session_id}`,
+      'X-VISITOR-ID': cc_visitor_id,
+    },
   };
 };
 
-export const getSessionHeaders = (req, res) => {
-  let c = null;
-  try {
-    c = getSessionCookie(req, res);
-  } catch (err) {
-    logError(err, req, res);
-  }
-  return getRequestHeaders(c);
+export const getCookieHeaders = (cookie) => {
+  return getRequestHeaders(cookie.get('cc_session_id'), cookie.get('cc_visitor_id'));
 };
 
 const logError = (req, res, err, ...msg) => {
@@ -57,7 +59,7 @@ const logError = (req, res, err, ...msg) => {
   if (!req && !res) {
     return;
   }
-  console.info(`REQUEST: path: ${req.path} ip: ${req.ip} method: ${req.method}`);
+  console.info(`REQUEST: path: ${req.path} method: ${req.method}`);
   if (!err) {
     return;
   }
@@ -90,7 +92,7 @@ const handleError = (req, res, err) => {
 };
 
 export const getHomeProps = (req, res) => {
-  const opts = getSessionHeaders(req, res);
+  const opts = isomorphicGetHeaders(req, res);
   return Promise.all([axios.get(statsURL, opts), axios.get(charactersURL, opts)])
     .then(([stats, characters]) => {
       return {
@@ -108,7 +110,7 @@ export const getHomeProps = (req, res) => {
 };
 
 export const getMarvelProps = (req, res) => {
-  const opts = getSessionHeaders(req, res);
+  const opts = isomorphicGetHeaders(req, res);
   return axios
     .get(`${publishersURL}/marvel`, opts)
     .then((result) => {
@@ -120,7 +122,7 @@ export const getMarvelProps = (req, res) => {
 };
 
 export const getDCProps = (req, res) => {
-  const opts = getSessionHeaders(req, res);
+  const opts = getRequiredHeaders(req, res);
   return axios
     .get(`${publishersURL}/dc`, opts)
     .then((result) => {
@@ -132,7 +134,7 @@ export const getDCProps = (req, res) => {
 };
 
 export const getTrendingProps = (req, res) => {
-  const opts = getSessionHeaders(req, res);
+  const opts = isomorphicGetHeaders(req, res);
   return axios
     .get(`${publishersURL}/dc`, opts)
     .then((result) => {
@@ -144,7 +146,7 @@ export const getTrendingProps = (req, res) => {
 };
 
 export const getCharacterProps = (req, res) => {
-  const opts = getSessionHeaders(req, res);
+  const opts = isomorphicGetHeaders(req, res);
   return axios
     .get(`${charactersURL}/${encodeURIComponent(req.params.slug)}`, opts)
     .then((result) => {

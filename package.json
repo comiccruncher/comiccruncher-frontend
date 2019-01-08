@@ -13,9 +13,9 @@
     },
     "browser": {
         "express": false,
-        "uuid": false,
         "winston": false,
-        "cookieParser": false
+        "jwt-decode": false,
+        "cookie-parser": false
     },
     "dependencies": {
         "axios": "^0.18.0",
@@ -25,12 +25,12 @@
         "emotion": "^9.2.12",
         "emotion-server": "^9.2.12",
         "express": "^4.16.3",
+        "jwt-decode": "^2.2.0",
         "next": "^7.0.2",
         "nprogress": "^0.2.0",
         "prop-types": "^15.6.2",
         "react": "~16.6.3",
         "react-autosuggest": "^9.4.2",
-        "react-cookies": "^0.1.0",
         "react-countup": "^4.0.0-alpha.6",
         "react-debounce-input": "^3.2.0",
         "react-dom": "^16.5.2",
@@ -39,7 +39,7 @@
         "react-modal": "^3.6.1",
         "rebass": "^3.0.0-9",
         "recharts": "^1.4.1",
-        "uuid": "^3.3.2",
+        "universal-cookie": "^3.0.7",
         "winston": "^3.1.0"
     },
     "devDependencies": {

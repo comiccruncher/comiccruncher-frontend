@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
-import cookies from 'react-cookies';
+import Cookies from 'universal-cookie';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
@@ -11,6 +11,8 @@ import { Brands } from '../shared/styles/colors';
 import { Text, UIFontStack } from '../shared/styles/type';
 import { Event } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
+
+const cookies = new Cookies();
 
 const ChartHeight = 400;
 
@@ -146,7 +148,7 @@ export default class AppearanceChart extends React.Component {
 
     axios
       .get(`${charactersURL}/${suggestionSlug}`, {
-        headers: { Authorization: `Bearer ${cookies.load('cc_session_id')}` },
+        headers: { Authorization: `Bearer ${cookies.get('cc_session_id')}` },
       })
       .then((res) => {
         this.setState({ error: null });
