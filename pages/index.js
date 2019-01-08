@@ -12,7 +12,6 @@ import { MainContent } from '../components/Layout/Content';
 import Layout from '../components/Layout/Layout';
 import ErrorDisplayTracker from '../components/shared/components/Error';
 import { getHomeProps } from './_utils';
-import { withCache } from '../components/emotion/cache';
 
 const Home = ({ meta, stats, characters }) => (
   <React.Fragment>

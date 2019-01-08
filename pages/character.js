@@ -6,7 +6,6 @@ import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
 import FullCharacter from '../components/Character/FullCharacter';
 import { getCharacterProps } from './_utils';
-import { withCache } from '../components/emotion/cache';
 
 const Character = ({ meta, data }) => (
   <React.Fragment>
