@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import { Title, Section } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
@@ -81,4 +80,4 @@ Home.propTypes = {
   }),
 };
 
-export default withRouter(Home);
+export default Home;

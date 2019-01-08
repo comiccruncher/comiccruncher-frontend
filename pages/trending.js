@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Error from './_error';
@@ -74,4 +73,4 @@ Trending.propTypes = {
   data: PropTypes.arrayOf(RankedCharacterProps),
 };
 
-export default withRouter(Trending);
+export default Trending;

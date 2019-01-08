@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { withRouter } from 'next/router';
 import { Flex, Box } from 'rebass/emotion';
 import Layout from '../components/Layout/Layout';
 import { MainContent } from '../components/Layout/Content';
@@ -26,4 +25,4 @@ const FAQ = () => (
   </Layout>
 );
 
-export default withRouter(FAQ);
+export default FAQ;
