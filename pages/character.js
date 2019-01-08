@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
 import Error from './_error';
 import Layout from '../components/Layout/Layout';
 import { FullCharacterProps } from '../components/Character/Types';
@@ -31,4 +30,4 @@ Character.getInitialProps = async ({ req, res }) => {
   return getCharacterProps(req, res);
 };
 
-export default withRouter(Character);
+export default Character;
