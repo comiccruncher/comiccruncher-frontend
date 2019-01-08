@@ -34,9 +34,7 @@ const CharacterSearchProps = PropTypes.shape({
 
 const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
   <React.Fragment>
-    {(image || vendor_image) && (
-      <SearchImg src={image ? thumbnails.image.small : thumbnails.vendor_image.small} alt={name} />
-    )}
+    {thumbnails && <SearchImg src={thumbnails.image.small || thumbnails.vendor_image.small} alt={name} />}
     <Text.SearchResult>
       <p>
         <strong>{name}</strong>
