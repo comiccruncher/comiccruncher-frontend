@@ -237,19 +237,19 @@ class CharactersList extends React.Component {
         </Flex>
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
-            {initial &&
+            {error ? (
+              <Text.Default>
+                <p>{error}.</p>
+              </Text.Default>
+            ) : (
               hasMoreItems &&
               !isNextPageLoading && (
                 <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
                   Load More
                 </Button>
-              )}
-            {!error && isNextPageLoading && <LoadingSVG />}
-            {error && (
-              <Text.Default>
-                <p>{error}.</p>
-              </Text.Default>
+              )
             )}
+            {!error && isNextPageLoading && <LoadingSVG />}
           </Box>
         </Flex>
         <CharacterModal
