@@ -1,13 +1,16 @@
 import React from 'react';
 import App, { Container } from 'next/app';
+/*
+This is a cool effect, but Safari and mobile are having trouble w/ it. :(
+Fix later.
 import NProgress from 'nprogress';
 import Router from 'next/router';
-
 Router.events.on('routeChangeStart', (url) => {
   NProgress.start();
 });
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
+*/
 
 export default class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
