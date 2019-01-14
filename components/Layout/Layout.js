@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import getConfig from 'next/config';
 import { injectGlobal } from 'emotion';
-import ReactGA from 'react-ga';
-import Cookies from 'universal-cookie';
 import Responsive from '../shared/styles/responsive';
 import { UI, Palette } from '../shared/styles/colors';
 import { UIFontStack } from '../shared/styles/type';
@@ -12,23 +10,7 @@ import Spacing from '../shared/styles/spacing';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
 
-const { cdnURL, gaID, isProd } = getConfig().publicRuntimeConfig;
-const cookies = new Cookies();
-
-ReactGA.initialize(gaID, {
-  debug: !isProd,
-  titleCase: false,
-});
-if (!isProd) {
-  ReactGA.set({ sendHitTask: null });
-}
-const visitorId = cookies.get('cc_visitor_id');
-if (visitorId) {
-  ReactGA.set({ userId: visitorId });
-  ReactGA.event({ category: 'cookie', action: 'hit userId', label: visitorId });
-} else {
-  ReactGA.event({ category: 'cookie', action: 'miss userId' });
-}
+const { cdnURL } = getConfig().publicRuntimeConfig;
 
 injectGlobal`
   * {

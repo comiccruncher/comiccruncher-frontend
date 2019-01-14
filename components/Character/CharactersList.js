@@ -12,7 +12,7 @@ import { RankedCharacterProps } from './Types';
 import CharacterModal from './CharacterModal';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
-import { Event, TrackEvent, TrackError, TrackPageviewP } from '../ga/Tracker';
+import { Event, TrackEvent, TrackError } from '../ga/Tracker';
 import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache';
 
@@ -99,14 +99,16 @@ class CharactersList extends React.Component {
    */
   loadData = () => {
     this.setState({ isNextPageLoading: true });
-    let link = baseURL + this.props.characters.meta.pagination.next_page;
-    if (this.state.nextHref) {
-      link = this.state.nextHref;
+    const { characters, router } = this.props;
+    let link = baseURL + characters.meta.pagination.next_page;
+    const { nextHref } = this.state;
+    if (nextHref) {
+      link = nextHref;
     }
     getNextPage(link)
       .then((res) => {
         const body = res.data;
-        Event('LoadMore', 'click', link);
+        Event(router.asPath, 'load more', link);
         this.setState((prevState) => ({
           characters: prevState.characters.concat(body.data),
           isNextPageLoading: false,
@@ -170,9 +172,7 @@ class CharactersList extends React.Component {
         const data = resp.data;
         const localUrl = `/characters/${slug}`;
         this.setState({ characterModal: data }, () => {
-          // todo: fix document.title and <Layout> so we get a dynamic title.
-          const title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-          Promise.all([TrackEvent('modal', 'open', slug), TrackPageviewP(localUrl, title)]).then(() => {
+          TrackEvent('modal', 'open', slug).then(() => {
             const router = this.props.router;
             // Must use `{ shallow: true }` so modals load for other pages.
             router.push(`${router.route}?character=${slug}`, localUrl, { shallow: true });
@@ -206,25 +206,24 @@ class CharactersList extends React.Component {
   };
 
   render() {
-    const initial = this.props.characters.data;
+    const data = this.props.characters.data;
     const { characters, characterModal, requestedCharacterSlug, hasMoreItems, isNextPageLoading, error } = this.state;
     return (
       <React.Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
-          {initial &&
-            initial.map((character, i) => {
+          {data &&
+            data.map((character) => {
               return (
                 <CharacterItem
                   character={character}
                   requestedSlug={requestedCharacterSlug}
-                  // Bug?? this.setState not a function??
                   handleModalOpenRequest={(e) => this.handleModalOpenRequest(e, character.slug)}
                   key={character.slug}
                 />
               );
             })}
           {characters &&
-            characters.map((character, i) => {
+            characters.map((character) => {
               return (
                 <CharacterItem
                   character={character}
@@ -244,7 +243,7 @@ class CharactersList extends React.Component {
             ) : (
               hasMoreItems &&
               !isNextPageLoading && (
-                <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
+                <Button type="primary" onClick={this.loadData} textAlign="center">
                   Load More
                 </Button>
               )
