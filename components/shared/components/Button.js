@@ -23,6 +23,10 @@ const Button = styled.button(
     outline: 0,
   },
   (props) =>
+    props.textAlign && {
+      textAlign: props.textAlign,
+    },
+  (props) =>
     props.type === 'primary' && {
       backgroundColor: UI.Background.Blue,
       '&:hover': {
@@ -53,7 +57,7 @@ const Button = styled.button(
         opacity: '0.8',
         backgroundColor: UI.Background.LightGray,
       },
-    },
+    }
 );
 
 export default Button;
