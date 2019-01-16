@@ -65,7 +65,7 @@ const getCharacter = async (slug) => {
 
 class CharactersList extends React.Component {
   static propTypes = {
-    router: PropTypes.instanceOf(Router),
+    router: PropTypes.object,
     characters: PropTypes.shape({
       meta: PropTypes.shape({
         status_code: PropTypes.number,
@@ -140,8 +140,7 @@ class CharactersList extends React.Component {
       },
       () => {
         const { router } = this.props;
-        // Check if it's the `/index` page...we want to push it as `/`. Otherwise, use normally.
-        const pushAs = router.route === '/index' ? '/' : router.route;
+        const pushAs = router.route;
         TrackEvent('modal', 'close', modal.slug).then(() => router.push(pushAs, pushAs, { shallow: true }));
       }
     );
@@ -191,9 +190,8 @@ class CharactersList extends React.Component {
     const router = this.props.router;
     const route = router.route;
     router.beforePopState(({ url, as, options }) => {
-      // If current page or we're on the index page. Above, if it's the index page
-      // we pushed it as `/` and not `/index`.
-      if (as === route || (as === '/' && route === '/index')) {
+      // If current page..
+      if (as === route) {
         this.handleModalCloseRequest();
       }
       if (url.includes(`${route}?character=`) || url.includes('/character?slug=')) {

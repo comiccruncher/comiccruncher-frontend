@@ -11,7 +11,7 @@ const Character = ({ meta, data }) => (
     {meta.error ? (
       <Error status_code={meta.status_code} />
     ) : (
-      <Layout canonical={`/characters/${data.slug}`}>
+      <Layout>
         <FullCharacter character={data} showFooterText={true} />
       </Layout>
     )}

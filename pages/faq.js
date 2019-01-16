@@ -6,7 +6,7 @@ import { MainContent } from '../components/Layout/Content';
 import { Section, Text } from '../components/shared/styles/type';
 
 const FAQ = () => (
-  <Layout canonical="/faq">
+  <Layout>
     <Head>
       <title>{'Frequently Asked Questions | Comic Cruncher'}</title>
     </Head>

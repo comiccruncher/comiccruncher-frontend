@@ -18,7 +18,7 @@ const Trending = (props) => {
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
-        <Layout canonical="/trending">
+        <Layout>
           <Head>
             <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
           </Head>

@@ -19,7 +19,7 @@ const DC = (props) => {
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
-        <Layout canonical="/dc">
+        <Layout>
           <Head>
             <title>{`DC Comics | Popular Characters | Comic Cruncher`}</title>
           </Head>

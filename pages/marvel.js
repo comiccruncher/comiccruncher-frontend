@@ -19,7 +19,7 @@ const Marvel = (props) => {
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
-        <Layout canonical="/marvel">
+        <Layout>
           <Head>
             <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
           </Head>

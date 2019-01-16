@@ -15,7 +15,7 @@ import { getHomeProps } from './_utils';
 
 const Home = ({ meta, stats, characters }) => (
   <React.Fragment>
-    <Layout canonical="/">
+    <Layout>
       <Head>
         <title>Home | All-Time Popular Characters | Comic Cruncher</title>
       </Head>

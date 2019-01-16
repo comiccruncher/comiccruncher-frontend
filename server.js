@@ -108,7 +108,7 @@ app
       // `/index` is the filename of `/pages/index.js
       // * must pass in req.params for back button to work:
       // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
-      app.render(req, res, '/index', req.params);
+      app.render(req, res, '/', req.params);
     });
 
     server.get('*', (req, res) => {
