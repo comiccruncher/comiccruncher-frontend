@@ -47,6 +47,9 @@ const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
       Authorization: `Bearer ${cc_session_id}`,
       'X-VISITOR-ID': cc_visitor_id,
     },
+    params: {
+      key: 'batmansmellsbadly',
+    },
   };
 };
 

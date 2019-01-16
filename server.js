@@ -36,9 +36,32 @@ const getToken = async () => {
       return resp.data.data.token;
     })
     .catch((error) => {
-      logger.error(error.toString());
+      const { response } = error;
+      if (response.data) {
+        logger.error(`Error getting auth token: ${JSON.stringify(response.data)}`);
+      } else {
+        logger.error(`Error getting auth token: ${error.toString()}`);
+      }
       return null;
     });
+};
+
+const AuthMiddleware = (req, res, next) => {
+  if (!req.cookies.cc_session_id) {
+    getToken()
+      .then((token) => {
+        const result = jwtDecode(token);
+        res.cookie('cc_session_id', token, secureCookieOpts);
+        res.cookie('cc_visitor_id', result.jti, secureCookieOpts);
+        next();
+      })
+      .catch((err) => {
+        logger.error(err);
+        next();
+      });
+  } else {
+    next();
+  }
 };
 
 app
@@ -50,23 +73,7 @@ app
 
     server.use(cookieParser());
 
-    server.use((req, res, next) => {
-      if (!req.cookies.cc_session_id) {
-        getToken()
-          .then((token) => {
-            const result = jwtDecode(token);
-            res.cookie('cc_session_id', token, secureCookieOpts);
-            res.cookie('cc_visitor_id', result.jti, secureCookieOpts);
-            next();
-          })
-          .catch((err) => {
-            logger.error(err);
-            next();
-          });
-      } else {
-        next();
-      }
-    });
+    // server.use(AuthMiddleware);
 
     server.use((req, res, next) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');
