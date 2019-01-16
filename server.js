@@ -121,6 +121,6 @@ app
     });
   })
   .catch((ex) => {
-    console.error(ex.stack);
+    logger.error(ex.stack);
     process.exit(1);
   });
