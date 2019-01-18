@@ -110,7 +110,7 @@ export const getImage = (image, vendor_image, thumbnails, size) => {
 };
 
 const CharacterImage = ({ name, image, vendor_image, thumbnails }) => {
-  return <img src={getImage(image, vendor_image, thumbnails, 'medium')} alt={name} title={name} />;
+  return <img src={getImage(image, vendor_image, thumbnails, 'large')} alt={name} title={name} />;
 };
 
 CharacterImage.propTypes = {
