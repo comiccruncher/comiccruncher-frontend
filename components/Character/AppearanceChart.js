@@ -10,6 +10,7 @@ import Search from '../Search/Search';
 import { Brands } from '../shared/styles/colors';
 import { Text, UIFontStack } from '../shared/styles/type';
 import { Event } from '../ga/Tracker';
+import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache';
 
 const cookies = new Cookies();
@@ -145,11 +146,8 @@ export default class AppearanceChart extends React.Component {
       return;
     }
     const suggestionSlug = suggestion.slug;
-
     axios
-      .get(`${charactersURL}/${suggestionSlug}`, {
-        headers: { Authorization: `Bearer ${cookies.get('cc_session_id')}` },
-      })
+      .get(`${charactersURL}/${suggestionSlug}`, getCookieHeaders(cookies))
       .then((res) => {
         this.setState({ error: null });
         const meta = res.data.meta;
