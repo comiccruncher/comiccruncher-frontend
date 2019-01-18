@@ -102,15 +102,15 @@ const SVGStyle = css({
   },
 });
 
-const getImage = (image, vendor_image, thumbnails) => {
+export const getImage = (image, vendor_image, thumbnails, size) => {
   if (thumbnails && (thumbnails.image || thumbnails.vendor_image)) {
-    return thumbnails.image ? thumbnails.image.medium : thumbnails.vendor_image.medium;
+    return thumbnails.image ? thumbnails.image[size] : thumbnails.vendor_image[size];
   }
   return image || vendor_image;
 };
 
 const CharacterImage = ({ name, image, vendor_image, thumbnails }) => {
-  return <img src={getImage(image, vendor_image, thumbnails)} alt={name} title={name} />;
+  return <img src={getImage(image, vendor_image, thumbnails, 'large')} alt={name} title={name} />;
 };
 
 CharacterImage.propTypes = {

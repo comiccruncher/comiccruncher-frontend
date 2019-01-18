@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
 import getConfig from 'next/config';
 import axios from 'axios';
 import styled from 'react-emotion';

@@ -17,7 +17,7 @@ const searchURL = getConfig().publicRuntimeConfig.API.searchCharactersURL;
 
 const searchCharacter = async (query) => {
   let opts = getCookieHeaders(cookie);
-  opts = Object.assign({ params: { query: encodeURIComponent(query) } }, opts);
+  opts.params.query = encodeURIComponent(query);
   return await axios
     .get(searchURL, opts)
     .then((resp) => {

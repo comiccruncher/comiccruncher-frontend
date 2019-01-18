@@ -126,6 +126,7 @@ remote-deploy-pm2:
 	ssh ${PM2_SERVER1} "docker pull ${PM2_IMAGE} && ${DOCKER_COMPOSE_PM2_UP_CMD}"
 	scp -r ./deploy/uploads ${PM2_SERVER2}:~/deploy
 	ssh ${PM2_SERVER2} "docker pull ${PM2_IMAGE} && ${DOCKER_COMPOSE_PM2_UP_CMD}"
+	ssh ${PM2_SERVER2} "docker-compose -f ./deploy/uploads/docker-compose.redis.yml run --rm redis"
 
 .PHONY: docker-compose-pm2
 docker-compose-pm2:
