@@ -4,6 +4,7 @@ import Router, { withRouter } from 'next/router';
 import getConfig from 'next/config';
 import axios from 'axios';
 import styled from 'react-emotion';
+import Cookies from 'universal-cookie';
 import { Flex, Box } from 'rebass/emotion';
 import { CharacterCard } from './CharacterCard';
 import Button from '../shared/components/Button';
@@ -11,18 +12,60 @@ import { RankedCharacterProps } from './Types';
 import CharacterModal from './CharacterModal';
 import { LoadingSVG } from '../shared/components/Icons';
 import { Text } from '../shared/styles/type';
-import { Event, TrackEvent, TrackError, TrackPageviewP } from '../ga/Tracker';
+import { Event, TrackEvent, TrackError } from '../ga/Tracker';
+import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache';
 
+const cookie = new Cookies();
 const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
 
 const CharacterLink = styled.a({
   textDecoration: 'none',
 });
 
+const CharacterItem = ({ character, requestedSlug, handleModalOpenRequest }) => {
+  return (
+    <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]}>
+      <CharacterLink href={`/characters/${character.slug}`} onClick={handleModalOpenRequest}>
+        <CharacterCard character={character} isLoading={requestedSlug === character.slug} />
+      </CharacterLink>
+    </Box>
+  );
+};
+
+CharacterItem.propTypes = {
+  character: RankedCharacterProps.isRequired,
+  requestedSlug: PropTypes.string,
+  handleModalOpenRequest: PropTypes.func.isRequired,
+};
+
+const getNextPage = async (url) => {
+  return await axios
+    .get(url, getCookieHeaders(cookie))
+    .then((resp) => {
+      return resp;
+    })
+    .catch((error) => {
+      TrackError(error.toString(), false);
+      throw new Error(error.toString());
+    });
+};
+
+const getCharacter = async (slug) => {
+  return await axios
+    .get(`${charactersURL}/${encodeURIComponent(slug)}`, getCookieHeaders(cookie))
+    .then((resp) => {
+      return resp.data;
+    })
+    .catch((error) => {
+      TrackError(error.toString(), false);
+      throw new Error(error.toString());
+    });
+};
+
 class CharactersList extends React.Component {
   static propTypes = {
-    referer: PropTypes.string,
+    router: PropTypes.object,
     characters: PropTypes.shape({
       meta: PropTypes.shape({
         status_code: PropTypes.number,
@@ -37,18 +80,15 @@ class CharactersList extends React.Component {
     }),
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      characters: props && props.hasOwnProperty('characters') ? props.characters.data : [],
-      hasMoreItems: true,
-      nextHref: null,
-      error: null,
-      characterModal: null,
-      isNextPageLoading: false,
-      requestedCharacterSlug: null,
-    };
-  }
+  state = {
+    characters: [],
+    hasMoreItems: true,
+    nextHref: null,
+    error: null,
+    characterModal: null,
+    isNextPageLoading: false,
+    requestedCharacterSlug: null,
+  };
 
   componentDidMount() {
     this.listenBeforePopState();
@@ -59,15 +99,16 @@ class CharactersList extends React.Component {
    */
   loadData = () => {
     this.setState({ isNextPageLoading: true });
-    let link = baseURL + this.props.characters.meta.pagination.next_page;
-    if (this.state.nextHref) {
-      link = this.state.nextHref;
+    const { characters, router } = this.props;
+    let link = baseURL + characters.meta.pagination.next_page;
+    const { nextHref } = this.state;
+    if (nextHref) {
+      link = nextHref;
     }
-    axios
-      .get(link)
+    getNextPage(link)
       .then((res) => {
         const body = res.data;
-        Event('LoadMore', 'click', link);
+        Event(router.asPath, 'load more', link);
         this.setState((prevState) => ({
           characters: prevState.characters.concat(body.data),
           isNextPageLoading: false,
@@ -80,7 +121,6 @@ class CharactersList extends React.Component {
         }
       })
       .catch((err) => {
-        TrackError(err.toString(), false);
         this.setState({ error: err.toString() });
       });
   };
@@ -99,8 +139,9 @@ class CharactersList extends React.Component {
         requestedCharacterSlug: null,
       },
       () => {
-        const referer = this.props.referer;
-        TrackEvent('modal', 'close', modal.slug).then(() => Router.push(referer, referer, { shallow: true }));
+        const { router } = this.props;
+        const pushAs = router.route;
+        TrackEvent('modal', 'close', modal.slug).then(() => router.push(pushAs, pushAs, { shallow: true }));
       }
     );
   };
@@ -125,24 +166,20 @@ class CharactersList extends React.Component {
   loadCharacter = (slug) => {
     this.resetCharacterModal();
     slug = encodeURIComponent(slug);
-    const link = `${charactersURL}/${slug}`;
-    axios
-      .get(link, { params: { key: 'batmansmellsbadly' } })
-      .then((res) => {
-        const data = res.data.data;
+    getCharacter(slug)
+      .then((resp) => {
+        const data = resp.data;
         const localUrl = `/characters/${slug}`;
         this.setState({ characterModal: data }, () => {
-          // todo: fix document.title and <Layout> so we get a dynamic title.
-          const title = `${data.name} ${data.other_name && `(${data.other_name})`} | Comic Cruncher`;
-          Promise.all([TrackEvent('modal', 'open', slug), TrackPageviewP(localUrl, title)]).then(() => {
+          TrackEvent('modal', 'open', slug).then(() => {
+            const router = this.props.router;
             // Must use `{ shallow: true }` so modals load for other pages.
-            Router.push(`${this.props.referer}?character=${slug}`, localUrl, { shallow: true });
+            router.push(`${router.route}?character=${slug}`, localUrl, { shallow: true });
           });
         });
       })
-      .catch((error) => {
-        TrackError(error.toString(), false);
-        this.setState({ error: error.toString() });
+      .catch((err) => {
+        this.setState({ error: err.toString(), requestedCharacterSlug: null });
       });
   };
 
@@ -150,11 +187,14 @@ class CharactersList extends React.Component {
    * Listens on when the route changes and handles opening the modal.
    */
   listenBeforePopState = () => {
-    Router.beforePopState(({ url, as, options }) => {
-      if (as === this.props.referer) {
+    const router = this.props.router;
+    const route = router.route;
+    router.beforePopState(({ url, as, options }) => {
+      // If current page..
+      if (as === route) {
         this.handleModalCloseRequest();
       }
-      if (url.includes(`${this.props.referer}?character=`) || url.includes('/character?slug=')) {
+      if (url.includes(`${route}?character=`) || url.includes('/character?slug=')) {
         // Force SSR refresh so it doesn't try loading a character page JS.
         window.location.href = as;
         return false;
@@ -164,37 +204,49 @@ class CharactersList extends React.Component {
   };
 
   render() {
-    const { characters, characterModal, requestedCharacterSlug } = this.state;
+    const data = this.props.characters.data;
+    const { characters, characterModal, requestedCharacterSlug, hasMoreItems, isNextPageLoading, error } = this.state;
     return (
       <React.Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
-          {characters.map((character, i) => {
-            return (
-              <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]} key={character.slug}>
-                <CharacterLink
-                  href={`/characters/${character.slug}`}
-                  onClick={(e) => this.handleModalOpenRequest(e, character.slug)}
-                >
-                  <CharacterCard character={character} isLoading={requestedCharacterSlug === character.slug} />
-                </CharacterLink>
-              </Box>
-            );
-          })}
+          {data &&
+            data.map((character) => {
+              return (
+                <CharacterItem
+                  character={character}
+                  requestedSlug={requestedCharacterSlug}
+                  handleModalOpenRequest={(e) => this.handleModalOpenRequest(e, character.slug)}
+                  key={character.slug}
+                />
+              );
+            })}
+          {characters &&
+            characters.map((character) => {
+              return (
+                <CharacterItem
+                  character={character}
+                  requestedSlug={requestedCharacterSlug}
+                  handleModalOpenRequest={(e) => this.handleModalOpenRequest(e, character.slug)}
+                  key={character.slug}
+                />
+              );
+            })}
         </Flex>
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
-            {this.state.hasMoreItems &&
-              !this.state.isNextPageLoading && (
-                <Button type="primary" onClick={this.loadData} style={{ textAlign: 'center' }}>
+            {error ? (
+              <Text.Default>
+                <p>{error}.</p>
+              </Text.Default>
+            ) : (
+              hasMoreItems &&
+              !isNextPageLoading && (
+                <Button type="primary" onClick={this.loadData} textAlign="center">
                   Load More
                 </Button>
-              )}
-            {!this.state.error && this.state.isNextPageLoading && <LoadingSVG />}
-            {this.state.error && (
-              <Text.Default>
-                <p>{this.state.error}.</p>
-              </Text.Default>
+              )
             )}
+            {!error && isNextPageLoading && <LoadingSVG />}
           </Box>
         </Flex>
         <CharacterModal

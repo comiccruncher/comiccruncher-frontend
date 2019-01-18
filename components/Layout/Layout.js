@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import getConfig from 'next/config';
+import { withRouter } from 'next/router';
 import { injectGlobal } from 'emotion';
-import ReactGA from 'react-ga';
 import Responsive from '../shared/styles/responsive';
 import { UI, Palette } from '../shared/styles/colors';
 import { UIFontStack } from '../shared/styles/type';
@@ -11,15 +11,7 @@ import Spacing from '../shared/styles/spacing';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
 
-const { cdnURL, gaID, isProd } = getConfig().publicRuntimeConfig;
-
-ReactGA.initialize(gaID, {
-  debug: !isProd,
-  titleCase: false,
-});
-if (!isProd) {
-  ReactGA.set({ sendHitTask: null });
-}
+const { cdnURL } = getConfig().publicRuntimeConfig;
 
 injectGlobal`
   * {
@@ -280,7 +272,7 @@ injectGlobal`
 
 `;
 
-const Layout = ({ canonical, children, navBackground }) => (
+const Layout = ({ children, navBackground, router }) => (
   <React.Fragment>
     <Head>
       <meta charSet="utf-8" />
@@ -306,20 +298,19 @@ const Layout = ({ canonical, children, navBackground }) => (
       <meta name="msapplication-square150x150logo" content={`${cdnURL}/mstile-150x150.png`} />
       <meta name="msapplication-wide310x150logo" content={`${cdnURL}/mstile-310x150.png`} />
       <meta name="msapplication-square310x310logo" content={`${cdnURL}/mstile-310x310.png`} />
-      {canonical && <link rel="canonical" href={canonical} />}
+      {router.asPath && <link rel="canonical" href={router.asPath} />}
     </Head>
     <div className="app">
-      <Navigation background={navBackground} activeHref={canonical} />
+      <Navigation background={navBackground} activeHref={router.asPath} />
       {children}
     </div>
   </React.Fragment>
 );
 
 Layout.propTypes = {
-  canonical: PropTypes.string,
-  title: PropTypes.string,
+  router: PropTypes.object,
   navBackground: PropTypes.string,
   children: PropTypes.node,
 };
 
-export default Layout;
+export default withRouter(Layout);

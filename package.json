@@ -12,16 +12,22 @@
         "start": "rm -rf ./node_modules/.cache; cross-env NODE_ENV=production node server.js"
     },
     "browser": {
-        "express": false
+        "express": false,
+        "winston": false,
+        "jwt-decode": false,
+        "cookie-parser": false,
+        "redis": false
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "cookie": "^0.3.1",
+        "cookie-parser": "^1.4.3",
         "countup.js": "^1.9.3",
         "emotion": "^9.2.12",
         "emotion-server": "^9.2.12",
         "express": "^4.16.3",
+        "jwt-decode": "^2.2.0",
         "next": "^7.0.2",
-        "nprogress": "^0.2.0",
         "prop-types": "^15.6.2",
         "react": "~16.6.3",
         "react-autosuggest": "^9.4.2",
@@ -32,7 +38,10 @@
         "react-ga": "^2.5.6",
         "react-modal": "^3.6.1",
         "rebass": "^3.0.0-9",
-        "recharts": "^1.4.1"
+        "recharts": "^1.4.1",
+        "redis": "^2.8.0",
+        "universal-cookie": "^3.0.7",
+        "winston": "^3.1.0"
     },
     "devDependencies": {
         "@babel/core": "^7.1.2",

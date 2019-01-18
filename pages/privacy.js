@@ -6,7 +6,7 @@ import { MainContent } from '../components/Layout/Content';
 import { Section, Text } from '../components/shared/styles/type';
 
 const Privacy = () => (
-  <Layout canonical="/privacy">
+  <Layout>
     <Head>
       <title>Privacy Policy | Comic Cruncher</title>
     </Head>

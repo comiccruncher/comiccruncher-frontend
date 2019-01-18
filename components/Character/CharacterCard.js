@@ -102,8 +102,15 @@ const SVGStyle = css({
   },
 });
 
+const getImage = (image, vendor_image, thumbnails) => {
+  if (thumbnails && (thumbnails.image || thumbnails.vendor_image)) {
+    return thumbnails.image ? thumbnails.image.medium : thumbnails.vendor_image.medium;
+  }
+  return image || vendor_image;
+};
+
 const CharacterImage = ({ name, image, vendor_image, thumbnails }) => {
-  return <img src={image ? thumbnails.image.large : thumbnails.vendor_image.large} alt={name} title={name} />;
+  return <img src={getImage(image, vendor_image, thumbnails)} alt={name} title={name} />;
 };
 
 CharacterImage.propTypes = {

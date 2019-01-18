@@ -27,16 +27,12 @@ const SearchLink = styled('a')({
 const CharacterSearchProps = PropTypes.shape({
   name: PropTypes.string.isRequired,
   other_name: PropTypes.string,
-  image: PropTypes.string,
-  vendor_image: PropTypes.string,
   thumbnails: CharacterThumbnailsProps,
 });
 
-const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
+const DisplayName = ({ name, other_name, thumbnails }) => (
   <React.Fragment>
-    {(image || vendor_image) && (
-      <SearchImg src={image ? thumbnails.image.small : thumbnails.vendor_image.small} alt={name} />
-    )}
+    {thumbnails && <SearchImg src={thumbnails.image.small || thumbnails.vendor_image.small} alt={name} />}
     <Text.SearchResult>
       <p>
         <strong>{name}</strong>
@@ -47,7 +43,7 @@ const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
 );
 
 DisplayName.propTypes = {
-  CharacterSearchProps,
+  ...CharacterSearchProps,
 };
 
 export const CharacterSearchResult = (props) => (
@@ -70,5 +66,5 @@ export const CharacterSearchResult = (props) => (
 CharacterSearchResult.propTypes = {
   slug: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  CharacterSearchProps,
+  ...CharacterSearchProps,
 };

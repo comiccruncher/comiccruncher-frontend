@@ -46,13 +46,11 @@ const FullCharacter = ({ showFooterText, character }) => {
                 ) &&
                 (vendor_description || (vendor_image && !image)) && (
                   <Text.Default>
-                    <p>
-                      <small>
-                        Data ({vendor_description && `biography`}
-                        {vendor_description && ` and `}
-                        image) provided by Marvel. &copy; 2019 Marvel
-                      </small>
-                    </p>
+                    <small>
+                      Data ({vendor_description && `biography`}
+                      {vendor_description && ` and `}
+                      image) provided by Marvel. &copy; 2019 Marvel
+                    </small>
                   </Text.Default>
                 )}
             </Box>

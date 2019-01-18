@@ -38,7 +38,6 @@ export const TrackExternalClick = (e, category, href) => {
 };
 
 export const TrackError = (description, isFatal) => {
-  console.log(description, isFatal);
   return ReactGA.exception({ description: description, fatal: isFatal });
 };
 
@@ -49,7 +48,7 @@ export const TrackErrorP = (description, isFatal) => {
 };
 
 export const TrackErrorWithEvent = (status_code, url, ...message) => {
-  Event(Categories.ERROR, status_code ? status_code.toString() : 'undefined', url);
+  Event(Categories.ERROR, status_code ? status_code.toString() + `: ${message}` : `${message}`, url);
 };
 
 export const TrackModal = (href) => {
