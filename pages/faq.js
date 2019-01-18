@@ -16,9 +16,7 @@ const FAQ = () => (
           <Section.Title>
             <h1>FAQ</h1>
           </Section.Title>
-          <Text.Default>
-            <p>This is the FAQ page!</p>
-          </Text.Default>
+          <Text.Default>This is the FAQ page!</Text.Default>
         </Box>
       </Flex>
     </MainContent>

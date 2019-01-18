@@ -46,10 +46,8 @@ const Trending = (props) => {
                   <h2>Trending Marvel Characters</h2>
                 </Section.Title>
                 <Text.Default>
-                  <p>
-                    This page shows trending Marvel characters by <strong>main</strong> appearances only (no alternate
-                    realities)!
-                  </p>
+                  This page shows trending Marvel characters by <strong>main</strong> appearances only (no alternate
+                  realities)!
                 </Text.Default>
               </Box>
             </Flex>
