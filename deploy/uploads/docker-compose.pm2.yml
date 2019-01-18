@@ -5,6 +5,11 @@ services:
     image: comiccruncher/frontend:test
     ports:
       - "3000:3000"
+    environment:
+      CC_REDIS_HOST: ${CC_REDIS_HOST}
+      CC_REDIS_PORT: ${CC_REDIS_PORT}
+      CC_REDIS_PASSWORD: ${CC_REDIS_PASSWORD}
+      NODE_ENV: production
   log:
     restart: always
     image: gliderlabs/logspout
