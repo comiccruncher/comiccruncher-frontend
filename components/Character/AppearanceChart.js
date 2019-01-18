@@ -7,7 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
 import { Brands } from '../shared/styles/colors';
-import { Text } from '../shared/styles/type';
+import { Text, UIFontStack } from '../shared/styles/type';
 import { Event } from '../ga/Tracker';
 import { withCache } from '../emotion/cache';
 
@@ -202,7 +202,7 @@ export default class AppearanceChart extends React.Component {
             handleAlternate={this.handleAlternate}
             isAlternate={isAlternate}
           />
-          <p>There was an error getting the chart: {error}</p>
+          <Text.Default>There was an error getting the chart: {error}</Text.Default>
         </React.Fragment>
       );
     }
@@ -214,7 +214,7 @@ export default class AppearanceChart extends React.Component {
           handleAlternate={this.handleAlternate}
           isAlternate={isAlternate}
         />
-        <ChartDiv>
+        <ChartDiv css={{fontFamily: UIFontStack}}>
           {comparison &&
             isAlternate && (
               <ResponsiveContainer minHeight={ChartHeight} width="100%">

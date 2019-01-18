@@ -1,4 +1,5 @@
 import React from 'react';
+import { Flex, Box } from 'rebass/emotion';
 import { Section, Text } from '../shared/styles/type';
 import { AppearancesProps, CharacterSyncLogsProps, FullCharacterProps } from './Types';
 import AppearanceChart from './AppearanceChart';
@@ -22,26 +23,40 @@ export const AppearancesSection = ({ character }) => {
             <Section.Title>
               <h3>Appearances per year</h3>
             </Section.Title>
-            <Section.Byline>
-              <Text.Default>
-                <p>
-                  <strong>{mainCounts + altCounts}</strong> total appearances
-                </p>
-                <p>
-                  <strong>{mainCounts}</strong> main appearances
-                </p>
-                <p>
-                  <strong>{altCounts}</strong> alternate appearances
-                </p>
+            <Flex flexWrap="wrap" alignItems="center" alignContent="center">
+              <Box width={[1, 1 / 3, 1 / 3]}>
+                <Section.Byline>
+                  <Text.Default>
+                    <strong>{mainCounts + altCounts}</strong> total appearances
+                  </Text.Default>
+                </Section.Byline>
+              </Box>
+              <Box width={[1, 1 / 3, 1 / 3]}>
+                <Section.Byline>
+                  <Text.Default>
+                    <strong>{mainCounts}</strong> main appearances
+                  </Text.Default>
+                </Section.Byline>
+              </Box>
+              <Box width={[1, 1 / 3, 1 / 3]}>
+                <Section.Byline>
+                  <Text.Default>
+                    <strong>{altCounts}</strong> alternate appearances
+                  </Text.Default>
+                </Section.Byline>
+              </Box>
+            </Flex>
+            <AppearanceChart character={character} />
+            <Flex flexWrap="wrap" alignItems="center" alignContent="center" py={16}>
+              <Box width={[1, 1 / 3, 1 / 3]}>
                 {lastSyncs && (
-                  <p>
+                  <Text.Default>
                     Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
                     {`with ${newIssues} new issues`}
-                  </p>
+                  </Text.Default>
                 )}
-              </Text.Default>
-            </Section.Byline>
-            <AppearanceChart character={character} />
+              </Box>
+            </Flex>
           </React.Fragment>
         )}
     </React.Fragment>

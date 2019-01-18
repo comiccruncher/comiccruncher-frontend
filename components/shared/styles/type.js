@@ -98,7 +98,7 @@ const SectionByline = styled.div({
   marginBottom: Spacing.Small,
 });
 
-const TextDefault = styled.div((props) => ({
+const TextDefault = styled.p((props) => ({
   color: UI.Text.Default,
   fontFamily: UIFontStack,
   lineHeight: 1.5,
