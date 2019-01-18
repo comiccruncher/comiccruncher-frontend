@@ -6,6 +6,7 @@ import Spacing from '../shared/styles/spacing';
 import { Text } from '../shared/styles/type';
 import { withCache } from '../emotion/cache';
 import { CharacterThumbnailsProps } from '../Character/Types';
+import { getImage } from '../Character/CharacterCard';
 
 const SearchResult = styled('div')`
   display: flex;
@@ -30,9 +31,9 @@ const CharacterSearchProps = PropTypes.shape({
   thumbnails: CharacterThumbnailsProps,
 });
 
-const DisplayName = ({ name, other_name, thumbnails }) => (
+const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
   <React.Fragment>
-    {thumbnails && <SearchImg src={thumbnails.image.small || thumbnails.vendor_image.small} alt={name} />}
+    {thumbnails && <SearchImg src={getImage(image, vendor_image, thumbnails, 'small')} alt={name} />}
     <Text.SearchResult>
       <p>
         <strong>{name}</strong>
@@ -48,7 +49,7 @@ DisplayName.propTypes = {
 
 export const CharacterSearchResult = (props) => (
   <div>
-    <span className={'suggestion-content ' + props.slug}>
+    <span className={'suggestion-content ' + encodeURIComponent(props.slug)}>
       <span className="name">
         <Link href={`/characters/${encodeURIComponent(props.slug)}`}>
           <SearchLink onClick={props.onClick}>
