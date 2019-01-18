@@ -102,7 +102,8 @@ const handleError = (req, res, err) => {
 
 export const getHomeProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
-  return Promise.all([axios.get(statsURL, opts), axios.get(charactersURL, opts)])
+  return axios
+    .all([axios.get(statsURL, opts), axios.get(charactersURL, opts)])
     .then(([stats, characters]) => {
       return {
         stats: stats.data,
