@@ -8,7 +8,7 @@ import { getCharacterProps } from './_utils';
 
 const Character = ({ meta, data }) => (
   <React.Fragment>
-    {meta.error ? (
+    {meta && meta.error ? (
       <Error status_code={meta.status_code} />
     ) : (
       <Layout>

@@ -45,7 +45,7 @@ const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
   return {
     headers: {
       Authorization: `Bearer ${cc_session_id}`,
-      'X-VISITOR-ID': cc_visitor_id,
+      'X-VISITOR-ID': cc_visitor_id || 0,
     },
     params: {
       key: 'batmansmellsbadly',
@@ -57,44 +57,47 @@ export const getCookieHeaders = (cookie) => {
   return getRequestHeaders(cookie.get('cc_session_id'), cookie.get('cc_visitor_id'));
 };
 
-const logError = (req, res, err, ...msg) => {
-  // if not a server render...
+const logError = (req, res, err) => {
+  // if not a server render
   if (!req && !res) {
     return;
   }
-  console.info(`REQUEST: path: ${req.path} method: ${req.method}`);
   if (!err) {
     return;
   }
+  // this block would be server-rendered below.
+  const winston = require('winston');
+  const logger = winston.createLogger({
+    level: 'info',
+    defaultMeta: { service: 'node' },
+    transports: new winston.transports.Console({
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json(), winston.format.align()),
+    }),
+  });
   if (err.response) {
     // Response coming from remote request.
-    console.error(
-      `ERROR: message: ${err.toString()} status code: ${err.response.status} error: ${JSON.stringify(
-        err.response.data
-      )}`
-    );
+    logger.error({ message: err.toString(), path: req.path, meta: err.response.data.meta || '' });
     return;
   }
   // No response back.. something else.
-  console.error(`ERROR: ${err.toString()}`);
-  if (msg.length > 0) {
-    console.info(`additional info: ${msg}`);
-  }
+  logger.error({ message: err.toString(), path: req.path });
 };
 
 const handleError = (req, res, err) => {
   logError(req, res, err);
   if (err && err.response) {
-    if (err.response.status === 404) {
-      // Send 404 request back to server.
-      res.statusCode = 404;
+    if (res) {
+      res.status(err.response.status);
     }
     return err.response.data;
+  }
+  if (res) {
+    res.status(502);
   }
   return { meta: { status_code: 502, error: 'No response received from remote server.' } };
 };
 
-export const getHomeProps = (req, res) => {
+export const getHomeProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
   return Promise.all([axios.get(statsURL, opts), axios.get(charactersURL, opts)])
     .then(([stats, characters]) => {
@@ -108,13 +111,13 @@ export const getHomeProps = (req, res) => {
       };
     })
     .catch((err) => {
-      return handleError(err);
+      return handleError(req, res, err);
     });
 };
 
-export const getMarvelProps = (req, res) => {
+export const getMarvelProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
-  return axios
+  return await axios
     .get(`${publishersURL}/marvel`, opts)
     .then((result) => {
       return result.data;
@@ -124,9 +127,9 @@ export const getMarvelProps = (req, res) => {
     });
 };
 
-export const getDCProps = (req, res) => {
+export const getDCProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
-  return axios
+  return await axios
     .get(`${publishersURL}/dc`, opts)
     .then((result) => {
       return result.data;
@@ -136,9 +139,9 @@ export const getDCProps = (req, res) => {
     });
 };
 
-export const getTrendingProps = (req, res) => {
+export const getTrendingProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
-  return axios
+  return await axios
     .get(`${publishersURL}/dc`, opts)
     .then((result) => {
       return result.data;
@@ -148,21 +151,14 @@ export const getTrendingProps = (req, res) => {
     });
 };
 
-export const getCharacterProps = (req, res) => {
+export const getCharacterProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
-  return axios
+  return await axios
     .get(`${charactersURL}/${encodeURIComponent(req.params.slug)}`, opts)
     .then((result) => {
       return result.data;
     })
     .catch((err) => {
-      if (err.response) {
-        // Copy response back to server.
-        res.statusCode = err.response.status;
-      } else {
-        // this is really bad..no server response at all.
-        res.statusCode = 500;
-      }
       return handleError(req, res, err);
     });
 };

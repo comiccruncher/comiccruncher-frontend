@@ -37,12 +37,13 @@ const Home = ({ meta, stats, characters }) => (
             <Section.Title>
               <h1>Popular Characters</h1>
             </Section.Title>
-            {meta.error && (
-              <ErrorDisplayTracker
-                status_code={meta.status_code}
-                error="Sorry, we couldn't load the characters. The issue has been logged!"
-              />
-            )}
+            {meta &&
+              meta.error && (
+                <ErrorDisplayTracker
+                  status_code={meta.status_code}
+                  error="Sorry, we couldn't load the characters. The issue has been logged!"
+                />
+              )}
           </Box>
         </Flex>
         {characters && <CharactersList characters={characters} referer="/" />}
