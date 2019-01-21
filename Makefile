@@ -4,21 +4,13 @@ NEXT_STATIC_DIR = _next/static
 
 NGINX_SERVER = aimee@68.183.27.114
 
-DOCKER_COMPOSE_NGINX = docker-compose -f ./deploy/uploads/docker-compose.nginx.yml
-
 DOCKER_COMPOSE_DEV = docker-compose -f docker-compose.yml
 
-DEPLOY_NGINX_COMMAND = ${DOCKER_COMPOSE_NGINX} up \
-	-d \
-	--build \
-	--remove-orphans \
-	--force-recreate
+DOCKER_COMPOSE_PM2 = docker-compose -f ./deploy/uploads/pm2/docker-compose.pm2.yml
 
-DOCKER_COMPOSE_PM2 = docker-compose -f ./deploy/uploads/docker-compose.pm2.yml
+DOCKER_COMPOSE_PM2_UP_CMD = docker-compose up -d --build
 
-DOCKER_COMPOSE_PM2_UP_CMD = ${DOCKER_COMPOSE_PM2} up -d --build --remove-orphans --force-recreate
-
-PM2_IMAGE = comiccruncher/frontend:test
+PM2_IMAGE = comiccruncher/frontend:latest
 
 PM2_SERVER1 = aimee@167.99.157.206
 PM2_SERVER2 = aimee@68.183.143.225
@@ -100,42 +92,31 @@ docker-push-pm2:
 docker-pull-pm2:
 	docker pull ${PM2_IMAGE}
 
-.PHONY: docker-compose-nginx
-docker-compose-up-nginx:
-	${DEPLOY_NGINX_COMMAND} ${DOCKER_COMPOSE_PM2_UP_CMD}
-
-.PHONY: docker-compose-nginx-stop
-docker-compose-nginx-stop:
-	${DOCKER_COMPOSE_NGINX} stop
-
-.PHONY: docker-compose-nginx-rm
-docker-compose-nginx-rm:
-	${DOCKER_COMPOSE_NGINX} rm
-
 .PHONY: remote-upload-nginx
 remote-upload-nginx:
-	scp -r ./deploy/uploads ${NGINX_SERVER}:~/deploy
+	scp -r ./deploy/uploads/nginx/* ${NGINX_SERVER}:~/
 
 .PHONY: remote-deploy-nginx
-remote-deploy-nginx-initial:
-	ssh ${NGINX_SERVER} "${DEPLOY_NGINX_COMMAND}"
+remote-deploy-nginx-initial: remote-upload-nginx
+	ssh ${NGINX_SERVER} 'sh deploy.sh'
 
 .PHONY: remote-deploy-pm2
-remote-deploy-pm2:
-	scp -r ./deploy/uploads ${PM2_SERVER1}:~/deploy
-	ssh ${PM2_SERVER1} "docker pull ${PM2_IMAGE} && ${DOCKER_COMPOSE_PM2_UP_CMD}"
-	scp -r ./deploy/uploads ${PM2_SERVER2}:~/deploy
-	ssh ${PM2_SERVER2} "docker pull ${PM2_IMAGE} && ${DOCKER_COMPOSE_PM2_UP_CMD}"
-	ssh ${PM2_SERVER2} "docker-compose -f ./deploy/uploads/docker-compose.redis.yml run --rm redis"
+remote-deploy-pm2-cmd:
+	scp -r ./deploy/uploads/pm2/* ${PM2_SERVER}:~/
+	ssh ${PM2_SERVER} "sh deploy.sh"
 
-.PHONY: docker-compose-pm2
-docker-compose-pm2:
-	${DOCKER_COMPOSE_PM2} -d --build --remove-orphans
+remote-deploy-pm2:
+	PM2_SERVER=${PM2_SERVER1} make remote-deploy-pm2-cmd
+	PM2_SERVER=${PM2_SERVER2} make remote-deploy-pm2-cmd
+	make remote-clear-redis
+
+remote-clear-redis:
+	ssh ${PM2_SERVER2} "docker-compose -f docker-compose.redis.yml run --rm redis"
 
 .PHONY: docker-reload-nginx
 docker-reload-nginx:
-	scp -r ./deploy/uploads ${NGINX_SERVER}:~/deploy
-	ssh ${NGINX_SERVER} "sh ~/deploy/uploads/nginx.sh"
+	scp -r ./deploy/uploads/nginx/* ${NGINX_SERVER}:~/
+	ssh ${NGINX_SERVER} "sh ~/nginx.sh"
 
 # Deploy pm2 and nginx Docker containers. 
 .PHONY: remote-deploy
