@@ -1,0 +1,58 @@
+version: "3.2"
+services:
+  pm2:
+    depends_on:
+      - filebeat
+      - telegraf
+    container_name: pm2
+    restart: always
+    image: comiccruncher/frontend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      CC_REDIS_HOST: ${CC_REDIS_HOST}
+      CC_REDIS_PORT: ${CC_REDIS_PORT}
+      CC_REDIS_PASSWORD: ${CC_REDIS_PASSWORD}
+      NODE_ENV: production
+  filebeat:
+    command: ["--strict.perms=false"]
+    restart: always
+    user: root
+    container_name: filebeat
+    image: docker.elastic.co/beats/filebeat:6.5.4
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - filebeat:/usr/share/filebeat/data
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+    logging:
+      options:
+        max-size: "25M"
+        max-file: "3"
+    environment:
+      HOSTNAME: "${HOSTNAME}"
+      ELASTIC_HOST: "10.136.103.144:9200"
+      ELASTIC_USER: "${CC_ELASTIC_USER}"
+      ELASTIC_PASSWORD: "${CC_ELASTIC_PASSWORD}"
+      KIBANA_HOST: "${CC_KIBANA_HOST}"
+      KIBANA_USER: "${CC_KIBANA_USER}"
+      KIBANA_PASSWORD: "${CC_KIBANA_PASSWORD}"
+  telegraf:
+    container_name: telegraf
+    restart: always
+    image: telegraf:1.9-alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - type: bind
+        source: /run/utmp
+        target: /host/var/run/utmp
+    logging:
+      options:
+        max-size: "25M"
+        max-file: "3"
+    environment:
+      HOSTNAME: "${HOSTNAME}"
+      HOST_VAR: "/host/var"
+volumes:
+  filebeat:
