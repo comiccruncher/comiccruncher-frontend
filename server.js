@@ -129,7 +129,7 @@ app
     });
 
     server.get('/dc', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/marvel', req.params) : app.render(req, res, '/dc', req.params);
+      USE_CACHE ? renderAndCache(req, res, '/dc', req.params) : app.render(req, res, '/dc', req.params);
     });
 
     server.get('/trending', (req, res) => {
