@@ -62,7 +62,7 @@ export const getCookieHeaders = (cookie) => {
 
 const logError = (req, res, err) => {
   // if not a server render
-  if (!req && !res) {
+  if (!req || !res) {
     return;
   }
   if (!err) {
