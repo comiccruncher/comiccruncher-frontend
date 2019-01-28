@@ -44,7 +44,7 @@ injectGlobal`
   .react-autosuggest__container {
     position: relative;
     font-family: ${UIFontStack};
-    font-weight: 300;
+    font-weight: 400;
     font-size: 14px;
   }
 
@@ -109,11 +109,10 @@ injectGlobal`
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-  }
-
-  .suggestion-content p {
     font-size: 14px;
     line-height: 1.4;
+    font-family: ${UIFontStack};
+    font-weight: 400;
   }
 
   .name {

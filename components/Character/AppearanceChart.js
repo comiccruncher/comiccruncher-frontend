@@ -46,31 +46,17 @@ const FormStyle = styled.form({
 const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
 const getMainKey = (slug) => `main-${slug}`;
 const getAltKey = (slug) => `alt-${slug}`;
-const mainFilter = (item) => item.category === 'main';
-const altFilter = (item) => item.category === 'alternate';
-
-const getAppearanceCounts = (key, appearances) => {
-  if (!appearances || appearances.length === 0) {
-    return [];
-  }
-  const mainFiltered = appearances.find(mainFilter);
-  const mainMapped = mainFiltered.aggregates.map((item) => {
+// we'll need to map the apperance aggregates with unique keys
+// for bar chart to work with comparisons.
+const mapAppearances = (appearances) => {
+  const { slug, aggregates } = appearances;
+  return aggregates.map((item) => {
     const obj = {};
-    obj[getMainKey(key)] = item.count;
+    obj[getMainKey(slug)] = item.main;
+    obj[getAltKey(slug)] = item.alternate;
     obj['year'] = item.year;
     return obj;
   });
-  const altFiltered = appearances.find(altFilter);
-  const altMapped = altFiltered.aggregates.map((item) => {
-    const obj = {};
-    obj[getAltKey(key)] = item.count;
-    obj['year'] = item.year;
-    return obj;
-  });
-
-  const data = [];
-  mainMapped.forEach((item, i) => data.push(Object.assign({}, item, altMapped[i])));
-  return data;
 };
 
 const getMissingYears = (slug, largestYear, smallestYear) => {
@@ -137,19 +123,21 @@ export default class AppearanceChart extends React.Component {
   componentDidMount() {
     const { character } = this.props;
     const publisher = character.publisher.slug;
-    const data = getAppearanceCounts(character.slug, character.appearances);
+    const data = mapAppearances(character.appearances);
     this.setState({ data: data, color: publisher === 'dc' ? Brands.DC : Brands.Marvel });
   }
 
   onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     event.preventDefault();
-    const { comparison } = this.state;
-    if (comparison && comparison.slug == suggestion.slug) {
+    const { character } = this.props;
+    const { slug } = suggestion;
+    // no appearances for current character, then pass.
+    if (character.appearances.aggregates.length === 0 || slug === character.slug) {
+      Event('appearances', 'compare', `${this.props.character.slug}:${slug}`);
       return;
     }
-    const suggestionSlug = suggestion.slug;
     axios
-      .get(`${charactersURL}/${suggestionSlug}`, getCookieHeaders(cookies))
+      .get(`${charactersURL}/${slug}`, getCookieHeaders(cookies))
       .then((res) => {
         this.setState({ error: null });
         const meta = res.data.meta;
@@ -157,7 +145,10 @@ export default class AppearanceChart extends React.Component {
           throw new Error(meta.error);
         }
         const reqCharacter = res.data.data;
-        const counts = getAppearanceCounts(reqCharacter.slug, reqCharacter.appearances);
+        const counts = mapAppearances(reqCharacter.appearances);
+        if (counts.length === 0) {
+          return;
+        }
         const comparisonMinYear = counts[0].year;
         const originalCharacter = this.props.character;
         const originalData = this.state.data;
@@ -174,7 +165,7 @@ export default class AppearanceChart extends React.Component {
           ),
         })),
           () => {
-            Event('search:appearances', 'click', `${this.props.character.slug}:${suggestionSlug}`);
+            Event('appearances', 'compare', `${this.props.character.slug}:${slug}`);
           };
       })
       .catch((error) => {
@@ -221,7 +212,7 @@ export default class AppearanceChart extends React.Component {
         />
         <ChartDiv>
           {comparison &&
-            isAlternate && (
+            (isAlternate ? (
               <ResponsiveContainer minHeight={ChartHeight} width="100%">
                 <BarChart data={comparisonData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -245,9 +236,7 @@ export default class AppearanceChart extends React.Component {
                   />
                 </BarChart>
               </ResponsiveContainer>
-            )}
-          {comparison &&
-            !isAlternate && (
+            ) : (
               <ResponsiveContainer minHeight={ChartHeight} width="100%">
                 <BarChart data={comparisonData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -264,9 +253,9 @@ export default class AppearanceChart extends React.Component {
                   />
                 </BarChart>
               </ResponsiveContainer>
-            )}
+            ))}
           {!comparison &&
-            isAlternate && (
+            (isAlternate ? (
               <ResponsiveContainer minHeight={ChartHeight} width="100%">
                 <BarChart data={comparisonData.length > 0 ? comparisonData : data}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -278,9 +267,7 @@ export default class AppearanceChart extends React.Component {
                   <Bar dataKey={altKey} fill="#969696" stackId="a" name="Alternate" />
                 </BarChart>
               </ResponsiveContainer>
-            )}
-          {!comparison &&
-            !isAlternate && (
+            ) : (
               <ResponsiveContainer minHeight={ChartHeight} width="100%">
                 <BarChart data={comparisonData.length > 0 ? comparisonData : data}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -291,8 +278,7 @@ export default class AppearanceChart extends React.Component {
                   <Bar dataKey={mainKey} fill={color} stackId="a" name="Main" />
                 </BarChart>
               </ResponsiveContainer>
-            )}
-          ;
+            ))}
         </ChartDiv>
       </React.Fragment>
     );

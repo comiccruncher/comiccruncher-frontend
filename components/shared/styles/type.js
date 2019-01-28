@@ -185,17 +185,6 @@ const Label = {};
 Type.Label = Label;
 Label.Default = LabelDefault;
 
-export {
-  UIFontStack,
-  BangersFontStack,
-  Size,
-  Weight,
-  Title,
-  Section,
-  Text,
-  Label,
-  HeadingH1,
-  HeadingH2,
-};
+export { UIFontStack, BangersFontStack, Size, Weight, Title, Section, Text, Label, HeadingH1, HeadingH2 };
 
 export default Type;

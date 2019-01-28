@@ -69,11 +69,15 @@ const BlankImg = styled(ImgContainer)({
   },
 });
 
+const StyledFlex = styled(Flex)({
+  minHeight: 300,
+});
+
 export const CharacterHeader = ({ name, other_name, image, background }) => {
   return (
     <React.Fragment>
       <Header background="#fff" overflow="hidden">
-        <Flex flexWrap="wrap" justifyContent="space-between" alignContent="center">
+        <StyledFlex flexWrap="wrap" justifyContent="space-between" alignContent="center">
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
             {image ? (
               <CharacterImg src={image} alt={`${name} profile image`} />
@@ -89,7 +93,7 @@ export const CharacterHeader = ({ name, other_name, image, background }) => {
             bg={background}
           >
             <Flex justifyContent="space-between" alignItems="center" alignContent="center">
-              <Box flex="1 0 auto">
+              <Box>
                 <HeaderTitle>
                   <Title.Large>
                     <h1>{name}</h1>
@@ -103,7 +107,7 @@ export const CharacterHeader = ({ name, other_name, image, background }) => {
               </Box>
             </Flex>
           </Box>
-        </Flex>
+        </StyledFlex>
       </Header>
     </React.Fragment>
   );
