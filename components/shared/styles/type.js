@@ -4,9 +4,9 @@ import Spacing from './spacing';
 import Responsive from './responsive';
 
 const UIFontStack =
-  'Inter UI, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
+  'Inter UI, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
 const BangersFontStack =
-  'Bangers, -apple-system, BlinkMacSystemFont, "Comic Sans MS", cursive, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
+  'Bangers, -apple-system, BlinkMacSystemFont, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
 
 const Size = {
   XXLarge: 120,
@@ -18,6 +18,7 @@ const Size = {
 };
 
 const Weight = {
+  Light: 200,
   Normal: 400,
   Medium: 500,
   Bold: 700,

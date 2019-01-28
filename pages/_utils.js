@@ -61,7 +61,8 @@ export const getCookieHeaders = (cookie) => {
 };
 
 const logError = (req, res, err) => {
-  // if not a server render
+  // if not a server render... must use || and not && to fix bug
+  // for some browsers when using back button ¯\_(ツ)_/¯
   if (!req || !res) {
     return;
   }

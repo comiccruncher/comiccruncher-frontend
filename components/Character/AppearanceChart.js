@@ -18,9 +18,11 @@ const cookies = new Cookies();
 const ChartHeight = 400;
 
 const ChartDiv = styled.div({
+  fontFamily: UIFontStack,
   height: `${ChartHeight}px`,
   marginLeft: '-60px',
   marginRight: '-25px',
+  fontSize: '.8em',
 });
 
 const SearchDiv = styled.div({
@@ -217,7 +219,7 @@ export default class AppearanceChart extends React.Component {
           handleAlternate={this.handleAlternate}
           isAlternate={isAlternate}
         />
-        <ChartDiv css={{fontFamily: UIFontStack}}>
+        <ChartDiv>
           {comparison &&
             isAlternate && (
               <ResponsiveContainer minHeight={ChartHeight} width="100%">
