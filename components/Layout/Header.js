@@ -3,13 +3,12 @@ import styled from 'react-emotion';
 import { UI } from '../shared/styles/colors';
 import Responsive from '../shared/styles/responsive';
 import Spacing from '../shared/styles/spacing';
-import Lines from '../shared/components/Lines';
 
 const HeaderSection = styled('header')((props) => ({
   overflow: props.overflow || 'visible',
   position: 'relative',
   background: props.background || UI.Background.RedGradient,
-  minHeight: '420px',
+  minHeight: '300px',
   textAlign: props.textAlign || 'center',
   padding: Spacing.xxxLarge,
   [Responsive.Mobile]: {
