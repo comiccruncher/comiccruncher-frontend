@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { Box, Flex } from 'rebass/emotion';
@@ -27,7 +27,7 @@ const getHeaderImg = (image, vendor_image, thumbnails) => {
 const FullCharacter = ({ showFooterText, character }) => {
   const { name, other_name, vendor_image, image, thumbnails, publisher, vendor_description, description } = character;
   return (
-    <React.Fragment>
+    <Fragment>
       <HTMLTitle name={character.name} other_name={character.other_name} />
       <Wrapper>
         <CharacterHeader
@@ -57,7 +57,7 @@ const FullCharacter = ({ showFooterText, character }) => {
           </Flex>
         </WithFooter>
       </Wrapper>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'react-emotion';
@@ -32,7 +32,7 @@ const CharacterSearchProps = PropTypes.shape({
 });
 
 const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
-  <React.Fragment>
+  <Fragment>
     {thumbnails && <SearchImg src={getImage(image, vendor_image, thumbnails, 'small')} alt={name} />}
     <Text.SearchResult>
       <p>
@@ -40,7 +40,7 @@ const DisplayName = ({ name, other_name, image, vendor_image, thumbnails }) => (
       </p>
       {other_name && <p>{other_name}</p>}
     </Text.SearchResult>
-  </React.Fragment>
+  </Fragment>
 );
 
 DisplayName.propTypes = {

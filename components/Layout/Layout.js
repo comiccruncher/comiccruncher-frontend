@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import getConfig from 'next/config';
@@ -272,7 +272,7 @@ injectGlobal`
 `;
 
 const Layout = ({ children, navBackground, router }) => (
-  <React.Fragment>
+  <Fragment>
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -302,7 +302,7 @@ const Layout = ({ children, navBackground, router }) => (
       <Navigation background={navBackground} activeHref={router.asPath} />
       {children}
     </div>
-  </React.Fragment>
+  </Fragment>
 );
 
 Layout.propTypes = {

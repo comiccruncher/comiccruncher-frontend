@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -47,12 +47,12 @@ const TrackCC = (e) => {
 };
 
 const Footer = ({ showFooterText = true }) => (
-  <React.Fragment>
+  <Fragment>
     <Flex>
       <Box width={1}>
         <FooterContainer>
           {showFooterText && (
-            <React.Fragment>
+            <Fragment>
               <ul>
                 <li>
                   <Link href={`/`}>
@@ -77,12 +77,12 @@ const Footer = ({ showFooterText = true }) => (
                   <Github width="32" height="32" />
                 </a>
               </IconsContainer>
-            </React.Fragment>
+            </Fragment>
           )}
         </FooterContainer>
       </Box>
     </Flex>
-  </React.Fragment>
+  </Fragment>
 );
 
 Footer.propTypes = {

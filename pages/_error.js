@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { Flex, Box } from 'rebass/emotion';
@@ -27,7 +27,7 @@ const ErrorText = {
 const Error = ({ status_code }) => {
   const { title, content } = StatusCodes.includes(status_code) ? ErrorText[status_code] : ErrorText[500];
   return (
-    <React.Fragment>
+    <Fragment>
       <Head>
         <title>{title} | Comic Cruncher</title>
       </Head>
@@ -43,7 +43,7 @@ const Error = ({ status_code }) => {
           </MainPageFlex>
         </WithFooter>
       </Layout>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
 import { Flex, Box } from 'rebass/emotion';
 import styled from 'react-emotion';
@@ -22,7 +22,7 @@ const InnerHeader = styled(Box)({
 });
 
 const Home = ({ meta, stats, characters }) => (
-  <React.Fragment>
+  <Fragment>
     <Layout>
       <Head>
         <title>Home | All-Time Popular Characters | Comic Cruncher</title>
@@ -54,7 +54,7 @@ const Home = ({ meta, stats, characters }) => (
         {characters && <CharactersList characters={characters} referer="/" />}
       </WithFooter>
     </Layout>
-  </React.Fragment>
+  </Fragment>
 );
 
 Home.getInitialProps = async ({ req, res }) => {

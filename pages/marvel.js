@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
-import { Flex, Box } from 'rebass/emotion';
+import { Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Error from './_error';
 import Layout from '../components/Layout/Layout';
@@ -15,7 +15,7 @@ import { getMarvelProps } from './_utils';
 const Marvel = (props) => {
   const { meta, data } = props;
   return (
-    <React.Fragment>
+    <Fragment>
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
@@ -46,7 +46,7 @@ const Marvel = (props) => {
           </WithFooter>
         </Layout>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

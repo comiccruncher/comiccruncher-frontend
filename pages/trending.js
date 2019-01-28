@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
 import { Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ import { getTrendingProps } from './_utils';
 const Trending = (props) => {
   const { meta, data } = props;
   return (
-    <React.Fragment>
+    <Fragment>
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
@@ -46,7 +46,7 @@ const Trending = (props) => {
           </WithFooter>
         </Layout>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

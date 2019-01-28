@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
@@ -84,7 +84,7 @@ const getComparisonData = (slug, originalMinYear, comparisonMinYear, comparisonD
 };
 
 const SearchComponent = ({ onSuggestedSelected, isAlternate, handleAlternate }) => (
-  <React.Fragment>
+  <Fragment>
     <SearchDiv>
       <Search id="compare" placeholder="Compare to another character." onSuggestionSelected={onSuggestedSelected} />
       <FormStyle>
@@ -96,7 +96,7 @@ const SearchComponent = ({ onSuggestedSelected, isAlternate, handleAlternate }) 
         </label>
       </FormStyle>
     </SearchDiv>
-  </React.Fragment>
+  </Fragment>
 );
 
 SearchComponent.propTypes = {
@@ -192,19 +192,19 @@ export default class AppearanceChart extends React.Component {
 
     if (error) {
       return (
-        <React.Fragment>
+        <Fragment>
           <SearchComponent
             onSuggestedSelected={this.onSuggestedSelected}
             handleAlternate={this.handleAlternate}
             isAlternate={isAlternate}
           />
           <Text.Default>There was an error getting the chart: {error}</Text.Default>
-        </React.Fragment>
+        </Fragment>
       );
     }
 
     return (
-      <React.Fragment>
+      <Fragment>
         <SearchComponent
           onSuggestedSelected={this.onSuggestedSelected}
           handleAlternate={this.handleAlternate}
@@ -280,7 +280,7 @@ export default class AppearanceChart extends React.Component {
               </ResponsiveContainer>
             ))}
         </ChartDiv>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

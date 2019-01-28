@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
 import { CharacterProps, CharacterThumbnailsProps } from './Types';
@@ -121,7 +121,7 @@ CharacterImage.propTypes = {
 };
 
 export const CharacterCard = ({ character, isLoading }) => (
-  <React.Fragment>
+  <Fragment>
     <Card publisher={character.publisher}>
       {isLoading && (
         <LoadingBG>
@@ -138,7 +138,7 @@ export const CharacterCard = ({ character, isLoading }) => (
       )}
       <DisplayName stats={character.stats} name={character.name} />
     </Card>
-  </React.Fragment>
+  </Fragment>
 );
 
 CharacterCard.propTypes = {

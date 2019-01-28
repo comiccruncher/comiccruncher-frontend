@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'react-emotion';
 import { UI } from '../shared/styles/colors';
 import Responsive from '../shared/styles/responsive';
@@ -26,18 +26,16 @@ const GenericHeader = styled('header')((props) => ({
 
 // A generic fluid header with options to customize the CSS.
 export const Header = (props) => (
-  <React.Fragment>
-    <GenericHeader {...props}>
-      {props.children}
-    </GenericHeader>
-  </React.Fragment>
+  <Fragment>
+    <GenericHeader {...props}>{props.children}</GenericHeader>
+  </Fragment>
 );
 
 // The main header for the frontpage.
 export const MainHeader = (props) => (
-  <React.Fragment>
+  <Fragment>
     <HeaderSection background={props.background} textAlign={props.textAlign}>
       {props.children}
     </HeaderSection>
-  </React.Fragment>
+  </Fragment>
 );

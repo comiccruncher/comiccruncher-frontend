@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import CountUp from 'react-countup';
 import { Flex } from 'rebass/emotion';
 import { Title, Text } from '../shared/styles/type';
@@ -9,10 +9,10 @@ export const CharacterStats = ({ publisher, stats }) => {
   const allTime = stats ? stats.find((stat) => stat.category === 'all_time') : null;
   const main = stats ? stats.find((stat) => stat.category === 'main') : null;
   return (
-    <React.Fragment>
+    <Fragment>
       {allTime &&
         main && (
-          <React.Fragment>
+          <Fragment>
             <Flex flexWrap={'wrap'} mt={30} mb={30}>
               <StatBox width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
                 <Title.Red>
@@ -39,9 +39,9 @@ export const CharacterStats = ({ publisher, stats }) => {
                 <Text.Default bold>avg issues/year</Text.Default>
               </StatBox>
             </Flex>
-          </React.Fragment>
+          </Fragment>
         )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Flex, Box } from 'rebass/emotion';
 import { Section, Text } from '../shared/styles/type';
 import { FullCharacterProps } from './Types';
@@ -15,9 +15,9 @@ export const AppearancesSection = ({ character }) => {
   const lastSyncs = last_syncs ? last_syncs.slice(0, 2) : [];
   const newIssues = lastSyncs.length == 2 ? lastSyncs[0].num_issues - lastSyncs[1].num_issues : 0;
   return (
-    <React.Fragment>
+    <Fragment>
       {appearances && (
-        <React.Fragment>
+        <Fragment>
           <Section.Title>
             <h3>Appearances per year</h3>
           </Section.Title>
@@ -55,9 +55,9 @@ export const AppearancesSection = ({ character }) => {
               )}
             </Box>
           </Flex>
-        </React.Fragment>
+        </Fragment>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 
