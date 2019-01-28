@@ -277,8 +277,7 @@ const Layout = ({ children, navBackground, router }) => (
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
-      <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
+      <link href={`${cdnURL}/static/assets/font.css`} rel="stylesheet" />
       <link rel="apple-touch-icon-precomposed" sizes="57x57" href={`${cdnURL}/apple-touch-icon-57x57.png`} />
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href={`${cdnURL}/apple-touch-icon-114x114.png`} />
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href={`${cdnURL}/apple-touch-icon-72x72.png`} />
