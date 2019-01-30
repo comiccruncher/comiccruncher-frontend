@@ -146,7 +146,6 @@ export default class AppearanceChart extends React.Component {
   render() {
     const { character } = this.props;
     const { error, comparison, isAlternate, comparisonData } = this.state;
-    console.log(character.appearances.aggregates);
     return (
       <Fragment>
         <SearchDiv>
