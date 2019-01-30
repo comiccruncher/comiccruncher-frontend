@@ -1,26 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { FullCharacterProps } from './Types';
 import Search from '../Search/Search';
-import { Brands } from '../shared/styles/colors';
 import { Text, UIFontStack } from '../shared/styles/type';
 import { Event } from '../ga/Tracker';
 import { getCookieHeaders } from '../../pages/_utils';
+import { SingularChart, DualChart } from './Charts';
 import { withCache } from '../emotion/cache';
 
 const cookies = new Cookies();
 
-const ChartHeight = 400;
-
 const ChartDiv = styled.div({
   fontFamily: UIFontStack,
-  height: `${ChartHeight}px`,
-  marginLeft: '-60px',
+  marginLeft: '-35px',
   marginRight: '-25px',
   fontSize: '.8em',
 });
@@ -44,79 +39,53 @@ const FormStyle = styled.form({
   },
 });
 const charactersURL = getConfig().publicRuntimeConfig.API.charactersURL;
-const getMainKey = (slug) => `main-${slug}`;
-const getAltKey = (slug) => `alt-${slug}`;
-const mainFilter = (item) => item.category === 'main';
-const altFilter = (item) => item.category === 'alternate';
 
-const getAppearanceCounts = (key, appearances) => {
-  if (!appearances || appearances.length === 0) {
-    return [];
-  }
-  const mainFiltered = appearances.find(mainFilter);
-  const mainMapped = mainFiltered.aggregates.map((item) => {
-    const obj = {};
-    obj[getMainKey(key)] = item.count;
-    obj['year'] = item.year;
-    return obj;
-  });
-  const altFiltered = appearances.find(altFilter);
-  const altMapped = altFiltered.aggregates.map((item) => {
-    const obj = {};
-    obj[getAltKey(key)] = item.count;
-    obj['year'] = item.year;
-    return obj;
-  });
-
-  const data = [];
-  mainMapped.forEach((item, i) => data.push(Object.assign({}, item, altMapped[i])));
-  return data;
-};
-
-const getMissingYears = (slug, largestYear, smallestYear) => {
-  // We'll have to push items to the beginning of the list.
-  // 1963 ... to 1979.
+/**
+ * Fills 0's for between the largest and greatest year.
+ *
+ * @param {int} largestYear
+ * @param {int} smallestYear
+ */
+const fillZeros = (largestYear, smallestYear) => {
   const numItems = largestYear - smallestYear;
   const filledYears = [];
   for (let i = 0; i < numItems; i++) {
-    const obj = {};
-    obj[getMainKey(slug)] = 0;
-    obj['year'] = smallestYear + i;
-    obj[getAltKey(slug)] = 0;
-    filledYears.push(obj);
+    filledYears.push({
+      main: 0,
+      year: smallestYear + i,
+      alternate: 0,
+    });
   }
   return filledYears;
 };
 
-const getComparisonData = (slug, originalMinYear, comparisonMinYear, comparisonData, originalData) => {
-  const filled = getMissingYears(slug, originalMinYear, comparisonMinYear);
-  const newData = originalData.slice();
-  newData.unshift(...filled);
-  const newComparisonData = [];
-  newData.forEach((item, i) => newComparisonData.push(Object.assign({}, item, comparisonData[i])));
-  return newComparisonData;
-};
-
-const SearchComponent = ({ onSuggestedSelected, isAlternate, handleAlternate }) => (
-  <React.Fragment>
-    <SearchDiv>
-      <Search id="compare" placeholder="Compare to another character." onSuggestionSelected={onSuggestedSelected} />
-      <FormStyle>
-        <label>
-          <Text.Default>
-            <input type="checkbox" checked={isAlternate} onChange={handleAlternate} />
-            <span>Alternate Realities</span>
-          </Text.Default>
-        </label>
-      </FormStyle>
-    </SearchDiv>
-  </React.Fragment>
-);
-
-SearchComponent.propTypes = {
-  onSuggestedSelected: PropTypes.func.isRequired,
-  isAlternate: PropTypes.bool.isRequired,
-  handleAlternate: PropTypes.func.isRequired,
+const composeComparisonData = (original, comparison) => {
+  // if 2011 (original) > 1979 (comparison) ... means we want to backfill the original data.
+  const a = original.appearances.aggregates;
+  const b = comparison.appearances.aggregates;
+  const aYear = a[0].year;
+  const bYear = b[0].year;
+  let newData = [];
+  let missingYears = [];
+  const backFillOriginal = aYear > bYear;
+  if (backFillOriginal) {
+    // backfill original data
+    missingYears = fillZeros(aYear, bYear);
+    newData = a.slice();
+  } else {
+    missingYears = fillZeros(bYear, aYear);
+    newData = b.slice();
+  }
+  newData.unshift(...missingYears);
+  return newData.map((e, i) => {
+    return {
+      main: backFillOriginal ? newData[i].main : a[i].main,
+      alternate: backFillOriginal ? newData[i].alternate : a[i].alternate,
+      comparisonMain: backFillOriginal ? b[i].main : newData[i].main,
+      comparisonAlternate: backFillOriginal ? b[i].alternate : newData[i].alternate,
+      year: backFillOriginal ? newData[i].year : a[i].year,
+    };
+  });
 };
 
 export default class AppearanceChart extends React.Component {
@@ -126,30 +95,23 @@ export default class AppearanceChart extends React.Component {
 
   state = {
     comparison: null,
-    data: [],
     comparisonData: [],
     isAlternate: true,
-    isMain: true,
-    color: Brands.Marvel,
     error: null,
   };
 
-  componentDidMount() {
-    const { character } = this.props;
-    const publisher = character.publisher.slug;
-    const data = getAppearanceCounts(character.slug, character.appearances);
-    this.setState({ data: data, color: publisher === 'dc' ? Brands.DC : Brands.Marvel });
-  }
-
-  onSuggestedSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+  onSuggestedSelected = (event, { suggestion }) => {
     event.preventDefault();
-    const { comparison } = this.state;
-    if (comparison && comparison.slug == suggestion.slug) {
+    const { character } = this.props;
+    const { slug } = suggestion;
+    const aggregates = character.appearances.aggregates;
+    // no appearances for current character, then pass.
+    if (aggregates.length === 0 || slug === character.slug) {
+      Event('appearances', 'compare', `${character.slug}:${slug}`);
       return;
     }
-    const suggestionSlug = suggestion.slug;
     axios
-      .get(`${charactersURL}/${suggestionSlug}`, getCookieHeaders(cookies))
+      .get(`${charactersURL}/${slug}`, getCookieHeaders(cookies))
       .then((res) => {
         this.setState({ error: null });
         const meta = res.data.meta;
@@ -157,24 +119,12 @@ export default class AppearanceChart extends React.Component {
           throw new Error(meta.error);
         }
         const reqCharacter = res.data.data;
-        const counts = getAppearanceCounts(reqCharacter.slug, reqCharacter.appearances);
-        const comparisonMinYear = counts[0].year;
-        const originalCharacter = this.props.character;
-        const originalData = this.state.data;
-        const originalMinYear = originalData[0].year;
-        const originalIsGreater = originalMinYear > comparisonMinYear;
         this.setState((prevState) => ({
           comparison: reqCharacter,
-          comparisonData: getComparisonData(
-            originalIsGreater ? originalCharacter.slug : reqCharacter.slug,
-            originalIsGreater ? originalMinYear : comparisonMinYear,
-            originalIsGreater ? comparisonMinYear : originalMinYear,
-            originalIsGreater ? counts : originalData,
-            originalIsGreater ? originalData : counts
-          ),
+          comparisonData: composeComparisonData(character, reqCharacter),
         })),
           () => {
-            Event('search:appearances', 'click', `${this.props.character.slug}:${suggestionSlug}`);
+            Event('appearances', 'compare', `${character.slug}:${slug}`);
           };
       })
       .catch((error) => {
@@ -194,107 +144,42 @@ export default class AppearanceChart extends React.Component {
   };
 
   render() {
-    const c = this.props.character;
-    const mainKey = getMainKey(c.slug);
-    const altKey = getAltKey(c.slug);
-    const { error, comparison, isAlternate, comparisonData, data, color } = this.state;
-
-    if (error) {
-      return (
-        <React.Fragment>
-          <SearchComponent
-            onSuggestedSelected={this.onSuggestedSelected}
-            handleAlternate={this.handleAlternate}
-            isAlternate={isAlternate}
-          />
-          <Text.Default>There was an error getting the chart: {error}</Text.Default>
-        </React.Fragment>
-      );
-    }
-
+    const { character } = this.props;
+    const { error, comparison, isAlternate, comparisonData } = this.state;
     return (
-      <React.Fragment>
-        <SearchComponent
-          onSuggestedSelected={this.onSuggestedSelected}
-          handleAlternate={this.handleAlternate}
-          isAlternate={isAlternate}
-        />
+      <Fragment>
+        <SearchDiv>
+          <Search
+            id="compare"
+            placeholder="Compare to another character."
+            onSuggestionSelected={this.onSuggestedSelected}
+          />
+        </SearchDiv>
+        <FormStyle>
+          <label>
+            <Text.Default>
+              <input type="checkbox" checked={isAlternate} onChange={this.handleAlternate} />
+              <span>Alternate Realities</span>
+            </Text.Default>
+          </label>
+        </FormStyle>
         <ChartDiv>
-          {comparison &&
-            isAlternate && (
-              <ResponsiveContainer minHeight={ChartHeight} width="100%">
-                <BarChart data={comparisonData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" name="Year" />
-                  <YAxis type="number" />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey={mainKey} fill={color} stackId="a" name={`Main (${c.name})`} />
-                  <Bar dataKey={altKey} fill="#969696" stackId="a" name={`Alternate (${c.name})`} />
-                  <Bar
-                    dataKey={getMainKey(comparison.slug)}
-                    fill="red"
-                    stackId="b"
-                    name={`Main (${comparison.name})`}
-                  />
-                  <Bar
-                    dataKey={getAltKey(comparison.slug)}
-                    fill="orange"
-                    stackId="b"
-                    name={`Alternate (${comparison.name})`}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          {comparison &&
-            !isAlternate && (
-              <ResponsiveContainer minHeight={ChartHeight} width="100%">
-                <BarChart data={comparisonData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" name="Year" />
-                  <YAxis type="number" />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey={mainKey} fill={color} stackId="a" name={`Main (${c.name})`} />
-                  <Bar
-                    dataKey={getMainKey(comparison.slug)}
-                    fill="#969696"
-                    stackId="b"
-                    name={`Main (${comparison.name})`}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          {!comparison &&
-            isAlternate && (
-              <ResponsiveContainer minHeight={ChartHeight} width="100%">
-                <BarChart data={comparisonData.length > 0 ? comparisonData : data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" name="Year" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey={mainKey} fill={color} stackId="a" name="Main" />
-                  <Bar dataKey={altKey} fill="#969696" stackId="a" name="Alternate" />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          {!comparison &&
-            !isAlternate && (
-              <ResponsiveContainer minHeight={ChartHeight} width="100%">
-                <BarChart data={comparisonData.length > 0 ? comparisonData : data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" name="Year" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey={mainKey} fill={color} stackId="a" name="Main" />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          ;
+          {!error ? (
+            !comparison ? (
+              <SingularChart showAlternate={isAlternate} character={character} />
+            ) : (
+              <DualChart
+                composedData={comparisonData}
+                character={character}
+                comparison={comparison}
+                showAlternate={isAlternate}
+              />
+            )
+          ) : (
+            <Text.Default>There was an error getting the chart: {error}</Text.Default>
+          )}
         </ChartDiv>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { Flex, Box } from 'rebass/emotion';
 import Layout from '../components/Layout/Layout';
-import { MainContent } from '../components/Layout/Content';
+import { WithFooter, MainPageFlex } from '../components/Layout/Content';
 import { Title } from '../components/shared/styles/type';
 import ErrorDisplayTracker from '../components/shared/components/Error';
 
@@ -27,30 +27,23 @@ const ErrorText = {
 const Error = ({ status_code }) => {
   const { title, content } = StatusCodes.includes(status_code) ? ErrorText[status_code] : ErrorText[500];
   return (
-    <React.Fragment>
+    <Fragment>
       <Head>
         <title>{title} | Comic Cruncher</title>
       </Head>
       <Layout>
-        <MainContent>
-          <Flex
-            flexWrap="wrap"
-            alignItems="center"
-            alignContent="center"
-            justifyContent="center"
-            flexDirection="column"
-            style={{ height: '420px' }}
-          >
+        <WithFooter>
+          <MainPageFlex>
             <Box alignSelf="center" p={3}>
               <Title.Large>
                 <h1>{title}</h1>
               </Title.Large>
               <ErrorDisplayTracker status_code={status_code} error={content} />
             </Box>
-          </Flex>
-        </MainContent>
+          </MainPageFlex>
+        </WithFooter>
       </Layout>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

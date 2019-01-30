@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { Box, Flex } from 'rebass/emotion';
 import { Text } from '../shared/styles/type';
 import { Brands } from '../shared/styles/colors';
 import { FullCharacterProps } from './Types';
-import { MainContent } from '../Layout/Content';
+import { WithFooter } from '../Layout/Content';
 import { withCache } from '../emotion/cache';
 import { CharacterHeader } from './CharacterHeader';
 import { CharacterStats } from './CharacterStats';
@@ -27,7 +27,7 @@ const getHeaderImg = (image, vendor_image, thumbnails) => {
 const FullCharacter = ({ showFooterText, character }) => {
   const { name, other_name, vendor_image, image, thumbnails, publisher, vendor_description, description } = character;
   return (
-    <React.Fragment>
+    <Fragment>
       <HTMLTitle name={character.name} other_name={character.other_name} />
       <Wrapper>
         <CharacterHeader
@@ -36,7 +36,7 @@ const FullCharacter = ({ showFooterText, character }) => {
           image={getHeaderImg(image, vendor_image, thumbnails)}
           background={publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC}
         />
-        <MainContent showFooterText={showFooterText}>
+        <WithFooter showFooterText={showFooterText}>
           <CharacterStats publisher={character.publisher} stats={character.stats} />
           <Flex flexWrap={'wrap'}>
             <Box p={30} width={[1]}>
@@ -55,9 +55,9 @@ const FullCharacter = ({ showFooterText, character }) => {
                 )}
             </Box>
           </Flex>
-        </MainContent>
+        </WithFooter>
       </Wrapper>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

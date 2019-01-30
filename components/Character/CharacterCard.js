@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
 import { CharacterProps, CharacterThumbnailsProps } from './Types';
@@ -121,24 +121,25 @@ CharacterImage.propTypes = {
 };
 
 export const CharacterCard = ({ character, isLoading }) => (
-  <React.Fragment>
+  <Fragment>
     <Card publisher={character.publisher}>
       {isLoading && (
         <LoadingBG>
           <LoadingSVG className={SVGStyle} color={character.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
         </LoadingBG>
       )}
-      {(character.image || character.vendor_image) && (
-        <CharacterImage
-          name={character.name}
-          image={character.image}
-          vendor_image={character.vendor_image}
-          thumbnails={character.thumbnails}
-        />
-      )}
+      {character.thumbnails &&
+        (character.image || character.vendor_image) && (
+          <CharacterImage
+            name={character.name}
+            image={character.image}
+            vendor_image={character.vendor_image}
+            thumbnails={character.thumbnails}
+          />
+        )}
       <DisplayName stats={character.stats} name={character.name} />
     </Card>
-  </React.Fragment>
+  </Fragment>
 );
 
 CharacterCard.propTypes = {

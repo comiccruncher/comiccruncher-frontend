@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'react-emotion';
 
@@ -63,12 +63,12 @@ const tr = (top = -30, right = 50) =>
   });
 
 const Lines = (props) => (
-  <React.Fragment>
+  <Fragment>
     <div css={props.tr ? tr(...props.tr) : tr()} />
     <div css={props.tl ? tl(...props.tl) : tl()} />
     <div css={props.bl ? bl(...props.bl) : bl()} />
     <div css={props.br ? br(...props.br) : br()} />
-  </React.Fragment>
+  </Fragment>
 );
 
 Lines.propTypes = {

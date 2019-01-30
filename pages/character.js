@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Error from './_error';
 import Layout from '../components/Layout/Layout';
@@ -7,7 +7,7 @@ import FullCharacter from '../components/Character/FullCharacter';
 import { getCharacterProps } from './_utils';
 
 const Character = ({ meta, data }) => (
-  <React.Fragment>
+  <Fragment>
     {meta && meta.error ? (
       <Error status_code={meta.status_code} />
     ) : (
@@ -15,7 +15,7 @@ const Character = ({ meta, data }) => (
         <FullCharacter character={data} showFooterText={true} />
       </Layout>
     )}
-  </React.Fragment>
+  </Fragment>
 );
 
 Character.propTypes = {
@@ -27,7 +27,7 @@ Character.propTypes = {
 };
 
 Character.getInitialProps = async ({ req, res }) => {
-  return getCharacterProps(req, res);
+  return await getCharacterProps(req, res);
 };
 
 export default Character;

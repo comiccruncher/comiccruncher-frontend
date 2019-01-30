@@ -13,9 +13,9 @@ import { UI } from '../shared/styles/colors';
 import Size, { UIFontStack, Weight } from '../shared/styles/type';
 import Button from '../shared/components/Button';
 import { Event, TrackEvent } from '../ga/Tracker';
-import { withCache } from '../emotion/cache';
 import Toggle from '../shared/enhancers/Toggle';
-import {withOuterClick} from '../shared/enhancers/withOuterClick';
+import { withOuterClick } from '../shared/enhancers/withOuterClick';
+import { withCache } from '../emotion/cache';
 
 const Container = styled.div((props) => ({
   paddingRight: Spacing.Small,
@@ -107,6 +107,7 @@ const Nav = styled('nav')({
   borderRight: `2px solid ${UI.Text.Dark}`,
   borderLeft: `2px solid ${UI.Text.Dark}`,
   boxShadow: `-4px 4px ${UI.Text.Dark}`,
+  display: 'block',
   '> ul': {
     'list-style-type': 'none',
     ' > li': {
@@ -138,30 +139,32 @@ const NavLink = styled.a((props) => ({
   },
 }));
 
-const NavItems = ({items, activeHref }) => (
-  <React.Fragment>
-    <Nav style={{ display: 'block'}}>
-      <ul>
-        {items &&
-          items.map((item, i) => {
-            return (
-              <li key={item.href}>
-                <Link href={item.href} prefetch={item.prefetch || false}>
-                  <NavLink
-                    isActive={activeHref === item.href}
-                    href={item.href}
-                    tabIndex={item.tabIndex}
-                    onClick={item.onClick}
-                  >
-                    {item.displayText}
-                  </NavLink>
-                </Link>
-              </li>
-            );
-          })}
-      </ul>
-    </Nav>
-  </React.Fragment>
+const OuterNavBox = styled(Box)({
+  position: 'relative',
+});
+
+const NavItems = ({ items, activeHref }) => (
+  <Nav>
+    <ul>
+      {items &&
+        items.map((item, i) => {
+          return (
+            <li key={item.href}>
+              <Link href={item.href} prefetch={item.prefetch || false}>
+                <NavLink
+                  isActive={activeHref === item.href}
+                  href={item.href}
+                  tabIndex={item.tabIndex}
+                  onClick={item.onClick}
+                >
+                  {item.displayText}
+                </NavLink>
+              </Link>
+            </li>
+          );
+        })}
+    </ul>
+  </Nav>
 );
 
 NavItems.propTypes = {
@@ -180,7 +183,7 @@ class MainNav extends React.Component {
   render() {
     return (
       <Toggle>
-        {({hide, isOpen, toggle}) => (
+        {({ hide, isOpen, toggle }) => (
           <NavContainer>
             <Button onClick={() => this.handleClick(!isOpen) || toggle()} tabIndex="2">
               Menu &#9662;
@@ -223,9 +226,9 @@ const Navigation = (props) => (
       </Box>
       <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}>
         <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" alignContent="center">
-          <Box width={[1, 2 / 5]} style={{ position: 'relative' }}>
+          <OuterNavBox width={[1, 2 / 5]}>
             <MainNav items={MainNavLinks} activeHref={props.activeHref} />
-          </Box>
+          </OuterNavBox>
           <Box width={[1, 3 / 5]}>
             <SearchContainer>
               <Search id="navsearch" />

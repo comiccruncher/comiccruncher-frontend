@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Flex } from 'rebass/emotion';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { Header } from '../Layout/Header';
 import Responsive from '../shared/styles/responsive';
 import { UI } from '../shared/styles/colors';
 import { Title } from '../shared/styles/type';
 import Dimensions from '../shared/styles/dimensions';
 
-const AngledBox = css({
+const AngledBox = styled(Box)({
   zIndex: 10,
   position: 'relative',
   '&::after': {
@@ -69,11 +69,15 @@ const BlankImg = styled(ImgContainer)({
   },
 });
 
+const StyledFlex = styled(Flex)({
+  minHeight: 300,
+});
+
 export const CharacterHeader = ({ name, other_name, image, background }) => {
   return (
-    <React.Fragment>
+    <Fragment>
       <Header background="#fff" overflow="hidden">
-        <Flex flexWrap="wrap" justifyContent="space-between" alignContent="center">
+        <StyledFlex flexWrap="wrap" justifyContent="space-between" alignContent="center">
           <Box flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Small}`, 2 / 5]}>
             {image ? (
               <CharacterImg src={image} alt={`${name} profile image`} />
@@ -82,12 +86,7 @@ export const CharacterHeader = ({ name, other_name, image, background }) => {
               <BlankImg />
             )}
           </Box>
-          <Box
-            flex="1 0 auto"
-            width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]}
-            className={AngledBox}
-            bg={background}
-          >
+          <AngledBox flex="1 0 auto" width={[1, `${Dimensions.GoldenRatio.Large}`, 3 / 5]} bg={background}>
             <Flex justifyContent="space-between" alignItems="center" alignContent="center">
               <Box flex="1 0 auto">
                 <HeaderTitle>
@@ -102,10 +101,10 @@ export const CharacterHeader = ({ name, other_name, image, background }) => {
                 </HeaderTitle>
               </Box>
             </Flex>
-          </Box>
-        </Flex>
+          </AngledBox>
+        </StyledFlex>
       </Header>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

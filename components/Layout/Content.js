@@ -1,13 +1,13 @@
 import React from 'react';
-import { css } from 'react-emotion';
+import styled from 'react-emotion';
+import { Flex, Box } from 'rebass/emotion';
 import Footer from './Footer';
 import Responsive from '../shared/styles/responsive';
 import { withCache } from '../emotion/cache';
 
 const Halftone = 'https://flash.comiccruncher.com/static/assets/Halftone.png';
 
-const HalftoneBG = css({
-  minHeight: '300px',
+const StyledBG = styled.div({
   background: `url(${Halftone}) no-repeat`,
   'background-color': '#fff',
   'background-size': 'contain',
@@ -20,11 +20,33 @@ const HalftoneBG = css({
   },
 });
 
-// A content block for <main> content with a <footer> at the end.
-export const MainContent = (props) =>
-  withCache(
-    <div css={props.style || HalftoneBG}>
+const StyledContent = styled(Flex)({
+  minHeight: 300,
+});
+
+export const WithFooter = (props) => (
+  <StyledBG>
+    {props.children}
+    <Footer {...props} />
+  </StyledBG>
+);
+
+export const MainPageFlex = (props) => (
+  <Flex flexWrap={'wrap'} m={'30px auto'} pl={3} pr={3}>
+    {props.children}
+  </Flex>
+);
+
+export const CenterWrap = (props) => (
+  <StyledContent
+    flexWrap="wrap"
+    alignItems="center"
+    alignContent="center"
+    justifyContent="center"
+    flexDirection="column"
+  >
+    <Box alignSelf="center" p={3}>
       {props.children}
-      <Footer {...props} />
-    </div>
-  );
+    </Box>
+  </StyledContent>
+);

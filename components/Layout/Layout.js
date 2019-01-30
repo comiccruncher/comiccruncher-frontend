@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import getConfig from 'next/config';
@@ -44,7 +44,7 @@ injectGlobal`
   .react-autosuggest__container {
     position: relative;
     font-family: ${UIFontStack};
-    font-weight: 300;
+    font-weight: 400;
     font-size: 14px;
   }
 
@@ -109,11 +109,10 @@ injectGlobal`
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-  }
-
-  .suggestion-content p {
     font-size: 14px;
     line-height: 1.4;
+    font-family: ${UIFontStack};
+    font-weight: 400;
   }
 
   .name {
@@ -273,7 +272,7 @@ injectGlobal`
 `;
 
 const Layout = ({ children, navBackground, router }) => (
-  <React.Fragment>
+  <Fragment>
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -303,7 +302,7 @@ const Layout = ({ children, navBackground, router }) => (
       <Navigation background={navBackground} activeHref={router.asPath} />
       {children}
     </div>
-  </React.Fragment>
+  </Fragment>
 );
 
 Layout.propTypes = {

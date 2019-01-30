@@ -57,18 +57,16 @@ export const CharacterProps = PropTypes.shape({
 });
 
 // PropTypes for a character's appearances.
-export const AppearancesProps = PropTypes.arrayOf(
-  PropTypes.shape({
-    slug: PropTypes.string,
-    category: PropTypes.string.isRequired,
-    aggregates: PropTypes.arrayOf(
-      PropTypes.shape({
-        year: PropTypes.number.isRequired,
-        count: PropTypes.number.isRequired,
-      })
-    ),
-  })
-);
+export const AppearancesProps = PropTypes.shape({
+  slug: PropTypes.string,
+  aggregates: PropTypes.arrayOf(
+    PropTypes.shape({
+      year: PropTypes.number.isRequired,
+      main: PropTypes.number.isRequired,
+      alternate: PropTypes.number.isRequired,
+    })
+  ),
+});
 
 // PropTypes for the full character with their appearances attached.
 export const FullCharacterProps = PropTypes.shape({

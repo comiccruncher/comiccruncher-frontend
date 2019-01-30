@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
 import { Flex, Box } from 'rebass/emotion';
+import styled from 'react-emotion';
 import { Title, Section } from '../components/shared/styles/type';
 import Spacing from '../components/shared/styles/spacing';
 import PropTypes from 'prop-types';
@@ -8,31 +9,35 @@ import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { Stats } from '../components/Stats/Stats';
 import { MainHeader } from '../components/Layout/Header';
-import { MainContent } from '../components/Layout/Content';
+import { WithFooter, MainPageFlex } from '../components/Layout/Content';
 import Layout from '../components/Layout/Layout';
 import ErrorDisplayTracker from '../components/shared/components/Error';
 import { getHomeProps } from './_utils';
 
+const InnerHeader = styled(Box)({
+  width: '100%',
+  height: '100%',
+  paddingBottom: Spacing.xxLarge,
+  paddingTop: Spacing.xxLarge,
+});
+
 const Home = ({ meta, stats, characters }) => (
-  <React.Fragment>
+  <Fragment>
     <Layout>
       <Head>
         <title>Home | All-Time Popular Characters | Comic Cruncher</title>
       </Head>
       <MainHeader>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" justifyContent="center">
-          <Box
-            alignSelf="center"
-            style={{ width: '100%', height: '100%', paddingBottom: Spacing.xxLarge, paddingTop: Spacing.xxLarge }}
-          >
+          <InnerHeader alignSelf="center">
             <Title.Large>Comic Book Appearances</Title.Large>
             <Title.Byline>See popular character appearances</Title.Byline>
             {stats && <Stats {...stats.data} />}
-          </Box>
+          </InnerHeader>
         </Flex>
       </MainHeader>
-      <MainContent>
-        <Flex flexWrap={'wrap'} m={'30px auto'} pl={3}>
+      <WithFooter>
+        <MainPageFlex>
           <Box width={[1]}>
             <Section.Title>
               <h1>Popular Characters</h1>
@@ -45,11 +50,11 @@ const Home = ({ meta, stats, characters }) => (
                 />
               )}
           </Box>
-        </Flex>
+        </MainPageFlex>
         {characters && <CharactersList characters={characters} referer="/" />}
-      </MainContent>
+      </WithFooter>
     </Layout>
-  </React.Fragment>
+  </Fragment>
 );
 
 Home.getInitialProps = async ({ req, res }) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import getConfig from 'next/config';
@@ -207,7 +207,7 @@ class CharactersList extends React.Component {
     const data = this.props.characters.data;
     const { characters, characterModal, requestedCharacterSlug, hasMoreItems, isNextPageLoading, error } = this.state;
     return (
-      <React.Fragment>
+      <Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
           {data &&
             data.map((character) => {
@@ -254,7 +254,7 @@ class CharactersList extends React.Component {
           character={characterModal}
           isOpen={characterModal ? true : false}
         />
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
