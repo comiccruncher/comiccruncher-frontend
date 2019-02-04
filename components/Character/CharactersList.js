@@ -93,7 +93,7 @@ class CharactersList extends React.Component {
 
   componentDidMount() {
     this.listenBeforePopState();
-    this.setState({ width: window.innerWidth });
+    //this.setState({ width: window.innerWidth });
   }
 
   /**
@@ -153,10 +153,12 @@ class CharactersList extends React.Component {
    */
   handleModalOpenRequest = (slug) => (e) => {
     e.preventDefault();
+    /*
     if (this.state.width < 767) {
       window.location.href = `/characters/${slug}`;
       return;
     }
+    */
     this.setState({ requestedCharacterSlug: slug }, () => {
       this.loadCharacter(slug);
     });

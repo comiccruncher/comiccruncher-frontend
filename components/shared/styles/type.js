@@ -15,6 +15,7 @@ const Size = {
   Medium: 24,
   Default: 16,
   Small: 14,
+  XSmall: 12,
 };
 
 const Weight = {
@@ -126,6 +127,14 @@ const TextSmall = styled.div((props) => ({
   fontWeight: props.bold ? Weight.Bold : '',
 }));
 
+const TextXSmall = styled.div((props) => ({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: 1.5,
+  fontSize: Size.XSmall,
+  fontWeight: props.bold ? Weight.Bold : '',
+}));
+
 const LabelDefault = styled.label({
   color: UI.Text.Default,
   fontFamily: UIFontStack,
@@ -178,6 +187,7 @@ const Text = {};
 Type.Text = Text;
 Text.Default = TextDefault;
 Text.Small = TextSmall;
+Text.XSmall = TextXSmall;
 Text.SearchResult = TextSearchResult;
 
 // Label
