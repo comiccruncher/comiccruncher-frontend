@@ -88,10 +88,12 @@ class CharactersList extends React.Component {
     characterModal: null,
     isNextPageLoading: false,
     requestedCharacterSlug: null,
+    width: 0,
   };
 
   componentDidMount() {
     this.listenBeforePopState();
+    this.setState({ width: window.innerWidth });
   }
 
   /**
@@ -149,12 +151,16 @@ class CharactersList extends React.Component {
   /**
    * Shows the character modal.
    */
-  handleModalOpenRequest(e, slug) {
+  handleModalOpenRequest = (slug) => (e) => {
     e.preventDefault();
+    if (this.state.width < 767) {
+      window.location.href = `/characters/${slug}`;
+      return;
+    }
     this.setState({ requestedCharacterSlug: slug }, () => {
       this.loadCharacter(slug);
     });
-  }
+  };
 
   resetCharacterModal() {
     this.setState({ characterModal: null });
@@ -211,23 +217,25 @@ class CharactersList extends React.Component {
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
           {data &&
             data.map((character) => {
+              const slug = character.slug;
               return (
                 <CharacterItem
                   character={character}
                   requestedSlug={requestedCharacterSlug}
-                  handleModalOpenRequest={(e) => this.handleModalOpenRequest(e, character.slug)}
-                  key={character.slug}
+                  handleModalOpenRequest={this.handleModalOpenRequest(slug)}
+                  key={slug}
                 />
               );
             })}
           {characters &&
             characters.map((character) => {
+              const slug = character.slug;
               return (
                 <CharacterItem
                   character={character}
                   requestedSlug={requestedCharacterSlug}
-                  handleModalOpenRequest={(e) => this.handleModalOpenRequest(e, character.slug)}
-                  key={character.slug}
+                  handleModalOpenRequest={this.handleModalOpenRequest(slug)}
+                  key={slug}
                 />
               );
             })}

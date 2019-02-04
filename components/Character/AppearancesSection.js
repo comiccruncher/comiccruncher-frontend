@@ -46,7 +46,7 @@ export const AppearancesSection = ({ character }) => {
           </Flex>
           <AppearanceChart character={character} />
           <Flex flexWrap="wrap" alignItems="center" alignContent="center" py={16}>
-            <Box width={[1, 1 / 3, 1 / 3]}>
+            <Box width={[1]}>
               {lastSyncs && (
                 <Text.Default>
                   Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
