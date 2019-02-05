@@ -8,7 +8,8 @@ import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
 import { Flex, Box } from 'rebass/emotion';
 import { Github } from '../shared/components/Icons';
-import { TrackEvent, TrackExternalClick } from '../ga/Tracker';
+import { TrackEvent } from '../ga/Tracker';
+import { OutboundLink } from 'react-ga';
 
 const FooterContainer = styled('footer')({
   textAlign: 'center',
@@ -62,20 +63,20 @@ const Footer = ({ showFooterText = true }) => (
               </ul>
               <ul>
                 <li>
-                  <a href={aimeelaplant} onClick={(e) => TrackExternalClick(e, gaCategory, aimeelaplant)}>
+                  <OutboundLink eventLabel="twitter.com/aimeelaplant" to={aimeelaplant}>
                     @aimeelaplant
-                  </a>
+                  </OutboundLink>
                 </li>
                 <li>
-                  <a href={ghanbak} onClick={(e) => TrackExternalClick(e, gaCategory, ghanbak)}>
+                  <OutboundLink eventLabel="twitter.com/ghanbak" to={ghanbak}>
                     @ghanbak
-                  </a>
+                  </OutboundLink>
                 </li>
               </ul>
               <IconsContainer>
-                <a href={github} onClick={(e) => TrackExternalClick(e, gaCategory, github)}>
+                <OutboundLink eventLabel="GitHub Link" to={github}>
                   <Github width="32" height="32" />
-                </a>
+                </OutboundLink>
               </IconsContainer>
             </Fragment>
           )}

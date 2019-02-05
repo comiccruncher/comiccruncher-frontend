@@ -11,6 +11,7 @@ import { CharacterHeader } from './CharacterHeader';
 import { CharacterStats } from './CharacterStats';
 import { AppearancesSection } from './AppearancesSection';
 import { Biography } from './Biography';
+import { OutboundLink } from 'react-ga';
 import HTMLTitle from './HTMLTitle';
 
 const Wrapper = styled.div({
@@ -47,7 +48,10 @@ const FullCharacter = ({ showFooterText, character }) => {
                   <Text.XSmall>
                     <p>
                       {name} is a fictional entity and copyright (&copy;) of{' '}
-                      <a href="https://www.marvel.com/">Marvel Entertainment, LLC</a>.
+                      <OutboundLink eventLabel="marvel.com" to="https://www.marvel.com/">
+                        Marvel Entertainment, LLC
+                      </OutboundLink>
+                      .
                     </p>
                     <p>Image and biography provided by the Marvel API.</p>
                     <p>(Data provided by Marvel. &copy; 2019 Marvel).</p>
@@ -56,7 +60,9 @@ const FullCharacter = ({ showFooterText, character }) => {
               ) : (
                 <Text.XSmall>
                   {name} is a fictional entity and copyright (&copy;) of{' '}
-                  <a href="https://www.dccomics.com/">DC Entertainment, Inc.</a>
+                  <OutboundLink eventLabel="dccomics.com" to="https://www.dccomics.com/">
+                    DC Entertainment, Inc.
+                  </OutboundLink>
                 </Text.XSmall>
               )}
             </Box>
