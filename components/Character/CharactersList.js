@@ -154,9 +154,10 @@ class CharactersList extends React.Component {
   handleModalOpenRequest = (slug) => (e) => {
     e.preventDefault();
     if (this.state.width < 767) {
-      // force ssr-refresh
-      window.location.href = `/characters/${slug}`;
-      //  router.push(`/characters?slug=${slug}`, `/characters/${slug}`, { shallow: false });
+      // force ssr-refresh.. nvm, on mobile there is a bug if you press the forward button
+      // can't reproduce on dev.
+      //window.location.href = `/characters/${slug}`;
+      this.props.router.push(`/characters?slug=${slug}`, `/characters/${slug}`);
     } else {
       this.setState({ requestedCharacterSlug: slug }, () => {
         this.loadCharacter(slug);
