@@ -51,7 +51,7 @@ const Home = ({ meta, stats, characters }) => (
               )}
           </Box>
         </MainPageFlex>
-        {characters && <CharactersList characters={characters} referer="/" />}
+        {characters && <CharactersList characters={characters} />}
       </WithFooter>
     </Layout>
   </Fragment>

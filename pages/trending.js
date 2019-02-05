@@ -42,7 +42,7 @@ const Trending = (props) => {
                 </Text.Default>
               </Box>
             </MainPageFlex>
-            {data && <CharactersList characters={props} referer="/trending" />}
+            {data && <CharactersList characters={props} />}
           </WithFooter>
         </Layout>
       )}

@@ -42,7 +42,7 @@ const DC = (props) => {
                 </Text.Default>
               </Box>
             </MainPageFlex>
-            {data && <CharactersList characters={props} referer="/dc" />}
+            {data && <CharactersList characters={props} />}
           </WithFooter>
         </Layout>
       )}
