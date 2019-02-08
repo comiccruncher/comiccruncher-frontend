@@ -25,7 +25,7 @@ const CharacterLink = styled.a({
 
 const CharacterItem = ({ character, requestedSlug, handleModalOpenRequest }) => {
   return (
-    <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]}>
+    <Box pr={3} pb={3} width={[1, 1 / 2, 1 / 3, 1 / 4]}>
       <CharacterLink href={`/characters/${character.slug}`} onClick={handleModalOpenRequest}>
         <CharacterCard character={character} isLoading={requestedSlug === character.slug} />
       </CharacterLink>
