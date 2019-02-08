@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
+import LazyLoad from 'react-lazy-load';
 import { CharacterProps, CharacterThumbnailsProps } from './Types';
 import { DisplayName } from './DisplayName';
 import { UI, Brands } from '../shared/styles/colors';
@@ -55,7 +56,7 @@ const Card = styled.div(
         borderTop: '10px solid ' + UI.Background.White,
         borderRight: '10px solid ' + UI.Background.White,
         [Responsive.Mobile]: {
-         // border: 0,
+          // border: 0,
         },
       },
       '& *': {
@@ -141,25 +142,25 @@ CharacterImage.propTypes = {
 };
 
 export const CharacterCard = ({ character, isLoading }) => (
-  <Fragment>
-    <Card publisher={character.publisher}>
-      {isLoading && (
-        <LoadingBG>
-          <LoadingSVG className={SVGStyle} color={character.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
-        </LoadingBG>
-      )}
-      {character.thumbnails &&
-        (character.image || character.vendor_image) && (
+  <Card publisher={character.publisher}>
+    {isLoading && (
+      <LoadingBG>
+        <LoadingSVG className={SVGStyle} color={character.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC} />
+      </LoadingBG>
+    )}
+    {character.thumbnails &&
+      (character.image || character.vendor_image) && (
+        <LazyLoad height={300} debounce={false} threshold={100}>
           <CharacterImage
             name={character.name}
             image={character.image}
             vendor_image={character.vendor_image}
             thumbnails={character.thumbnails}
           />
-        )}
-      <DisplayName stats={character.stats} name={character.name} />
-    </Card>
-  </Fragment>
+        </LazyLoad>
+      )}
+    <DisplayName stats={character.stats} name={character.name} />
+  </Card>
 );
 
 CharacterCard.propTypes = {
