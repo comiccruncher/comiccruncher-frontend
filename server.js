@@ -132,20 +132,8 @@ app
       USE_CACHE ? renderAndCache(req, res, '/dc', req.params) : app.render(req, res, '/dc', req.params);
     });
 
-    server.get('/trending', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/trending', req.params) : app.render(req, res, '/trending', req.params);
-    });
-
     server.get('/characters/:slug', (req, res) => {
       USE_CACHE ? renderAndCache(req, res, '/characters', req.params) : app.render(req, res, '/characters', req.params);
-    });
-
-    server.get('/faq', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/faq', req.params) : app.render(req, res, '/faq', req.params);
-    });
-
-    server.get('/privacy', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/privacy', req.params) : app.render(req, res, '/privacy', req.params);
     });
 
     server.get('/', (req, res) => {

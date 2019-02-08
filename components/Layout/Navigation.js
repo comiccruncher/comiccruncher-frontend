@@ -45,13 +45,6 @@ const TrackNavClick = (e, label, href) => {
 
 const MainNavLinks = [
   {
-    href: '/trending',
-    displayText: 'Trending',
-    prefetch: true,
-    tabIndex: 3,
-    onClick: (e) => TrackNavClick(e, 'trending', '/trending'),
-  },
-  {
     href: '/marvel',
     displayText: 'Marvel',
     prefetch: true,
@@ -64,13 +57,6 @@ const MainNavLinks = [
     prefetch: true,
     tabIndex: 5,
     onClick: (e) => TrackNavClick(e, 'dc', '/dc'),
-  },
-  {
-    href: '/faq',
-    displayText: 'FAQ',
-    prefetch: true,
-    tabIndex: 6,
-    onClick: (e) => TrackNavClick(e, 'faq', '/faq'),
   },
 ];
 
@@ -145,6 +131,7 @@ const OuterNavBox = styled(Box)({
 
 const NavItems = ({ items, activeHref }) => (
   <Nav>
+    Marvel DC
     <ul>
       {items &&
         items.map((item, i) => {
