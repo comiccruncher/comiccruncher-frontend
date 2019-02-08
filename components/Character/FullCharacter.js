@@ -47,19 +47,18 @@ const FullCharacter = ({ showFooterText, character }) => {
                 (vendor_description || (vendor_image && !image)) && (
                   <Text.XSmall>
                     <p>
-                      {name} is a fictional entity and copyright (&copy;) of{' '}
+                      {name} is a fictional character and copyright (&copy;) of{' '}
                       <OutboundLink eventLabel="marvel.com" to="https://www.marvel.com/">
                         Marvel Entertainment, LLC
                       </OutboundLink>
                       .
                     </p>
-                    <p>Image and biography provided by the Marvel API.</p>
-                    <p>(Data provided by Marvel. &copy; 2019 Marvel).</p>
+                    <p>Image and biography provided by the Marvel API: Data provided by Marvel. &copy; 2019 Marvel</p>
                   </Text.XSmall>
                 )
               ) : (
                 <Text.XSmall>
-                  {name} is a fictional entity and copyright (&copy;) of{' '}
+                  {name} is a fictional character and copyright (&copy;) of{' '}
                   <OutboundLink eventLabel="dccomics.com" to="https://www.dccomics.com/">
                     DC Entertainment, Inc.
                   </OutboundLink>
