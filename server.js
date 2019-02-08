@@ -137,7 +137,7 @@ app
     });
 
     server.get('/characters/:slug', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/character', req.params) : app.render(req, res, '/character', req.params);
+      USE_CACHE ? renderAndCache(req, res, '/characters', req.params) : app.render(req, res, '/characters', req.params);
     });
 
     server.get('/faq', (req, res) => {

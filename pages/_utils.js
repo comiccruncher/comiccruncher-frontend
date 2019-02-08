@@ -156,10 +156,18 @@ export const getTrendingProps = async (req, res) => {
     });
 };
 
-export const getCharacterProps = async (req, res) => {
+export const getCharacterProps = async (req, res, query) => {
   const opts = isomorphicGetHeaders(req, res);
+  // need to check req first, then the query params for client-side
+  // fetch. fixed forward-button bug on mobile.
+  let slug = null;
+  if (req && req.params.slug) {
+    slug = req.params.slug;
+  } else {
+    slug = query.slug;
+  }
   return await axios
-    .get(`${charactersURL}/${encodeURIComponent(req.params.slug)}`, opts)
+    .get(`${charactersURL}/${encodeURIComponent(slug)}`, opts)
     .then((result) => {
       return result.data;
     })

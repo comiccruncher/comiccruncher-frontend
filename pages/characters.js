@@ -26,8 +26,8 @@ Character.propTypes = {
   data: FullCharacterProps,
 };
 
-Character.getInitialProps = async ({ req, res }) => {
-  return await getCharacterProps(req, res);
+Character.getInitialProps = async ({ req, res, query }) => {
+  return await getCharacterProps(req, res, query);
 };
 
 export default Character;
