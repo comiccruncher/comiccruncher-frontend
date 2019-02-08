@@ -235,6 +235,10 @@ injectGlobal`
 .nprogress-custom-parent #nprogress .bar {
   position: absolute;
 }
+
+.recharts-legend-item {
+  margin-top: 5px;
+}
 `;
 
 const Layout = ({ children, navBackground, router }) => (

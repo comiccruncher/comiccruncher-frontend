@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { Flex, Box } from 'rebass/emotion';
-import { Brush, ComposedChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { ComposedChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Brands } from '../shared/styles/colors';
 import { AppearancesProps } from './Types';
 
 const BAR_SIZE = 7;
 const COLORS = {
-  GRID: '#f5f5f5',
-  RED: Brands.Marvel,
-  LIGHT_RED: '#ffb5b5',
+  RED: '#FF0000',
+  LIGHT_RED: '#fad84a',
   BLUE: Brands.DC,
-  LIGHT_BLUE: '#7bbfff',
-  COMPARISON_MAIN: '#54a1e5',
-  COMPARISON_ALT: '#d7d7d7',
+  LIGHT_BLUE: '#02cfee',
   STROKE: '#f5f5f5',
 };
 
@@ -40,7 +37,7 @@ export const SingularChart = ({ character, showAlternate, width, height }) => {
         <Tooltip />
         <Legend verticalAlign="bottom" align="center" />
         <CartesianGrid stroke={COLORS.STROKE} />
-        <Bar barSize={BAR_SIZE} dataKey={'main'} fill={isMarvel ? Brands.Marvel : Brands.DC} stackId="a" name="Main" />
+        <Bar barSize={BAR_SIZE} dataKey={'main'} fill={isMarvel ? COLORS.RED : Brands.DC} stackId="a" name="Main" />
         {showAlternate && (
           <Bar
             barSize={BAR_SIZE}
@@ -50,7 +47,6 @@ export const SingularChart = ({ character, showAlternate, width, height }) => {
             name="Alternate"
           />
         )}
-        <Brush />
       </ComposedChart>
     </ResponsiveContainer>
   );
@@ -77,24 +73,23 @@ const ComparisonChart = ({ character, comparison, composedData, children }) => {
           <XAxis dataKey="year" name="Year" />
           <YAxis type="number" domain={[0, 'dataMax + 10']} />
           <Tooltip />
-          <Legend verticalAlign="top" margin={[20, 0]} />
+          <Legend verticalAlign="bottom" align="center" margin={[20, 0]} />
           <CartesianGrid stroke={COLORS.STROKE} />
           <Bar
             barSize={4}
             dataKey={'main'}
-            fill={isMarvel ? Brands.Marvel : Brands.DC}
+            fill={isMarvel ? COLORS.RED : Brands.DC}
             stackId="a"
             name={`Main (${character.name})`}
           />
           <Bar
             barSize={4}
             dataKey="comparisonMain"
-            fill={isMarvel ? Brands.DC : Brands.Marvel}
+            fill={isMarvel ? Brands.DC : COLORS.RED}
             stackId="b"
             name={`Main (${comparison.name})`}
           />
           {children}
-          <Brush />
         </ComposedChart>
       </StyledBox>
     </WrappedFlex>
@@ -135,14 +130,14 @@ const ComparisonChartAlternate = ({ character, comparison, composedData }) => {
   return (
     <ComparisonChart character={character} comparison={comparison} composedData={composedData}>
       <Bar
-        barSize={4}
+        barSize={3}
         dataKey="alternate"
         fill={isMarvel ? COLORS.LIGHT_RED : COLORS.LIGHT_BLUE}
         stackId="a"
         name={`Alternate (${character.name})`}
       />
       <Bar
-        barSize={4}
+        barSize={3}
         dataKey="comparisonAlternate"
         fill={isMarvel ? COLORS.LIGHT_BLUE : COLORS.LIGHT_RED}
         stackId="b"
