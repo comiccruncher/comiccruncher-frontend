@@ -9,11 +9,21 @@ import Responsive from '../shared/styles/responsive';
 import { LoadingSVG } from '../shared/components/Icons';
 
 const Card = styled.div(
-  {
+  (props) => ({
     width: '100%',
     height: Spacing.xxLarge * 6.25,
     overflow: 'hidden',
     position: 'relative',
+    [Responsive.Mobile]: {
+      height: '300px',
+      /*
+      overflow: 'hidden',
+      height: '112px',
+      lineHeight: '112px',
+      textAlign: 'left',
+      backgroundColor: props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC,
+      */
+    },
     '& .DisplayName': {
       position: 'absolute',
       color: UI.Text.White,
@@ -23,6 +33,15 @@ const Card = styled.div(
       left: 0,
       width: '80%',
       padding: Spacing.Small,
+      [Responsive.Mobile]: {
+        /*
+        position: 'relative',
+        width: '100%',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        paddingLeft: '125px',
+        */
+      },
       '&::after': {
         content: `' '`,
         width: '100%',
@@ -35,6 +54,9 @@ const Card = styled.div(
         right: '-10px',
         borderTop: '10px solid ' + UI.Background.White,
         borderRight: '10px solid ' + UI.Background.White,
+        [Responsive.Mobile]: {
+         // border: 0,
+        },
       },
       '& *': {
         color: UI.Text.White,
@@ -46,12 +68,20 @@ const Card = styled.div(
       height: 'inherit',
       objectFit: 'cover',
       transition: '0.3s ease-in-out',
-    },
-    [Responsive.Mobile]: {
-      paddingBottom: 0,
-    },
-    [Responsive.Tablet]: {
-      height: Spacing.xxLarge * 5,
+      /*
+      [Responsive.Mobile]: {
+        float: 'left',
+        height: '112px',
+        width: '112px',
+        position: 'absolute',
+        zIndex: 9,
+        borderRight: '10px solid #fff',
+        '&:after': {
+          content: '',
+          transform: 'skew(160deg)',
+        },
+      },
+      */
     },
     '&:hover': {
       cursor: 'pointer',
@@ -59,25 +89,15 @@ const Card = styled.div(
         transform: 'scale(1.1)',
       },
     },
-  },
-  (props) =>
-    props.publisher.slug === 'marvel' && {
-      '& .DisplayName': {
-        backgroundColor: Brands.Marvel,
-        '&:after': {
-          backgroundColor: Brands.Marvel,
-        },
+  }),
+  (props) => ({
+    '& .DisplayName': {
+      backgroundColor: props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC,
+      '&:after': {
+        backgroundColor: props.publisher.slug === 'marvel' ? Brands.Marvel : Brands.DC,
       },
     },
-  (props) =>
-    props.publisher.slug === 'dc' && {
-      '& .DisplayName': {
-        backgroundColor: Brands.DC,
-        '&:after': {
-          backgroundColor: Brands.DC,
-        },
-      },
-    }
+  })
 );
 
 const LoadingBG = styled.div({
