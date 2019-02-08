@@ -121,3 +121,5 @@ docker-reload-nginx:
 # Deploy pm2 and nginx Docker containers. 
 .PHONY: remote-deploy
 remote-deploy-all: remote-deploy-pm2 docker-reload-nginx
+
+deploy-steps: docker-yarn-build docker-upload-s3 docker-build-pm2 docker-push-pm2 remote-deploy-pm2
