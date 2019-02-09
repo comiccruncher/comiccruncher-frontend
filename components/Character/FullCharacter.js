@@ -10,7 +10,6 @@ import { withCache } from '../emotion/cache';
 import { CharacterHeader } from './CharacterHeader';
 import { CharacterStats } from './CharacterStats';
 import { AppearancesSection } from './AppearancesSection';
-import { Biography } from './Biography';
 import { OutboundLink } from 'react-ga';
 import HTMLTitle from './HTMLTitle';
 
@@ -42,28 +41,27 @@ const FullCharacter = ({ showFooterText, character }) => {
           <Flex flexWrap={'wrap'}>
             <Box p={30} width={[1]}>
               <AppearancesSection character={character} />
-              {publisher.slug === 'marvel' ? (
-                <Biography description={description} vendor_description={vendor_description} title="Biography" /> &&
+              <Text.XSmall>
+                <p>
+                  {name} is a fictional character and copyright (&copy;) of{' '}
+                  {publisher.slug === 'marvel' ? (
+                    <OutboundLink eventLabel="marvel.com" to="https://www.marvel.com/">
+                      Marvel Entertainment, LLC.
+                    </OutboundLink>
+                  ) : (
+                    <OutboundLink eventLabel="dccomics.com" to="https://www.dccomics.com/">
+                      DC Entertainment, Inc.
+                    </OutboundLink>
+                  )}
+                  .
+                </p>
+              </Text.XSmall>
+              {publisher.slug === 'marvel' &&
                 (vendor_description || (vendor_image && !image)) && (
                   <Text.XSmall>
-                    <p>
-                      {name} is a fictional character and copyright (&copy;) of{' '}
-                      <OutboundLink eventLabel="marvel.com" to="https://www.marvel.com/">
-                        Marvel Entertainment, LLC
-                      </OutboundLink>
-                      .
-                    </p>
                     <p>Image and biography provided by the Marvel API: Data provided by Marvel. &copy; 2019 Marvel</p>
                   </Text.XSmall>
-                )
-              ) : (
-                <Text.XSmall>
-                  {name} is a fictional character and copyright (&copy;) of{' '}
-                  <OutboundLink eventLabel="dccomics.com" to="https://www.dccomics.com/">
-                    DC Entertainment, Inc.
-                  </OutboundLink>
-                </Text.XSmall>
-              )}
+                )}
             </Box>
           </Flex>
         </WithFooter>

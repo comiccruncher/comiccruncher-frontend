@@ -119,7 +119,7 @@ class Search extends React.Component {
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
-        focusInputOnSuggestionClick={false}
+        focusInputOnSuggestionClick={true}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionSelected={this.props.onSuggestionSelected || this.onSuggestedSelected}
         renderInputComponent={renderSearchInput}

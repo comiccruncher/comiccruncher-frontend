@@ -50,7 +50,7 @@ const YellowTitle = styled.div({
   textShadow: `${TextShadow}`,
   marginBottom: Spacing.Tiny,
   [Responsive.Tablet]: {
-    fontSize: '2.8',
+    fontSize: '2.8em',
   },
   [Responsive.Mobile]: {
     fontSize: '2.2em',

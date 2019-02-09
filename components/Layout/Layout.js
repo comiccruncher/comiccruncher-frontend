@@ -30,6 +30,11 @@ injectGlobal`
     font-size: inherit;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+    -ms-text-size-adjust: 100%;
+  }
+
   .app {
     width: 100%;
     max-width: 1152px;
@@ -54,10 +59,6 @@ injectGlobal`
     padding: 10px 20px;
     border: 1px solid ${UI.Border.Dark};
     border-radius: 0;
-  }
-
-  .react-autosuggest__input:focus {
-    outline: none;
   }
 
   .react-autosuggest__container--open .react-autosuggest__input {
@@ -133,7 +134,6 @@ injectGlobal`
     position:relative;
     height: auto;
     border:0;
-    outline:0;
     margin: 0 auto;
     width:100%;
     max-width: 1152px;
