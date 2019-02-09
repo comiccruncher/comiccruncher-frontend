@@ -50,10 +50,26 @@ const YellowTitle = styled.div({
   textShadow: `${TextShadow}`,
   marginBottom: Spacing.Tiny,
   [Responsive.Tablet]: {
-    fontSize: '2.8rem',
+    fontSize: '2.8',
   },
   [Responsive.Mobile]: {
-    fontSize: '2.2rem',
+    fontSize: '2.2em',
+  },
+});
+
+const BlackTitle = styled.div({
+  color: UI.Text.Dark,
+  fontFamily: UIFontStack,
+  fontSize: '20px',
+  //letterSpacing: 2,
+  marginTop: '20px',
+  fontWeight: Weight.Normal,
+  marginBottom: Spacing.Tiny,
+  [Responsive.Tablet]: {
+    fontSize: '1.3em',
+  },
+  [Responsive.Mobile]: {
+    fontSize: '1.1em',
   },
 });
 
@@ -75,7 +91,7 @@ const SubTitle = styled.div({
   fontWeight: Weight.Bold,
   marginBottom: Spacing.Small,
   [Responsive.TabletAndBelow]: {
-    fontSize: '1.4rem',
+    fontSize: '1.4em',
   },
 });
 
@@ -88,7 +104,7 @@ const SectionTitle = styled.div({
   fontWeight: Weight.Bold,
   marginBottom: Spacing.Tiny,
   [Responsive.TabletAndBelow]: {
-    fontSize: '1.6rem ',
+    fontSize: '1.6em',
   },
 });
 
@@ -146,10 +162,10 @@ const LabelDefault = styled.label({
 const HeadingH1 = styled.h1((props) => ({
   fontSize: props.fontSize || Size.Large,
   [Responsive.Tablet]: {
-    fontSize: '1.8rem',
+    fontSize: '1.8em',
   },
   [Responsive.Mobile]: {
-    fontsize: '1.6rem',
+    fontsize: '1.6em',
   },
 }));
 
@@ -162,6 +178,14 @@ const HeadingH2 = styled.h2((props) => ({
   margin: '20px 0',
 }));
 
+const TextBlock = styled.p({
+  color: UI.Text.Default,
+  fontFamily: UIFontStack,
+  lineHeight: 1.5,
+  fontSize: Size.Default,
+  marginTop: '20px',
+});
+
 const Type = {};
 Type.Weight = Weight;
 Type.Size = Size;
@@ -173,6 +197,7 @@ Type.TextOutlineBig = TextOutlineBig;
 const Title = {};
 Type.Title = Title;
 Title.Large = YellowTitle;
+Title.Medium = BlackTitle;
 Title.Byline = SubTitle;
 Title.Red = RedTitle;
 
@@ -189,6 +214,7 @@ Text.Default = TextDefault;
 Text.Small = TextSmall;
 Text.XSmall = TextXSmall;
 Text.SearchResult = TextSearchResult;
+Text.P = TextBlock;
 
 // Label
 const Label = {};

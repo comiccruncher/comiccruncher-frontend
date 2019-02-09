@@ -136,6 +136,10 @@ app
       USE_CACHE ? renderAndCache(req, res, '/characters', req.params) : app.render(req, res, '/characters', req.params);
     });
 
+    server.get('/faq', (req, res) => {
+      USE_CACHE ? renderAndCache(req, res, '/faq', req.params) : app.render(req, res, '/faq', req.params);
+    });
+
     server.get('/', (req, res) => {
       // `/index` is the filename of `/pages/index.js
       // * must pass in req.params for back button to work:

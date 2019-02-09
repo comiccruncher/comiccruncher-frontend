@@ -55,8 +55,15 @@ const MainNavLinks = [
     href: '/dc',
     displayText: 'DC',
     prefetch: true,
-    tabIndex: 5,
+    tabIndex: 4,
     onClick: (e) => TrackNavClick(e, 'dc', '/dc'),
+  },
+  {
+    href: '/faq',
+    displayText: 'FAQ',
+    prefetch: true,
+    tabIndex: 5,
+    onClick: (e) => TrackNavClick(e, 'faq', '/faq'),
   },
 ];
 
@@ -131,7 +138,6 @@ const OuterNavBox = styled(Box)({
 
 const NavItems = ({ items, activeHref }) => (
   <Nav>
-    Marvel DC
     <ul>
       {items &&
         items.map((item, i) => {
