@@ -140,6 +140,7 @@ injectGlobal`
     border: 4px solid #000;
     box-shadow: 10px 10px #1f1f1f;
     margin: 0 auto;
+    outline: 0;
   }
 
   .Overlay {

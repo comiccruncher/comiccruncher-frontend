@@ -1,10 +1,8 @@
 import React from 'react';
-import styled, {css} from 'react-emotion';
-import PropTypes from 'prop-types';
-import { UI, Brands } from '../shared/styles/colors';
+import { css } from 'react-emotion';
+import { UI } from '../shared/styles/colors';
 import Spacing from '../shared/styles/spacing';
-import Type, { UIFontStack, BangersFontStack, Size } from '../shared/styles/type';
-import Dimensions from '../shared/styles/dimensions';
+import { UIFontStack, Size } from '../shared/styles/type';
 
 export const SearchBar = css({
   border: '2px solid ' + UI.Border.Dark,
@@ -16,5 +14,5 @@ export const SearchBar = css({
   color: UI.Text.Default,
   fontFamily: UIFontStack,
   lineHeight: 1.5,
-  fontSize: Size.Default
+  fontSize: Size.Default,
 });
