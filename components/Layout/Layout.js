@@ -11,7 +11,7 @@ import Spacing from '../shared/styles/spacing';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
 
-const { cdnURL } = getConfig().publicRuntimeConfig;
+const { siteURL, cdnURL } = getConfig().publicRuntimeConfig;
 
 injectGlobal`
   * {
@@ -267,7 +267,7 @@ const Layout = ({ children, navBackground, router }) => (
       <meta name="msapplication-square150x150logo" content={`${cdnURL}/mstile-150x150.png`} />
       <meta name="msapplication-wide310x150logo" content={`${cdnURL}/mstile-310x150.png`} />
       <meta name="msapplication-square310x310logo" content={`${cdnURL}/mstile-310x310.png`} />
-      {router.asPath && <link rel="canonical" href={router.asPath} />}
+      {router.asPath && <link rel="canonical" href={router.asPath === '/' ? siteURL : `${siteURL}${router.asPath}`} />}
     </Head>
     <div className="app">
       <Navigation background={navBackground} activeHref={router.asPath} />

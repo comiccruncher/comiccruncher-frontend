@@ -15,18 +15,20 @@ PM2_IMAGE = comiccruncher/frontend:latest
 PM2_SERVER1 = aimee@167.99.157.206
 PM2_SERVER2 = aimee@68.183.143.225
 
-S3_UPLOAD_STATIC = s3 cp ./static s3://${CC_AWS_BUCKET}/static --recursive
+S3_UPLOAD_STATIC = s3 cp ./static s3://${CC_AWS_BUCKET}/static --recursive --cache-control "public, max-age=2592000"
 
 S3_UPLOAD_NEXT_BUILD = s3 cp ./.next/static/$(shell cat ./.next/BUILD_ID) s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/$(shell cat ./.next/BUILD_ID) \
 		--recursive \
 		--content-type "application/json" \
-		--cache-control "public, max-age=86400"
+		--cache-control "public, max-age=2592000"
 S3_UPLOAD_NEXT_CHUNKS = s3 cp ./.next/static/chunks s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/chunks \
 		--recursive \
-		--content-type "application/json"
+		--content-type "application/json" \
+		--cache-control "public, max-age=2592000"
 S3_UPLOAD_NEXT_RUNTIME = s3 cp ./.next/static/runtime s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/runtime \
 		--recursive \
-		--content-type "application/json"
+		--content-type "application/json" \
+		--cache-control "public, max-age=2592000"
 
 DOCKER_COMPOSE_DEV = docker-compose -f docker-compose.yml 
 

@@ -262,6 +262,12 @@ class CharactersList extends React.Component {
       if (as === route) {
         this.handleModalCloseRequest();
       }
+      // for forward button detection.
+      if (url.includes(`${route}?characters=`) || url.includes('/characters?slug=')) {
+        // Force SSR refresh so it doesn't try loading a character page JS.
+        window.location.href = as;
+        return false;
+      }
       return true;
     });
   }

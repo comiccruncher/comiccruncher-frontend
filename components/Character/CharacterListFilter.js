@@ -78,12 +78,12 @@ class CharacterListFilter extends Component {
           <Box>
             <FormStyle>
               <label htmlFor="characterFilter">Filter: </label>
-              <SelectBox value={value} onChange={this.handleSelected}>
+              <SelectBox value={value} onChange={this.handleSelected} name="category">
                 {VALUES.map((item) => {
                   const key = Object.keys(item)[0];
                   const val = Object.values(item)[0];
                   return (
-                    <option value={key} key={key}>
+                    <option value={key} key={key} label={val}>
                       {val}
                     </option>
                   );
