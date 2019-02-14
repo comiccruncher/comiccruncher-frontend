@@ -12,6 +12,7 @@ import { CharacterStats } from './CharacterStats';
 import { AppearancesSection } from './AppearancesSection';
 import { OutboundLink } from 'react-ga';
 import HTMLTitle from './HTMLTitle';
+import { withScrollToTop } from '../shared/enhancers/withScrollToTop';
 
 const Wrapper = styled.div({
   background: '#fff',
@@ -75,4 +76,4 @@ FullCharacter.propTypes = {
   character: FullCharacterProps,
 };
 
-export default withCache(FullCharacter);
+export default withScrollToTop(FullCharacter);

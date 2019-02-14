@@ -4,7 +4,7 @@ import { Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Error from './_error';
 import Layout from '../components/Layout/Layout';
-import CharactersList from '../components/Character/CharactersList';
+import ListFilter from '../components/Character/CharacterListFilter';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { WithFooter, MainPageFlex, CenterWrap } from '../components/Layout/Content';
@@ -42,7 +42,7 @@ const Marvel = (props) => {
                 </Text.Default>
               </Box>
             </MainPageFlex>
-            {data && <CharactersList characters={props} />}
+            {data && <ListFilter publisher="marvel" characters={props} />}
           </WithFooter>
         </Layout>
       )}

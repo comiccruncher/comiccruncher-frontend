@@ -6,7 +6,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import cookieParser from 'cookie';
 
-const { charactersURL, statsURL, publishersURL } = getConfig().publicRuntimeConfig.API;
+const { charactersURL, statsURL, publishersURL, trendingURL } = getConfig().publicRuntimeConfig.API;
 
 const visitorFilt = (item) => item.hasOwnProperty('cc_visitor_id');
 const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
@@ -121,6 +121,12 @@ export const getHomeProps = async (req, res) => {
 };
 
 export const getMarvelProps = async (req, res) => {
+  if (typeof localStorage !== 'undefined') {
+    const val = localStorage.getItem('comiccruncher.marvel');
+    if (val === 'trending') {
+      return await getTrendingProps(req, res, 'marvel');
+    }
+  }
   const opts = isomorphicGetHeaders(req, res);
   return await axios
     .get(`${publishersURL}/marvel`, opts)
@@ -132,7 +138,13 @@ export const getMarvelProps = async (req, res) => {
     });
 };
 
-export const getDCProps = async (req, res) => {
+export const getDCProps = async (req, res, query) => {
+  if (typeof localStorage !== 'undefined') {
+    const val = localStorage.getItem('comiccruncher.dc');
+    if (val === 'trending') {
+      return await getTrendingProps(req, res, 'dc');
+    }
+  }
   const opts = isomorphicGetHeaders(req, res);
   return await axios
     .get(`${publishersURL}/dc`, opts)
@@ -144,10 +156,10 @@ export const getDCProps = async (req, res) => {
     });
 };
 
-export const getTrendingProps = async (req, res) => {
+export const getTrendingProps = async (req, res, publisherSlug) => {
   const opts = isomorphicGetHeaders(req, res);
   return await axios
-    .get(`${publishersURL}/dc`, opts)
+    .get(`${trendingURL}/${encodeURIComponent(publisherSlug)}`, opts)
     .then((result) => {
       return result.data;
     })
