@@ -45,7 +45,7 @@ class CharacterListFilter extends Component {
   }
 
   getValue() {
-    const value = typeof localStorage !== 'undefined' ? localStorage.getItem(LS_KEY(this.props.publisher)) : 'main';
+    const value = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(LS_KEY(this.props.publisher)) : 'main';
     return VALUES.some((element) => value in element) ? value : '';
   }
 
@@ -54,7 +54,7 @@ class CharacterListFilter extends Component {
     const value = encodeURIComponent(e.target.value);
     const publisher = this.props.publisher;
     this.setState({ value: value, isLoading: true });
-    localStorage.setItem(LS_KEY(publisher), value);
+    sessionStorage.setItem(LS_KEY(publisher), value);
     switch (value) {
       case 'main':
         const pubFunc = publisher === 'marvel' ? getMarvelProps : getDCProps;

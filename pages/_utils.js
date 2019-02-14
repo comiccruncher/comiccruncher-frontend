@@ -121,8 +121,8 @@ export const getHomeProps = async (req, res) => {
 };
 
 export const getMarvelProps = async (req, res) => {
-  if (typeof localStorage !== 'undefined') {
-    const val = localStorage.getItem('comiccruncher.marvel');
+  if (typeof sessionStorage !== 'undefined') {
+    const val = sessionStorage.getItem('comiccruncher.marvel');
     if (val === 'trending') {
       return await getTrendingProps(req, res, 'marvel');
     }
@@ -139,8 +139,8 @@ export const getMarvelProps = async (req, res) => {
 };
 
 export const getDCProps = async (req, res, query) => {
-  if (typeof localStorage !== 'undefined') {
-    const val = localStorage.getItem('comiccruncher.dc');
+  if (typeof sessionStorage !== 'undefined') {
+    const val = sessionStorage.getItem('comiccruncher.dc');
     if (val === 'trending') {
       return await getTrendingProps(req, res, 'dc');
     }

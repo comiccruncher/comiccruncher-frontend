@@ -130,7 +130,7 @@ class CharactersList extends React.Component {
     super(props);
     this.loadData = this.loadData.bind(this);
     this.handleModalCloseRequest = this.handleModalCloseRequest.bind(this);
-    this.handleModalOpenRequest = this.handleModalOpenRequest.bind(this);
+    //this.handleModalOpenRequest = this.handleModalOpenRequest.bind(this);
     this.resetCharacterModal = this.resetCharacterModal.bind(this);
     this.loadCharacter = this.loadCharacter.bind(this);
     this.listenBeforePopState = this.listenBeforePopState.bind(this);
@@ -138,10 +138,10 @@ class CharactersList extends React.Component {
 
   componentDidMount() {
     if (window.innerWidth <= 767) {
-      const wasClicked = localStorage.getItem(IS_CLICKED);
+      const wasClicked = sessionStorage.getItem(IS_CLICKED);
       if (wasClicked === '1') {
-        window.scrollTo(0, localStorage.getItem(`comiccruncher.${this.props.router.route}.lastScrollY`));
-        localStorage.setItem(IS_CLICKED, 0);
+        window.scrollTo(0, sessionStorage.getItem(`comiccruncher.${this.props.router.route}.lastScrollY`));
+        sessionStorage.setItem(IS_CLICKED, 0);
       }
     }
     this.listenBeforePopState();
@@ -191,7 +191,7 @@ class CharactersList extends React.Component {
   handleModalCloseRequest() {
     const modal = this.state.characterModal;
     if (modal === null) {
-      localStorage.setItem(IS_CLICKED, 1);
+      sessionStorage.setItem(IS_CLICKED, 1);
       return;
     }
     this.setState(
@@ -213,7 +213,8 @@ class CharactersList extends React.Component {
   handleModalOpenRequest = (slug) => (e) => {
     e.preventDefault();
     if (window.innerWidth <= 767) {
-      localStorage.setItem(`comiccruncher.${this.props.router.route}.lastScrollY`, window.scrollY);
+      sessionStorage.setItem(`comiccruncher.${this.props.router.route}.lastScrollY`, window.scrollY);
+      //window.location = `/characters/${slug}`;
       this.props.router.push(`/characters?slug=${slug}`, `/characters/${slug}`);
       return;
     } else {
