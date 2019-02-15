@@ -11,7 +11,7 @@ import Spacing from '../shared/styles/spacing';
 import Navigation from './Navigation';
 import { withCache } from '../emotion/cache';
 
-const { cdnURL } = getConfig().publicRuntimeConfig;
+const { siteURL, cdnURL } = getConfig().publicRuntimeConfig;
 
 injectGlobal`
   * {
@@ -28,6 +28,11 @@ injectGlobal`
   h6 {
     font-family: inherit;
     font-size: inherit;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+    -ms-text-size-adjust: 100%;
   }
 
   .app {
@@ -54,10 +59,6 @@ injectGlobal`
     padding: 10px 20px;
     border: 1px solid ${UI.Border.Dark};
     border-radius: 0;
-  }
-
-  .react-autosuggest__input:focus {
-    outline: none;
   }
 
   .react-autosuggest__container--open .react-autosuggest__input {
@@ -133,13 +134,13 @@ injectGlobal`
     position:relative;
     height: auto;
     border:0;
-    outline:0;
     margin: 0 auto;
     width:100%;
     max-width: 1152px;
     border: 4px solid #000;
     box-shadow: 10px 10px #1f1f1f;
     margin: 0 auto;
+    outline: 0;
   }
 
   .Overlay {
@@ -235,6 +236,10 @@ injectGlobal`
 .nprogress-custom-parent #nprogress .bar {
   position: absolute;
 }
+
+.recharts-legend-item {
+  margin-top: 5px;
+}
 `;
 
 const Layout = ({ children, navBackground, router }) => (
@@ -262,7 +267,7 @@ const Layout = ({ children, navBackground, router }) => (
       <meta name="msapplication-square150x150logo" content={`${cdnURL}/mstile-150x150.png`} />
       <meta name="msapplication-wide310x150logo" content={`${cdnURL}/mstile-310x150.png`} />
       <meta name="msapplication-square310x310logo" content={`${cdnURL}/mstile-310x310.png`} />
-      {router.asPath && <link rel="canonical" href={router.asPath} />}
+      {router.asPath && <link rel="canonical" href={router.asPath === '/' ? siteURL : `${siteURL}${router.asPath}`} />}
     </Head>
     <div className="app">
       <Navigation background={navBackground} activeHref={router.asPath} />

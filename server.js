@@ -45,7 +45,7 @@ const redisClient = USE_CACHE
 
 if (USE_CACHE) {
   redisClient.on('error', (err) => {
-    logger.error(err);
+    logger.error(err.toString());
   });
 }
 
@@ -70,15 +70,6 @@ const getToken = async () => {
     })
     .then((resp) => {
       return resp.data.data.token;
-    })
-    .catch((error) => {
-      const { response } = error;
-      if (response.data) {
-        logger.error(`Error getting auth token: ${JSON.stringify(response.data)}`);
-      } else {
-        logger.error(`Error getting auth token: ${error.toString()}`);
-      }
-      return 0;
     });
 };
 
@@ -91,7 +82,7 @@ const AuthMiddleware = (req, res, next) => {
         res.cookie('cc_visitor_id', result.jti, secureCookieOpts);
       })
       .catch((err) => {
-        logger.error(err);
+        logger.error(`error authenticating to API: ${err.toString()}`);
       })
       .finally(() => {
         next();
@@ -110,7 +101,7 @@ app
 
     server.use(cookieParser());
 
-    // server.use(AuthMiddleware);
+    server.use(AuthMiddleware);
 
     server.use((req, res, next) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -132,20 +123,12 @@ app
       USE_CACHE ? renderAndCache(req, res, '/dc', req.params) : app.render(req, res, '/dc', req.params);
     });
 
-    server.get('/trending', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/trending', req.params) : app.render(req, res, '/trending', req.params);
-    });
-
     server.get('/characters/:slug', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/character', req.params) : app.render(req, res, '/character', req.params);
+      USE_CACHE ? renderAndCache(req, res, '/characters', req.params) : app.render(req, res, '/characters', req.params);
     });
 
     server.get('/faq', (req, res) => {
       USE_CACHE ? renderAndCache(req, res, '/faq', req.params) : app.render(req, res, '/faq', req.params);
-    });
-
-    server.get('/privacy', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/privacy', req.params) : app.render(req, res, '/privacy', req.params);
     });
 
     server.get('/', (req, res) => {

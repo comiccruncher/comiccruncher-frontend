@@ -6,7 +6,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import cookieParser from 'cookie';
 
-const { charactersURL, statsURL, publishersURL } = getConfig().publicRuntimeConfig.API;
+const { charactersURL, statsURL, publishersURL, trendingURL } = getConfig().publicRuntimeConfig.API;
 
 const visitorFilt = (item) => item.hasOwnProperty('cc_visitor_id');
 const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
@@ -42,18 +42,13 @@ const isomorphicGetHeaders = (req, res) => {
 };
 
 const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
-  /*
-  TODO: later
-      headers: {
+  const opts = {
+    headers: {
       Authorization: `Bearer ${cc_session_id}`,
       'X-VISITOR-ID': cc_visitor_id || 0,
-    }
-  */
-  return {
-    params: {
-      key: 'batmansmellsbadly',
     },
   };
+  return opts;
 };
 
 export const getCookieHeaders = (cookie) => {
@@ -121,6 +116,12 @@ export const getHomeProps = async (req, res) => {
 };
 
 export const getMarvelProps = async (req, res) => {
+  if (typeof sessionStorage !== 'undefined') {
+    const val = sessionStorage.getItem('comiccruncher.marvel');
+    if (val === 'trending') {
+      return await getTrendingProps(req, res, 'marvel');
+    }
+  }
   const opts = isomorphicGetHeaders(req, res);
   return await axios
     .get(`${publishersURL}/marvel`, opts)
@@ -132,7 +133,13 @@ export const getMarvelProps = async (req, res) => {
     });
 };
 
-export const getDCProps = async (req, res) => {
+export const getDCProps = async (req, res, query) => {
+  if (typeof sessionStorage !== 'undefined') {
+    const val = sessionStorage.getItem('comiccruncher.dc');
+    if (val === 'trending') {
+      return await getTrendingProps(req, res, 'dc');
+    }
+  }
   const opts = isomorphicGetHeaders(req, res);
   return await axios
     .get(`${publishersURL}/dc`, opts)
@@ -144,10 +151,10 @@ export const getDCProps = async (req, res) => {
     });
 };
 
-export const getTrendingProps = async (req, res) => {
+export const getTrendingProps = async (req, res, publisherSlug) => {
   const opts = isomorphicGetHeaders(req, res);
   return await axios
-    .get(`${publishersURL}/dc`, opts)
+    .get(`${trendingURL}/${encodeURIComponent(publisherSlug)}`, opts)
     .then((result) => {
       return result.data;
     })
@@ -156,10 +163,18 @@ export const getTrendingProps = async (req, res) => {
     });
 };
 
-export const getCharacterProps = async (req, res) => {
+export const getCharacterProps = async (req, res, query) => {
   const opts = isomorphicGetHeaders(req, res);
+  // need to check req first, then the query params for client-side
+  // fetch. fixed forward-button bug on mobile.
+  let slug = null;
+  if (req && req.params.slug) {
+    slug = req.params.slug;
+  } else {
+    slug = query.slug;
+  }
   return await axios
-    .get(`${charactersURL}/${encodeURIComponent(req.params.slug)}`, opts)
+    .get(`${charactersURL}/${encodeURIComponent(slug)}`, opts)
     .then((result) => {
       return result.data;
     })

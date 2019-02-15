@@ -5,6 +5,7 @@ import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { Title, Text } from '../shared/styles/type';
 import Spacing from '../shared/styles/spacing';
+import Responsive from '../shared/styles/responsive';
 
 const Bang = 'https://flash.comiccruncher.com/static/assets/bang.svg';
 
@@ -19,31 +20,49 @@ export const StatBox = styled(Box)({
   transform: 'rotate(6deg)',
 });
 
+const StatTitle = styled(Title.Red)({
+  [Responsive.Mobile]: {
+    fontSize: '1.4em',
+  },
+  [Responsive.Tablet]: {
+    fontSize: '1.4em',
+  },
+});
+
+const StatDesc = styled(Text.Default)({
+  [Responsive.Tablet]: {
+    fontSize: '1em',
+  },
+  [Responsive.Mobile]: {
+    fontSize: '.8em',
+  },
+});
+
 export const Stats = (props) => (
   <Flex flexWrap="wrap">
-    <StatBox width={[1, 1 / 4, 1 / 4, 1 / 4]}>
-      <Title.Red>
+    <StatBox width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+      <StatTitle>
         <CountUp end={props.total_characters} />
-      </Title.Red>
+      </StatTitle>
       <Text.Default bold>characters</Text.Default>
     </StatBox>
-    <StatBox width={[1, 1 / 4, 1 / 4, 1 / 4]}>
-      <Title.Red>
+    <StatBox width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+      <StatTitle>
         <CountUp end={props.total_appearances} />
-      </Title.Red>
-      <Text.Default bold>appearances</Text.Default>
+      </StatTitle>
+      <StatDesc bold>appearances</StatDesc>
     </StatBox>
-    <StatBox width={[1, 1 / 4, 1 / 4, 1 / 4]}>
-      <Title.Red>
+    <StatBox width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+      <StatTitle>
         <CountUp end={props.total_issues} />
-      </Title.Red>
-      <Text.Default bold>issues</Text.Default>
+      </StatTitle>
+      <StatDesc bold>issues</StatDesc>
     </StatBox>
-    <StatBox width={[1, 1 / 4, 1 / 4, 1 / 4]}>
-      <Text.Default bold>dating from</Text.Default>
-      <Title.Red>
+    <StatBox width={[1 / 2, 1 / 4, 1 / 4, 1 / 4]}>
+      <StatDesc bold>dating from</StatDesc>
+      <StatTitle>
         <CountUp end={props.min_year} />
-      </Title.Red>
+      </StatTitle>
     </StatBox>
   </Flex>
 );

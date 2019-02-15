@@ -3,12 +3,12 @@ import Head from 'next/head';
 import { Box } from 'rebass/emotion';
 import PropTypes from 'prop-types';
 import Layout from '../components/Layout/Layout';
-import CharactersList from '../components/Character/CharactersList';
 import { RankedCharacterProps } from '../components/Character/Types';
 import { MainHeader } from '../components/Layout/Header';
 import { MainPageFlex, CenterWrap, WithFooter } from '../components/Layout/Content';
 import { Title, Section, Text } from '../components/shared/styles/type';
 import { Brands } from '../components/shared/styles/colors';
+import ListFilter from '../components/Character/CharacterListFilter';
 import Error from './_error';
 import { getDCProps } from './_utils';
 
@@ -38,11 +38,11 @@ const DC = (props) => {
                 </Section.Title>
                 <Text.Default>
                   This page shows most popular DC characters by <strong>main</strong> appearances only (no alternate
-                  alternate realities)!
+                  realities)!
                 </Text.Default>
               </Box>
             </MainPageFlex>
-            {data && <CharactersList characters={props} referer="/dc" />}
+            {data && <ListFilter characters={props} publisher="dc" />}
           </WithFooter>
         </Layout>
       )}
@@ -50,8 +50,8 @@ const DC = (props) => {
   );
 };
 
-DC.getInitialProps = async ({ req, res }) => {
-  return await getDCProps(req, res);
+DC.getInitialProps = async ({ req, res, query }) => {
+  return await getDCProps(req, res, query);
 };
 
 DC.propTypes = {

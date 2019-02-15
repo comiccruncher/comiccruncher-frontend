@@ -4,6 +4,8 @@ const CDN = 'https://flash.comiccruncher.com';
 
 const API = 'https://api.comiccruncher.com';
 
+const SITE = isProd ? 'https://comiccruncher.com' : 'localhost:3000';
+
 module.exports = {
   resolve: {
     aliasFields: ['browser'],
@@ -12,6 +14,7 @@ module.exports = {
   poweredByHeader: false,
   assetPrefix: isProd ? CDN : '',
   publicRuntimeConfig: {
+    siteURL: SITE,
     apiURL: API,
     isProd: isProd,
     cdnURL: CDN,

@@ -25,7 +25,7 @@ const CharacterLink = styled.a({
 
 const CharacterItem = ({ character, requestedSlug, handleModalOpenRequest }) => {
   return (
-    <Box pr={3} pb={3} width={[1, 1 / 3, 1 / 3, 1 / 4]}>
+    <Box pr={3} pb={3} width={[1, 1 / 2, 1 / 3, 1 / 4]}>
       <CharacterLink href={`/characters/${character.slug}`} onClick={handleModalOpenRequest}>
         <CharacterCard character={character} isLoading={requestedSlug === character.slug} />
       </CharacterLink>
@@ -37,6 +37,23 @@ CharacterItem.propTypes = {
   character: RankedCharacterProps.isRequired,
   requestedSlug: PropTypes.string,
   handleModalOpenRequest: PropTypes.func.isRequired,
+};
+
+const CharacterItemList = ({ characters, requestedSlug, handleModalOpenRequest }) => {
+  if (!characters) {
+    return null;
+  }
+  return characters.map((character) => {
+    const slug = character.slug;
+    return (
+      <CharacterItem
+        character={character}
+        requestedSlug={requestedSlug}
+        handleModalOpenRequest={handleModalOpenRequest(slug)}
+        key={slug}
+      />
+    );
+  });
 };
 
 const getNextPage = async (url) => {
@@ -63,6 +80,31 @@ const getCharacter = async (slug) => {
     });
 };
 
+const getInitialState = () => {
+  return {
+    characters: [], // TODO: this should be removed and we should only have props.
+    hasMoreItems: true,
+    nextHref: null,
+    error: null,
+    characterModal: null,
+    isNextPageLoading: false,
+    requestedCharacterSlug: null,
+  };
+};
+
+const isURLChanged = (curr, next) => {
+  const currentChars = curr.characters;
+  const nextChars = next.characters;
+  const currentPage = currentChars ? currentChars.meta.pagination.current_page : '';
+  const nextPage = nextChars ? nextChars.meta.pagination.current_page : '';
+  if (currentPage.substring(0, currentPage.indexOf('?')) !== nextPage.substring(0, nextPage.indexOf('?'))) {
+    return true;
+  }
+  return false;
+};
+
+const IS_CLICKED = 'comiccruncher.isCharacterClicked';
+
 class CharactersList extends React.Component {
   static propTypes = {
     router: PropTypes.object,
@@ -81,25 +123,41 @@ class CharactersList extends React.Component {
   };
 
   state = {
-    characters: [],
-    hasMoreItems: true,
-    nextHref: null,
-    error: null,
-    characterModal: null,
-    isNextPageLoading: false,
-    requestedCharacterSlug: null,
-    width: 0,
+    ...getInitialState(),
   };
 
+  constructor(props) {
+    super(props);
+    this.loadData = this.loadData.bind(this);
+    this.handleModalCloseRequest = this.handleModalCloseRequest.bind(this);
+    //this.handleModalOpenRequest = this.handleModalOpenRequest.bind(this);
+    this.resetCharacterModal = this.resetCharacterModal.bind(this);
+    this.loadCharacter = this.loadCharacter.bind(this);
+    this.listenBeforePopState = this.listenBeforePopState.bind(this);
+  }
+
   componentDidMount() {
+    if (window.innerWidth <= 767) {
+      const wasClicked = sessionStorage.getItem(IS_CLICKED);
+      if (wasClicked === '1') {
+        window.scrollTo(0, sessionStorage.getItem(`comiccruncher.${this.props.router.route}.lastScrollY`));
+        sessionStorage.setItem(IS_CLICKED, 0);
+      }
+    }
     this.listenBeforePopState();
-    this.setState({ width: window.innerWidth });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isURLChanged(this.props, nextProps)) {
+      this.setState(getInitialState());
+    }
+    return true;
   }
 
   /**
    * Loads data for the next page.
    */
-  loadData = () => {
+  loadData() {
     this.setState({ isNextPageLoading: true });
     const { characters, router } = this.props;
     let link = baseURL + characters.meta.pagination.next_page;
@@ -125,14 +183,15 @@ class CharactersList extends React.Component {
       .catch((err) => {
         this.setState({ error: err.toString() });
       });
-  };
+  }
 
   /**
    * Closes the modal and propagates the history change.
    */
-  handleModalCloseRequest = () => {
+  handleModalCloseRequest() {
     const modal = this.state.characterModal;
     if (modal === null) {
+      sessionStorage.setItem(IS_CLICKED, 1);
       return;
     }
     this.setState(
@@ -146,18 +205,18 @@ class CharactersList extends React.Component {
         TrackEvent('modal', 'close', modal.slug).then(() => router.push(pushAs, pushAs, { shallow: true }));
       }
     );
-  };
+  }
 
   /**
    * Shows the character modal.
    */
   handleModalOpenRequest = (slug) => (e) => {
     e.preventDefault();
-    if (this.state.width < 767) {
-      // force ssr-refresh.. nvm, on mobile there is a bug if you press the forward button
-      // can't reproduce on dev.
-      //window.location.href = `/characters/${slug}`;
+    if (window.innerWidth <= 767) {
+      sessionStorage.setItem(`comiccruncher.${this.props.router.route}.lastScrollY`, window.scrollY);
+      //window.location = `/characters/${slug}`;
       this.props.router.push(`/characters?slug=${slug}`, `/characters/${slug}`);
+      return;
     } else {
       this.setState({ requestedCharacterSlug: slug }, () => {
         this.loadCharacter(slug);
@@ -172,7 +231,7 @@ class CharactersList extends React.Component {
   /**
    * Loads the character.
    */
-  loadCharacter = (slug) => {
+  loadCharacter(slug) {
     this.resetCharacterModal();
     slug = encodeURIComponent(slug);
     getCharacter(slug)
@@ -183,19 +242,19 @@ class CharactersList extends React.Component {
           TrackEvent('modal', 'open', slug).then(() => {
             const router = this.props.router;
             // Must use `{ shallow: true }` so modals load for other pages.
-            router.push(`${router.route}?character=${slug}`, localUrl, { shallow: true });
+            router.push(`${router.route}?characters=${slug}`, localUrl, { shallow: true });
           });
         });
       })
       .catch((err) => {
         this.setState({ error: err.toString(), requestedCharacterSlug: null });
       });
-  };
+  }
 
   /**
    * Listens on when the route changes and handles opening the modal.
    */
-  listenBeforePopState = () => {
+  listenBeforePopState() {
     const router = this.props.router;
     const route = router.route;
     router.beforePopState(({ url, as, options }) => {
@@ -203,14 +262,15 @@ class CharactersList extends React.Component {
       if (as === route) {
         this.handleModalCloseRequest();
       }
-      if (url.includes(`${route}?character=`) || url.includes('/character?slug=')) {
+      // for forward button detection.
+      if (url.includes(`${route}?characters=`) || url.includes('/characters?slug=')) {
         // Force SSR refresh so it doesn't try loading a character page JS.
         window.location.href = as;
         return false;
       }
       return true;
     });
-  };
+  }
 
   render() {
     const data = this.props.characters.data;
@@ -218,37 +278,16 @@ class CharactersList extends React.Component {
     return (
       <Fragment>
         <Flex flexWrap="wrap" alignItems="center" alignContent="center" pl={3}>
-          {data &&
-            data.map((character) => {
-              const slug = character.slug;
-              return (
-                <CharacterItem
-                  character={character}
-                  requestedSlug={requestedCharacterSlug}
-                  handleModalOpenRequest={this.handleModalOpenRequest(slug)}
-                  key={slug}
-                />
-              );
-            })}
-          {characters &&
-            characters.map((character) => {
-              const slug = character.slug;
-              return (
-                <CharacterItem
-                  character={character}
-                  requestedSlug={requestedCharacterSlug}
-                  handleModalOpenRequest={this.handleModalOpenRequest(slug)}
-                  key={slug}
-                />
-              );
-            })}
+          <CharacterItemList
+            characters={data.concat(characters)}
+            requestedSlug={requestedCharacterSlug}
+            handleModalOpenRequest={this.handleModalOpenRequest}
+          />
         </Flex>
         <Flex justifyContent="center" alignItems="center" alignContent="center" py={24}>
           <Box alignSelf="center">
             {error ? (
-              <Text.Default>
-                <p>{error}.</p>
-              </Text.Default>
+              <Text.Default>{error}.</Text.Default>
             ) : (
               hasMoreItems &&
               !isNextPageLoading && (

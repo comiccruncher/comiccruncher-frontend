@@ -45,13 +45,6 @@ const TrackNavClick = (e, label, href) => {
 
 const MainNavLinks = [
   {
-    href: '/trending',
-    displayText: 'Trending',
-    prefetch: true,
-    tabIndex: 3,
-    onClick: (e) => TrackNavClick(e, 'trending', '/trending'),
-  },
-  {
     href: '/marvel',
     displayText: 'Marvel',
     prefetch: true,
@@ -62,14 +55,14 @@ const MainNavLinks = [
     href: '/dc',
     displayText: 'DC',
     prefetch: true,
-    tabIndex: 5,
+    tabIndex: 4,
     onClick: (e) => TrackNavClick(e, 'dc', '/dc'),
   },
   {
     href: '/faq',
     displayText: 'FAQ',
     prefetch: true,
-    tabIndex: 6,
+    tabIndex: 5,
     onClick: (e) => TrackNavClick(e, 'faq', '/faq'),
   },
 ];

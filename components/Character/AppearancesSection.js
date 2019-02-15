@@ -9,7 +9,7 @@ const prevNextReduce = (prev, next) => prev + next;
 export const AppearancesSection = ({ character }) => {
   const { appearances, last_syncs } = character;
   const { aggregates } = appearances;
-  const doMap = aggregates.length !== 0;
+  const doMap = aggregates && aggregates.length !== 0;
   const mainCounts = doMap ? aggregates.map((item) => item.main).reduce(prevNextReduce) : 0;
   const altCounts = doMap ? aggregates.map((item) => item.alternate).reduce(prevNextReduce) : 0;
   const lastSyncs = last_syncs ? last_syncs.slice(0, 2) : [];
@@ -44,17 +44,21 @@ export const AppearancesSection = ({ character }) => {
               </Section.Byline>
             </Box>
           </Flex>
-          <AppearanceChart character={character} />
-          <Flex flexWrap="wrap" alignItems="center" alignContent="center" py={16}>
-            <Box width={[1]}>
-              {lastSyncs && (
-                <Text.Small>
-                  Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
-                  {`with ${newIssues} new issues`}
-                </Text.Small>
-              )}
-            </Box>
-          </Flex>
+          {doMap && (
+            <Fragment>
+              <AppearanceChart character={character} />
+              <Flex flexWrap="wrap" alignItems="center" alignContent="center" py={16}>
+                <Box width={[1]}>
+                  {lastSyncs && (
+                    <Text.Small>
+                      Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
+                      {`with ${newIssues} new issues`}
+                    </Text.Small>
+                  )}
+                </Box>
+              </Flex>
+            </Fragment>
+          )}
         </Fragment>
       )}
     </Fragment>
