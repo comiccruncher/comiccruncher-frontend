@@ -70,6 +70,9 @@ class MyApp extends App {
     ReactGA.initialize(gaID, {
       debug: !isProd,
       titleCase: false,
+      gaOptions: {
+        siteSpeedSampleRate: 100,
+      },
     });
     if (!isProd) {
       ReactGA.set({ sendHitTask: null });

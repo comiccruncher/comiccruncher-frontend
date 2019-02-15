@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from 'rebass/emotion';
+import ReactGA from 'react-ga';
 import { withRouter } from 'next/router';
 import { RankedCharacterProps } from './Types';
 import CharacterList from './CharactersList';
@@ -53,6 +54,8 @@ class CharacterListFilter extends Component {
     e.preventDefault();
     const value = encodeURIComponent(e.target.value);
     const publisher = this.props.publisher;
+    // count as page view.
+    ReactGA.pageview(`/${publisher}/${value}`);
     this.setState({ value: value, isLoading: true });
     sessionStorage.setItem(LS_KEY(publisher), value);
     switch (value) {
