@@ -11,8 +11,6 @@ import { getCookieHeaders } from '../../pages/_utils';
 import { SingularChart, DualChart } from './Charts';
 import { withCache } from '../emotion/cache';
 
-const cookies = new Cookies();
-
 const ChartDiv = styled.div({
   fontFamily: UIFontStack,
   marginLeft: '-35px',
@@ -88,7 +86,7 @@ const composeComparisonData = (original, comparison) => {
   });
 };
 
-export default class AppearanceChart extends React.Component {
+class AppearanceChart extends React.Component {
   static propTypes = {
     character: FullCharacterProps,
   };
@@ -110,6 +108,7 @@ export default class AppearanceChart extends React.Component {
       Event('appearances', 'compare', `${character.slug}:${slug}`);
       return;
     }
+    const cookies = new Cookies();
     axios
       .get(`${charactersURL}/${slug}`, getCookieHeaders(cookies))
       .then((res) => {
@@ -183,3 +182,5 @@ export default class AppearanceChart extends React.Component {
     );
   }
 }
+
+export default AppearanceChart;

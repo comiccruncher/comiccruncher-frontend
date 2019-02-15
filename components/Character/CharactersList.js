@@ -16,8 +16,9 @@ import { Event, TrackEvent, TrackError } from '../ga/Tracker';
 import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache';
 
-const cookie = new Cookies();
 const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
+
+const cookie = new Cookies();
 
 const CharacterLink = styled.a({
   textDecoration: 'none',

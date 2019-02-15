@@ -65,7 +65,6 @@ class MyApp extends App {
   }
 
   initialTrack() {
-    const cookies = new Cookies();
     const { gaID, isProd } = getConfig().publicRuntimeConfig;
     ReactGA.initialize(gaID, {
       debug: !isProd,
@@ -77,6 +76,7 @@ class MyApp extends App {
     if (!isProd) {
       ReactGA.set({ sendHitTask: null });
     }
+    const cookies = new Cookies();
     const visitorId = cookies.get('cc_visitor_id');
     if (visitorId) {
       ReactGA.set({ userId: visitorId });
