@@ -3,7 +3,7 @@ import App, { Container } from 'next/app';
 import Router from 'next/router';
 import getConfig from 'next/config';
 import ReactGA from 'react-ga';
-//import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import { Palette } from '../components/shared/styles/colors';
 
@@ -65,7 +65,7 @@ class MyApp extends App {
   }
 
   initialTrack() {
-    //const cookies = new Cookies();
+    const cookies = new Cookies();
     const { gaID, isProd } = getConfig().publicRuntimeConfig;
     ReactGA.initialize(gaID, {
       debug: !isProd,
@@ -77,7 +77,6 @@ class MyApp extends App {
     if (!isProd) {
       ReactGA.set({ sendHitTask: null });
     }
-    /*
     const visitorId = cookies.get('cc_visitor_id');
     if (visitorId) {
       ReactGA.set({ userId: visitorId });
@@ -85,7 +84,6 @@ class MyApp extends App {
     } else {
       ReactGA.event({ category: 'cookie', action: 'miss userId' });
     }
-    */
     // track initial server-side render pageview.
     ReactGA.pageview(Router.asPath);
   }

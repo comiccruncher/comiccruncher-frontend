@@ -70,15 +70,6 @@ const getToken = async () => {
     })
     .then((resp) => {
       return resp.data.data.token;
-    })
-    .catch((error) => {
-      const { response } = error;
-      if (response.data) {
-        logger.error(`Error getting auth token: ${JSON.stringify(response.data)}`);
-      } else {
-        logger.error(`Error getting auth token: ${error.toString()}`);
-      }
-      return 0;
     });
 };
 
@@ -110,7 +101,7 @@ app
 
     server.use(cookieParser());
 
-    // server.use(AuthMiddleware);
+    server.use(AuthMiddleware);
 
     server.use((req, res, next) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');

@@ -42,18 +42,13 @@ const isomorphicGetHeaders = (req, res) => {
 };
 
 const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
-  /*
-  TODO: later
-      headers: {
+  const opts = {
+    headers: {
       Authorization: `Bearer ${cc_session_id}`,
       'X-VISITOR-ID': cc_visitor_id || 0,
-    }
-  */
-  return {
-    params: {
-      key: 'batmansmellsbadly',
     },
   };
+  return opts;
 };
 
 export const getCookieHeaders = (cookie) => {
