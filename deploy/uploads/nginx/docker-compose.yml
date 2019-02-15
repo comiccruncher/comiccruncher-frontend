@@ -5,7 +5,8 @@ services:
     container_name: certbot
     image: certbot/dns-route53:v0.30.0
     entrypoint: >
-      sh -c "trap exit TERM; while :; do certbot renew; sleep 24h & wait $${!}; done;"
+      sh -c "certbot certonly -n --dns-route53 --agree-tos --email aimee@aimeelaplant.com -d comiccruncher.com -d www.comiccruncher.com &&
+      trap exit TERM; while :; do certbot renew; sleep 24h & wait $${!}; done;"
     environment:
        AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
        AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -17,6 +18,7 @@ services:
         max-file: "3"
   nginx:
     container_name: nginx
+    command: "/bin/sh -c 'while :; do sleep 12h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     restart: always
     image: nginx:1.15-alpine
     ports:
