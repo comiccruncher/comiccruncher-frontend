@@ -45,7 +45,7 @@ const redisClient = USE_CACHE
 
 if (USE_CACHE) {
   redisClient.on('error', (err) => {
-    logger.error(err);
+    logger.error(err.toString());
   });
 }
 
@@ -82,7 +82,7 @@ const AuthMiddleware = (req, res, next) => {
         res.cookie('cc_visitor_id', result.jti, secureCookieOpts);
       })
       .catch((err) => {
-        logger.error(err);
+        logger.error(`error authenticating to API: ${err.toString()}`);
       })
       .finally(() => {
         next();
