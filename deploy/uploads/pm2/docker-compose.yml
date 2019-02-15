@@ -14,6 +14,7 @@ services:
       CC_REDIS_PORT: ${CC_REDIS_PORT}
       CC_REDIS_PASSWORD: ${CC_REDIS_PASSWORD}
       NODE_ENV: production
+      CC_JWT_AUTH_SECRET: ${CC_JWT_AUTH_SECRET}
   filebeat:
     command: ["--strict.perms=false"]
     restart: always
