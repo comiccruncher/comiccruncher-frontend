@@ -32,14 +32,14 @@ export const AppearancesSection = ({ character }) => {
             <Box width={[1, 1 / 3, 1 / 3]}>
               <Section.Byline>
                 <Text.Default>
-                  <strong>{mainCounts}</strong> main appearances
+                  <strong>{mainCounts}</strong> main reality appearances
                 </Text.Default>
               </Section.Byline>
             </Box>
             <Box width={[1, 1 / 3, 1 / 3]}>
               <Section.Byline>
                 <Text.Default>
-                  <strong>{altCounts}</strong> alternate appearances
+                  <strong>{altCounts}</strong> alternate reality appearances
                 </Text.Default>
               </Section.Byline>
             </Box>
@@ -52,7 +52,7 @@ export const AppearancesSection = ({ character }) => {
                   {lastSyncs && (
                     <Text.Small>
                       Last synced at {new Date(lastSyncs[0].synced_at).toLocaleDateString('en-us')}{' '}
-                      {`with ${newIssues} new issues`}
+                      {`with ${newIssues} new issues analyzed`}
                     </Text.Small>
                   )}
                 </Box>
