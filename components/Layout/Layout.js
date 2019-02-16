@@ -200,46 +200,9 @@ injectGlobal`
     opacity: 0;
   }
 
-#nprogress {
-  pointer-events: none;
-}
-
-#nprogress .bar {
-  background: ${Palette.Yellow.Default};
-  position: fixed;
-  z-index: 1031;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-}
-
-/* Fancy blur effect */
-#nprogress .peg {
-  display: block;
-  position: absolute;
-  right: 0px;
-  width: 100px;
-  height: 100%;
-  box-shadow: 0 0 10px ${Palette.Yellow.Default}, 0 0 5px ${Palette.Yellow.Default};
-  opacity: 1.0;
-  -webkit-transform: rotate(3deg) translate(0px, -4px);
-      -ms-transform: rotate(3deg) translate(0px, -4px);
-          transform: rotate(3deg) translate(0px, -4px);
-}
-
-.nprogress-custom-parent {
-  overflow: hidden;
-  position: relative;
-}
-
-.nprogress-custom-parent #nprogress .bar {
-  position: absolute;
-}
-
-.recharts-legend-item {
-  margin-top: 5px;
-}
+  .recharts-legend-item {
+    margin-top: 5px;
+  }
 `;
 
 const Layout = ({ children, navBackground, router }) => (
@@ -247,7 +210,8 @@ const Layout = ({ children, navBackground, router }) => (
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link href={`${cdnURL}/static/assets/font.css`} rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" />
+      <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
       <link rel="apple-touch-icon-precomposed" sizes="57x57" href={`${cdnURL}/apple-touch-icon-57x57.png`} />
       <link rel="apple-touch-icon-precomposed" sizes="114x114" href={`${cdnURL}/apple-touch-icon-114x114.png`} />
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href={`${cdnURL}/apple-touch-icon-72x72.png`} />
