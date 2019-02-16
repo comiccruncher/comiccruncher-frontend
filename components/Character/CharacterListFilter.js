@@ -8,7 +8,6 @@ import CharacterList from './CharactersList';
 import { getMarvelProps, getDCProps, getTrendingProps } from '../../pages/_utils.js';
 import styled from 'react-emotion';
 import { UI, Brands } from '../shared/styles/colors';
-import Spacing from '../shared/styles/spacing';
 import { UIFontStack, Size } from '../shared/styles/type';
 import { LoadingSVG } from '../shared/components/Icons';
 import { MainPageFlex, CenterWrap } from '../Layout/Content';
@@ -21,13 +20,12 @@ const FormStyle = styled.div({
 });
 
 const SelectBox = styled.select({
-  background: UI.Background.White,
   border: '2px solid ' + UI.Border.Dark,
-  padding: Spacing.Large,
+  padding: '0 5px',
   margin: ' 0',
   height: '35px',
-  width: '150px',
-  fontSize: '1.1em',
+  width: '175px',
+  fontSize: '1em',
 });
 
 const VALUES = [{ main: 'All-Time Main' }, { trending: 'Trending' }];
