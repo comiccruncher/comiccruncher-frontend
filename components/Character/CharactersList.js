@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import getConfig from 'next/config';
@@ -106,7 +106,7 @@ const isURLChanged = (curr, next) => {
 
 const IS_CLICKED = 'comiccruncher.isCharacterClicked';
 
-class CharactersList extends React.Component {
+class CharactersList extends Component {
   static propTypes = {
     router: PropTypes.object,
     characters: PropTypes.shape({

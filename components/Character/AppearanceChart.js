@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
@@ -86,7 +86,7 @@ const composeComparisonData = (original, comparison) => {
   });
 };
 
-class AppearanceChart extends React.Component {
+class AppearanceChart extends PureComponent {
   static propTypes = {
     character: FullCharacterProps,
   };
