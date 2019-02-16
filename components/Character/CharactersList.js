@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import getConfig from 'next/config';
@@ -16,8 +16,9 @@ import { Event, TrackEvent, TrackError } from '../ga/Tracker';
 import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache';
 
-const cookie = new Cookies();
 const { baseURL, charactersURL } = getConfig().publicRuntimeConfig.API;
+
+const cookie = new Cookies();
 
 const CharacterLink = styled.a({
   textDecoration: 'none',
@@ -105,7 +106,7 @@ const isURLChanged = (curr, next) => {
 
 const IS_CLICKED = 'comiccruncher.isCharacterClicked';
 
-class CharactersList extends React.Component {
+class CharactersList extends Component {
   static propTypes = {
     router: PropTypes.object,
     characters: PropTypes.shape({

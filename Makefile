@@ -56,7 +56,7 @@ docker-yarn-install-circleci:
 docker-yarn-build:
 	${DOCKER_COMPOSE_BUILD_RUN} yarn build
 
-# Uploads the static assets to s3.
+# Uploads the static assets to s3. Should be run manually.
 .PHONY: docker-upload-static
 docker-upload-static:
 	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_STATIC}
@@ -76,9 +76,9 @@ docker-upload-next-chunks:
 docker-upload-next-runtime:
 	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_RUNTIME}
 
-# Uploads all the statics and next statics to s3.
+# Uploads next statics to s3.
 .PHONY: docker-upload-s3
-docker-upload-s3: docker-upload-static docker-upload-next-build docker-upload-next-chunks docker-upload-next-runtime
+docker-upload-s3: docker-upload-next-build docker-upload-next-chunks docker-upload-next-runtime
 
 # Builds the Docker image for PM2.
 # Make sure to build the yarn build first..

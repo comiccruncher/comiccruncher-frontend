@@ -11,8 +11,8 @@ import { Stats } from '../components/Stats/Stats';
 import { MainHeader } from '../components/Layout/Header';
 import { WithFooter, MainPageFlex } from '../components/Layout/Content';
 import Layout from '../components/Layout/Layout';
-import ErrorDisplayTracker from '../components/shared/components/Error';
 import { getHomeProps } from './_utils';
+import Error from './_error';
 
 const InnerHeader = styled(Box)({
   width: '100%',
@@ -23,37 +23,34 @@ const InnerHeader = styled(Box)({
 
 const Home = ({ meta, stats, characters }) => (
   <Fragment>
-    <Layout>
-      <Head>
-        <title>Home | All-Time Popular Characters | Comic Cruncher</title>
-      </Head>
-      <MainHeader>
-        <Flex flexWrap="wrap" alignItems="center" alignContent="center" justifyContent="center">
-          <InnerHeader alignSelf="center">
-            <Title.Large>Comic Book Appearances</Title.Large>
-            <Title.Byline>See popular character appearances</Title.Byline>
-            {stats && <Stats {...stats.data} />}
-          </InnerHeader>
-        </Flex>
-      </MainHeader>
-      <WithFooter>
-        <MainPageFlex>
-          <Box width={[1]}>
-            <Section.Title>
-              <h1>Popular Characters</h1>
-            </Section.Title>
-            {meta &&
-              meta.error && (
-                <ErrorDisplayTracker
-                  status_code={meta.status_code}
-                  error="Sorry, we couldn't load the characters. The issue has been logged!"
-                />
-              )}
-          </Box>
-        </MainPageFlex>
-        {characters && <CharactersList characters={characters} />}
-      </WithFooter>
-    </Layout>
+    {meta && meta.error ? (
+      <Error status_code={meta.status_code} />
+    ) : (
+      <Layout>
+        <Head>
+          <title>Home | All-Time Popular Characters | Comic Cruncher</title>
+        </Head>
+        <MainHeader>
+          <Flex flexWrap="wrap" alignItems="center" alignContent="center" justifyContent="center">
+            <InnerHeader alignSelf="center">
+              <Title.Large>Comic Book Appearances</Title.Large>
+              <Title.Byline>See popular character appearances</Title.Byline>
+              {stats && <Stats {...stats.data} />}
+            </InnerHeader>
+          </Flex>
+        </MainHeader>
+        <WithFooter>
+          <MainPageFlex>
+            <Box width={[1]}>
+              <Section.Title>
+                <h1>Popular Characters</h1>
+              </Section.Title>
+            </Box>
+          </MainPageFlex>
+          {characters && <CharactersList characters={characters} />}
+        </WithFooter>
+      </Layout>
+    )}
   </Fragment>
 );
 

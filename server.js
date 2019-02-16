@@ -15,7 +15,6 @@ const CC_REDIS_PASSWORD = process.env.CC_REDIS_PASSWORD || '';
 const USE_CACHE = !IS_DEV || DEV_USE_CACHE;
 
 const secureCookieOpts = {
-  httpOnly: !IS_DEV,
   secure: !IS_DEV,
   sameSite: 'strict',
 };

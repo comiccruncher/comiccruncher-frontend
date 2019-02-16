@@ -37,8 +37,8 @@ const DC = (props) => {
                   <h1>Popular DC Characters</h1>
                 </Section.Title>
                 <Text.Default>
-                  This page shows most popular DC characters by <strong>main</strong> appearances only (no alternate
-                  realities)!
+                  This page shows most popular DC characters by <strong>main</strong> reality appearances only (no
+                  alternate realities)!
                 </Text.Default>
               </Box>
             </MainPageFlex>

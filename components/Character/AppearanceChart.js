@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled from 'react-emotion';
 import getConfig from 'next/config';
 import axios from 'axios';
@@ -10,8 +10,6 @@ import { Event } from '../ga/Tracker';
 import { getCookieHeaders } from '../../pages/_utils';
 import { SingularChart, DualChart } from './Charts';
 import { withCache } from '../emotion/cache';
-
-const cookies = new Cookies();
 
 const ChartDiv = styled.div({
   fontFamily: UIFontStack,
@@ -88,7 +86,7 @@ const composeComparisonData = (original, comparison) => {
   });
 };
 
-export default class AppearanceChart extends React.Component {
+class AppearanceChart extends PureComponent {
   static propTypes = {
     character: FullCharacterProps,
   };
@@ -110,6 +108,7 @@ export default class AppearanceChart extends React.Component {
       Event('appearances', 'compare', `${character.slug}:${slug}`);
       return;
     }
+    const cookies = new Cookies();
     axios
       .get(`${charactersURL}/${slug}`, getCookieHeaders(cookies))
       .then((res) => {
@@ -183,3 +182,5 @@ export default class AppearanceChart extends React.Component {
     );
   }
 }
+
+export default AppearanceChart;

@@ -16,11 +16,7 @@ class ErrorDisplayTracker extends React.Component {
   }
 
   render() {
-    return (
-      <Text.Default>
-        <p>{this.props.error}</p>
-      </Text.Default>
-    );
+    return <Text.Default>{this.props.error}</Text.Default>;
   }
 }
 

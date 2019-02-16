@@ -12,21 +12,7 @@ import { TrackEvent } from '../ga/Tracker';
 import { getCookieHeaders } from '../../pages/_utils';
 import { withCache } from '../emotion/cache'; /* Keep this here */
 
-const cookie = new Cookies();
 const searchURL = getConfig().publicRuntimeConfig.API.searchCharactersURL;
-
-const searchCharacter = async (query) => {
-  let opts = getCookieHeaders(cookie);
-  opts.params.query = encodeURIComponent(query);
-  return await axios
-    .get(searchURL, opts)
-    .then((resp) => {
-      return resp.data;
-    })
-    .catch((err) => {
-      throw new Error(err.toString());
-    });
-};
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 const escapeRegexCharacters = (str) => {
@@ -45,6 +31,7 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
 
+    this.searchCharacter = this.searchCharacter.bind(this);
     this.state = {
       value: '',
       suggestions: [],
@@ -58,6 +45,22 @@ class Search extends React.Component {
     });
   };
 
+  searchCharacter(value) {
+    const cookie = new Cookies();
+    let opts = getCookieHeaders(cookie);
+    opts['params'] = {
+      query: encodeURIComponent(value),
+    };
+    return axios
+      .get(searchURL, opts)
+      .then((resp) => {
+        return resp.data;
+      })
+      .catch((err) => {
+        throw new Error(err.toString());
+      });
+  }
+
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({ isLoading: true });
     value = value.trim();
@@ -66,7 +69,7 @@ class Search extends React.Component {
       return [];
     }
     TrackEvent(`search`, `typeahead:${this.props.id}`, value).then(() => {
-      searchCharacter(escapedValue)
+      this.searchCharacter(escapedValue)
         .then((resp) => {
           const chars = resp.data;
           // dumb hack for no suggestions.
