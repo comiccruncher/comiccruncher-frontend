@@ -4,7 +4,7 @@ import Spacing from './spacing';
 import Responsive from './responsive';
 
 const UIFontStack =
-  'Inter UI, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
+  'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
 const BangersFontStack =
   'Bangers, -apple-system, BlinkMacSystemFont, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol';
 
