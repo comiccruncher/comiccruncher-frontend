@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
-import { Flex, Box } from 'rebass/emotion';
 import Layout from '../components/Layout/Layout';
-import { WithFooter, MainPageFlex } from '../components/Layout/Content';
+import { WithFooter, CenterWrap } from '../components/Layout/Content';
 import { Title } from '../components/shared/styles/type';
 import ErrorDisplayTracker from '../components/shared/components/Error';
 
-const StatusCodes = [404, 304, 500];
+const StatusCodes = [401, 404, 304, 500];
 
 const ErrorText = {
   404: {
@@ -18,9 +17,13 @@ const ErrorText = {
     title: 'Bad Request',
     content: 'Maybe try a different input.',
   },
+  401: {
+    title: 'Whoops',
+    content: 'Cookies are needed for the site to function properly. Try refreshing the page or clearing your cookies.',
+  },
   500: {
-    title: 'Internal Server Error',
-    content: 'There was something wrong with the server. The error has been logged.',
+    title: 'Whoops',
+    content: 'Something happened on our end. The error has been logged.',
   },
 };
 
@@ -33,14 +36,12 @@ const Error = ({ status_code }) => {
       </Head>
       <Layout>
         <WithFooter>
-          <MainPageFlex>
-            <Box alignSelf="center" p={3}>
-              <Title.Large>
-                <h1>{title}</h1>
-              </Title.Large>
-              <ErrorDisplayTracker status_code={status_code} error={content} />
-            </Box>
-          </MainPageFlex>
+          <CenterWrap>
+            <Title.Large style={{ textAlign: 'center' }}>
+              <h1>{title}</h1>
+            </Title.Large>
+            <ErrorDisplayTracker status_code={status_code} error={content} />
+          </CenterWrap>
         </WithFooter>
       </Layout>
     </Fragment>
