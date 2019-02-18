@@ -1,10 +1,11 @@
 const express = require('express');
 const next = require('next');
-const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const winston = require('winston');
-const jwtDecode = require('jwt-decode');
 const redis = require('redis');
+const session = require('express-session');
+const uuidv4 = require('uuid/v4');
+const RedisStore = require('connect-redis')(session);
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const DEV_USE_CACHE = process.env.CC_DEV_USE_CACHE || false;
@@ -14,11 +15,6 @@ const CC_REDIS_PORT = process.env.CC_REDIS_PORT || 6379;
 const CC_REDIS_PASSWORD = process.env.CC_REDIS_PASSWORD || '';
 const USE_CACHE = !IS_DEV || DEV_USE_CACHE;
 
-const secureCookieOpts = {
-  secure: !IS_DEV,
-  sameSite: 'strict',
-};
-
 const redisClient = USE_CACHE
   ? new redis.createClient({
       host: CC_REDIS_HOST,
@@ -27,15 +23,15 @@ const redisClient = USE_CACHE
       retry_strategy: (opts) => {
         logger.error(opts);
         if (opts.error && opts.error.code === 'ECONNREFUSED') {
-          return new Error('The redis server refused the connection');
+          throw new Error('The redis server refused the connection');
         }
         if (opts.total_retry_time > 3000) {
           // End reconnecting after a specific timeout.
-          return new Error('Retry time exhausted');
+          throw new Error('Retry time exhausted');
         }
         if (opts.attempt > 3) {
           // Attempts exhausted.
-          return new Error(`attempts to connect to ${CC_REDIS_HOST}:${CC_REDIS_PORT} greater than 3. Quit.`);
+          throw new Error(`attempts to connect to ${CC_REDIS_HOST}:${CC_REDIS_PORT} greater than 3. Quit.`);
         }
         return Math.min(opts.attempt * 100, 3000);
       },
@@ -49,8 +45,6 @@ if (USE_CACHE) {
 }
 
 const app = next({ dev: IS_DEV });
-
-const apiURL = app.nextConfig.publicRuntimeConfig.apiURL;
 const handle = app.getRequestHandler();
 const logger = winston.createLogger({
   level: 'info',
@@ -60,6 +54,12 @@ const logger = winston.createLogger({
   }),
 });
 
+/*
+const apiURL = app.nextConfig.publicRuntimeConfig.apiURL;
+const secureCookieOpts = {
+  secure: !IS_DEV,
+  sameSite: 'strict',
+};
 const getToken = async () => {
   return await axios
     .post(`${apiURL}/authenticate`, null, {
@@ -69,19 +69,20 @@ const getToken = async () => {
     })
     .then((resp) => {
       return resp.data.data.token;
+    })
+    .catch((err) => {
+      logger.error(err.toString());
+      return 0;
     });
 };
 
 const AuthMiddleware = (req, res, next) => {
-  if (!req.cookies.cc_session_id) {
+  if (!req.cookies.cc_visitor_id) {
     getToken()
       .then((token) => {
         const result = jwtDecode(token);
-        res.cookie('cc_session_id', token, secureCookieOpts);
+        //res.cookie('cc_session_id', token, secureCookieOpts);
         res.cookie('cc_visitor_id', result.jti, secureCookieOpts);
-      })
-      .catch((err) => {
-        logger.error(`error authenticating to API: ${err.toString()}`);
       })
       .finally(() => {
         next();
@@ -90,6 +91,7 @@ const AuthMiddleware = (req, res, next) => {
     next();
   }
 };
+*/
 
 app
   .prepare()
@@ -98,9 +100,29 @@ app
 
     server.disable('x-powered-by');
 
-    server.use(cookieParser());
+    server.use(
+      session({
+        secret: CC_JWT_AUTH_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: !IS_DEV, domain: !IS_DEV ? 'https://comiccruncher.com' : '', httpOnly: false },
+        genid: () => {
+          return uuidv4();
+        },
+        proxy: !IS_DEV,
+        name: 'cc_visitor_id',
+        store: new RedisStore({
+          host: CC_REDIS_HOST,
+          port: CC_REDIS_PORT,
+          pass: CC_REDIS_PASSWORD,
+          disableTTL: true,
+          logErrors: true,
+          prefix: 'token:',
+        }),
+      })
+    );
 
-    server.use(AuthMiddleware);
+    server.use(cookieParser());
 
     server.use((req, res, next) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -108,6 +130,10 @@ app
       res.setHeader('Referrer-Policy', 'origin');
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
       res.setHeader('x-xss-protection', '1; mode=block');
+      if (!IS_DEV) {
+        res.setHeader('Access-Control-Allow-Origin', 'https://comiccruncher.com');
+        res.setHeader('Vary', 'Origin');
+      }
       next();
     });
 
