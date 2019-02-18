@@ -105,11 +105,11 @@ app
         secret: CC_JWT_AUTH_SECRET,
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: !IS_DEV, domain: !IS_DEV ? 'https://comiccruncher.com' : '', httpOnly: false },
+        cookie: { secure: IS_DEV ? false : true, domain: !IS_DEV ? 'https://comiccruncher.com' : '', httpOnly: false },
         genid: () => {
           return uuidv4();
         },
-        proxy: !IS_DEV,
+        // proxy: !IS_DEV,
         name: 'cc_visitor',
         store: new RedisStore({
           host: CC_REDIS_HOST,
