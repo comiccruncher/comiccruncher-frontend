@@ -105,7 +105,7 @@ app
         secret: CC_JWT_AUTH_SECRET,
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: IS_DEV ? false : true, domain: !IS_DEV ? 'https://comiccruncher.com' : '', httpOnly: false },
+        cookie: { secure: false, httpOnly: false },
         genid: () => {
           return uuidv4();
         },
