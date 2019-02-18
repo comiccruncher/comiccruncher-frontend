@@ -3,13 +3,10 @@ const next = require('next');
 const cookieParser = require('cookie-parser');
 const winston = require('winston');
 const redis = require('redis');
-const session = require('express-session');
 const uuidv4 = require('uuid/v4');
-const RedisStore = require('connect-redis')(session);
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const DEV_USE_CACHE = process.env.CC_DEV_USE_CACHE || false;
-const CC_JWT_AUTH_SECRET = process.env.CC_JWT_AUTH_SECRET || 'test';
 const CC_REDIS_HOST = process.env.CC_REDIS_HOST || 'localhost';
 const CC_REDIS_PORT = process.env.CC_REDIS_PORT || 6379;
 const CC_REDIS_PASSWORD = process.env.CC_REDIS_PASSWORD || '';
@@ -54,6 +51,11 @@ const logger = winston.createLogger({
   }),
 });
 
+const secureCookieOpts = {
+  secure: !IS_DEV,
+  sameSite: 'strict',
+};
+
 /*
 const apiURL = app.nextConfig.publicRuntimeConfig.apiURL;
 const secureCookieOpts = {
@@ -75,54 +77,28 @@ const getToken = async () => {
       return 0;
     });
 };
+*/
 
-const AuthMiddleware = (req, res, next) => {
+const UUIDMiddleware = (req, res, next) => {
   if (!req.cookies.cc_visitor_id) {
-    getToken()
-      .then((token) => {
-        const result = jwtDecode(token);
-        //res.cookie('cc_session_id', token, secureCookieOpts);
-        res.cookie('cc_visitor_id', result.jti, secureCookieOpts);
-      })
-      .finally(() => {
-        next();
-      });
+    //res.cookie('cc_session_id', token, secureCookieOpts);
+    res.cookie('cc_visitor_id', uuidv4(), secureCookieOpts);
+    next();
   } else {
     next();
   }
 };
-*/
 
 app
   .prepare()
   .then(() => {
     const server = express();
 
+    server.use(cookieParser());
+
     server.disable('x-powered-by');
 
-    server.use(
-      session({
-        secret: CC_JWT_AUTH_SECRET,
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false, httpOnly: false },
-        genid: () => {
-          return uuidv4();
-        },
-        // proxy: !IS_DEV,
-        name: 'cc_visitor',
-        store: new RedisStore({
-          host: CC_REDIS_HOST,
-          port: CC_REDIS_PORT,
-          pass: CC_REDIS_PASSWORD,
-          disableTTL: true,
-          logErrors: true,
-          prefix: 'token:',
-        }),
-      })
-    );
-
-    server.use(cookieParser());
+    server.use(UUIDMiddleware);
 
     server.use((req, res, next) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');

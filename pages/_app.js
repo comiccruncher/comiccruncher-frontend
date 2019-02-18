@@ -77,7 +77,7 @@ class MyApp extends App {
       ReactGA.set({ sendHitTask: null });
     }
     const cookies = new Cookies();
-    const visitorId = cookies.get('cc_visitor');
+    const visitorId = cookies.get('cc_visitor_id');
     if (visitorId) {
       ReactGA.set({ userId: visitorId });
       ReactGA.event({ category: 'cookie', action: 'hit userId', label: visitorId });
