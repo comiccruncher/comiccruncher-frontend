@@ -9,7 +9,7 @@ import cookieParser from 'cookie';
 const { charactersURL, statsURL, publishersURL, trendingURL } = getConfig().publicRuntimeConfig.API;
 
 const visitorFilt = (item) => item.hasOwnProperty('cc_visitor_id');
-const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
+// const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
 
 /**
  * Gets the cc_session_id cookie from the request if set.
@@ -29,22 +29,19 @@ const isomorphicGetHeaders = (req, res) => {
   // Check for server-side render if no cookie found in request above...
   if (res && res._headers && res._headers['set-cookie']) {
     const parsed = res._headers['set-cookie'].map((item) => cookieParser.parse(item));
-    const session = parsed.filter(sessionFilt);
+    // const session = parsed.filter(sessionFilt);
+    // session ? session[0].cc_session_id : 'UNDEFINED',
     const visitor = parsed.filter(visitorFilt);
-    return getRequestHeaders(
-      session ? session[0].cc_session_id : 'UNDEFINED',
-      visitor ? visitor[0].cc_visitor_id : 'UNDEFINED'
-    );
+    return getRequestHeaders(visitor ? visitor[0].cc_visitor_id : 0);
   }
   // This would be a client-side request.
   const cookie = new Cookies();
   return getCookieHeaders(cookie);
 };
 
-const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
+const getRequestHeaders = (cc_visitor_id) => {
   const opts = {
     headers: {
-      Authorization: `Bearer ${cc_session_id}`,
       'X-VISITOR-ID': cc_visitor_id || 0,
     },
   };
@@ -52,7 +49,7 @@ const getRequestHeaders = (cc_session_id, cc_visitor_id) => {
 };
 
 export const getCookieHeaders = (cookie) => {
-  return getRequestHeaders(cookie.get('cc_session_id'), cookie.get('cc_visitor_id'));
+  return getRequestHeaders(cookie.get('cc_visitor_id'));
 };
 
 const logError = (req, res, err) => {
