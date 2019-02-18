@@ -8,7 +8,7 @@ import cookieParser from 'cookie';
 
 const { charactersURL, statsURL, publishersURL, trendingURL } = getConfig().publicRuntimeConfig.API;
 
-const visitorFilt = (item) => item.hasOwnProperty('cc_visitor_id');
+const visitorFilt = (item) => item.hasOwnProperty('cc_visitor');
 // const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
 
 /**
@@ -39,17 +39,17 @@ const isomorphicGetHeaders = (req, res) => {
   return getCookieHeaders(cookie);
 };
 
-const getRequestHeaders = (cc_visitor_id) => {
+const getRequestHeaders = (cc_visitor) => {
   const opts = {
     headers: {
-      'X-VISITOR-ID': cc_visitor_id || 0,
+      'X-VISITOR-ID': cc_visitor || 0,
     },
   };
   return opts;
 };
 
 export const getCookieHeaders = (cookie) => {
-  return getRequestHeaders(cookie.get('cc_visitor_id'));
+  return getRequestHeaders(cookie.get('cc_visitor'));
 };
 
 const logError = (req, res, err) => {

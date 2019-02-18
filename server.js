@@ -110,7 +110,7 @@ app
           return uuidv4();
         },
         proxy: !IS_DEV,
-        name: 'cc_visitor_id',
+        name: 'cc_visitor',
         store: new RedisStore({
           host: CC_REDIS_HOST,
           port: CC_REDIS_PORT,
