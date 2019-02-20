@@ -62,7 +62,6 @@ class Search extends React.Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
-    this.setState({ isLoading: true });
     value = value.trim();
     const escapedValue = escapeRegexCharacters(value);
     if (escapedValue === '') {
@@ -84,6 +83,7 @@ class Search extends React.Component {
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: [],
+      value: '',
     });
   };
 
