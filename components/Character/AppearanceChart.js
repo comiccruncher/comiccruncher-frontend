@@ -118,13 +118,15 @@ class AppearanceChart extends PureComponent {
           throw new Error(meta.error);
         }
         const reqCharacter = res.data.data;
-        this.setState((prevState) => ({
-          comparison: reqCharacter,
-          comparisonData: composeComparisonData(character, reqCharacter),
-        })),
+        this.setState(
+          (prevState) => ({
+            comparison: reqCharacter,
+            comparisonData: composeComparisonData(character, reqCharacter),
+          }),
           () => {
             Event('appearances', 'compare', `${character.slug}:${slug}`);
-          };
+          }
+        );
       })
       .catch((error) => {
         this.setState({ error: error });
