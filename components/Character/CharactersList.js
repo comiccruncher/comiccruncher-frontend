@@ -260,7 +260,7 @@ class CharactersList extends Component {
     const route = router.route;
     router.beforePopState(({ url, as, options }) => {
       // If current page..
-      if (as === route) {
+      if (url === route) {
         this.handleModalCloseRequest();
       }
       // for forward button detection.

@@ -205,7 +205,15 @@ injectGlobal`
   }
 `;
 
-const Layout = ({ children, navBackground, router }) => (
+const Layout = ({
+  children,
+  navBackground,
+  router,
+  canonical = null,
+  description = null,
+  image = null,
+  socialTitle = null,
+}) => (
   <Fragment>
     <Head>
       <meta charSet="utf-8" />
@@ -230,7 +238,34 @@ const Layout = ({ children, navBackground, router }) => (
       <meta name="msapplication-square150x150logo" content={`${cdnURL}/mstile-150x150.png`} />
       <meta name="msapplication-wide310x150logo" content={`${cdnURL}/mstile-310x150.png`} />
       <meta name="msapplication-square310x310logo" content={`${cdnURL}/mstile-310x310.png`} />
-      {router.asPath && <link rel="canonical" href={router.asPath === '/' ? siteURL : `${siteURL}${router.asPath}`} />}
+      <meta property="og:site_name" content="Comic Cruncher" />
+      {canonical !== null && (
+        <Fragment>
+          <link rel="canonical" href={`${siteURL}${canonical}`} />
+          <meta property="og:url" content={`${siteURL}${canonical}`} />
+          <meta property="twitter:url" content={`${siteURL}${canonical}`} />
+        </Fragment>
+      )}
+      {description && (
+        <Fragment>
+          <meta name="description" content={description} />
+          <meta property="og:description" content={description} />
+          <meta name="twitter:description" content={description} />
+        </Fragment>
+      )}
+      {image && (
+        <Fragment>
+          <meta property="og:image" content={image} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content={image} />
+        </Fragment>
+      )}
+      {socialTitle && (
+        <Fragment>
+          <meta property="og:title" content={socialTitle} />
+          <meta name="twitter:title" content={socialTitle} />
+        </Fragment>
+      )}
     </Head>
     <div className="app">
       <Navigation background={navBackground} activeHref={router.asPath} />
@@ -243,6 +278,10 @@ Layout.propTypes = {
   router: PropTypes.object,
   navBackground: PropTypes.string,
   children: PropTypes.node,
+  canonical: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  socialTitle: PropTypes.string,
 };
 
 export default withRouter(Layout);

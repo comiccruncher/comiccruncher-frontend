@@ -149,6 +149,9 @@ const TextXSmall = styled.div((props) => ({
   lineHeight: 1.5,
   fontSize: Size.XSmall,
   fontWeight: props.bold ? Weight.Bold : '',
+  '& a': {
+    color: UI.Text.Dark,
+  },
 }));
 
 const LabelDefault = styled.label({
@@ -184,6 +187,9 @@ const TextBlock = styled.p({
   lineHeight: 1.5,
   fontSize: Size.Default,
   marginTop: '20px',
+  '& a': {
+    color: UI.Text.Dark,
+  },
 });
 
 const Type = {};
