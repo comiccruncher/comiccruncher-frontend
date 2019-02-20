@@ -7,7 +7,7 @@ import Spacing from '../shared/styles/spacing';
 import { UI } from '../shared/styles/colors';
 import { UIFontStack, Weight } from '../shared/styles/type';
 import { Flex, Box } from 'rebass/emotion';
-import { Github } from '../shared/components/Icons';
+import { Github, ProductHunt } from '../shared/components/Icons';
 import { TrackEvent } from '../ga/Tracker';
 import { OutboundLink } from 'react-ga';
 
@@ -35,6 +35,9 @@ const FooterContainer = styled('footer')({
 
 const IconsContainer = styled('div')({
   margin: '10px auto',
+  '& a': {
+    padding: '8px',
+  },
 });
 
 const aimeelaplant = 'https://twitter.com/aimeelaplant';
@@ -76,6 +79,9 @@ const Footer = ({ showFooterText = true }) => (
               <IconsContainer>
                 <OutboundLink eventLabel="GitHub Link" to={github}>
                   <Github width="32" height="32" />
+                </OutboundLink>
+                <OutboundLink eventLabel="ProductHunt link" to="https://producthunt.com/posts/comiccruncher">
+                  <ProductHunt />
                 </OutboundLink>
               </IconsContainer>
             </Fragment>

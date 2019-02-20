@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { Brands } from '../styles/colors';
 
 const LoadingCSS = css({
@@ -136,3 +136,11 @@ export const Github = ({ width = '100', height = '100', viewbox = '0 0 438.549 4
     <g />
   </svg>
 );
+
+export const ProductHunt = styled.span({
+  background: 'url(https://flash.comiccruncher.com/static/assets/product-hunt-logo-orange-64.png) no-repeat',
+  width: '32px',
+  height: '32px',
+  display: 'inline-block',
+  backgroundSize: 'contain',
+});
