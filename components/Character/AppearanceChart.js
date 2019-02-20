@@ -98,6 +98,19 @@ class AppearanceChart extends PureComponent {
     error: null,
   };
 
+  componentDidUpdate(prevProps) {
+    // Reset comparison data if chart changes. ._.
+    const character = this.props.character;
+    const prevChar = prevProps.character;
+    if (character && prevChar && character.slug !== prevChar.slug) {
+      this.setState({
+        comparison: null,
+        comparisonData: [],
+        error: null,
+      });
+    }
+  }
+
   onSuggestedSelected = (event, { suggestion }) => {
     event.preventDefault();
     const { character } = this.props;
@@ -118,13 +131,15 @@ class AppearanceChart extends PureComponent {
           throw new Error(meta.error);
         }
         const reqCharacter = res.data.data;
-        this.setState((prevState) => ({
-          comparison: reqCharacter,
-          comparisonData: composeComparisonData(character, reqCharacter),
-        })),
+        this.setState(
+          (prevState) => ({
+            comparison: reqCharacter,
+            comparisonData: composeComparisonData(character, reqCharacter),
+          }),
           () => {
             Event('appearances', 'compare', `${character.slug}:${slug}`);
-          };
+          }
+        );
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -149,7 +164,7 @@ class AppearanceChart extends PureComponent {
       <Fragment>
         <SearchDiv>
           <Search
-            id="compare"
+            id={character.slug}
             placeholder="Compare to another character."
             onSuggestionSelected={this.onSuggestedSelected}
           />

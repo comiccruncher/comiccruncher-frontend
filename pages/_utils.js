@@ -96,10 +96,24 @@ const handleError = (req, res, err) => {
 export const getHomeProps = async (req, res) => {
   const opts = isomorphicGetHeaders(req, res);
   return axios
-    .all([axios.get(statsURL, opts), axios.get(charactersURL, opts)])
-    .then(([stats, characters]) => {
+    .get(charactersURL, opts)
+    .then((characters) => {
+      // Hard-code stats for now. Can remove later.
       return {
-        stats: stats.data,
+        stats: {
+          meta: {
+            status_code: 200,
+            error: null,
+            pagination: null,
+          },
+          data: {
+            total_characters: 444,
+            total_appearances: 260340,
+            min_year: 1938,
+            max_year: 2019,
+            total_issues: 63751,
+          },
+        },
         characters: characters.data,
         meta: {
           status_code: 200,

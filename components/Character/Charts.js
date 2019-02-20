@@ -30,7 +30,7 @@ const StyledBox = styled(Box)({
 export const SingularChart = ({ character, showAlternate, width, height }) => {
   const isMarvel = character.publisher.slug === 'marvel';
   return (
-    <ResponsiveContainer width={'100%'} height={CHART_HEIGHT}>
+    <ResponsiveContainer width={'100%'} height={CHART_HEIGHT} id={character.slug}>
       <ComposedChart data={character.appearances.aggregates}>
         <XAxis dataKey="year" name="Year" />
         <YAxis type="number" domain={[0, 'dataMax + 10']} allowDataOverflow={true} />
@@ -69,7 +69,7 @@ const ComparisonChart = ({ character, comparison, composedData, children }) => {
   return (
     <WrappedFlex flexWrap="nowrap">
       <StyledBox flex="1 0 auto">
-        <ComposedChart data={composedData} updateId="1" width={1145} height={CHART_HEIGHT}>
+        <ComposedChart data={composedData} updateId="1" width={1145} height={CHART_HEIGHT} syncId={character.slug}>
           <XAxis dataKey="year" name="Year" />
           <YAxis type="number" domain={[0, 'dataMax + 10']} />
           <Tooltip />
