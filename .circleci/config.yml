@@ -35,7 +35,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      # Can't currently use cache due to fsevents on Mac and package.lock discrepancy. Fix later.
       - restore_cache:
           keys: 
             - node_modules-{{ checksum "yarn.lock" }}
