@@ -20,7 +20,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <html lang="en-us">
+      <html lang="en-us" prefix="og: http://ogp.me/ns#">
         <Head>
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>

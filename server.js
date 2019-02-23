@@ -154,12 +154,12 @@ app
   });
 
 const getCacheKey = (req) => {
-  return `frontend:${req.url}`;
+  // use path, so cache query strings, too.
+  return `frontend:${req.path}`;
 };
 
 const renderAndCache = async (req, res, pagePath, queryParams) => {
   const key = getCacheKey(req);
-
   redisClient.get(key, async (err, data) => {
     if (err) {
       return handleRedisError(req, res, pagePath, queryParams, err);

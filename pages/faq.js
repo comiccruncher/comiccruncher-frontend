@@ -7,7 +7,7 @@ import { Section, Text, Title } from '../components/shared/styles/type';
 import { OutboundLink } from 'react-ga';
 
 const FAQ = () => (
-  <Layout>
+  <Layout canonical="/faq">
     <Head>
       <title>{'Frequently Asked Questions | Comic Cruncher'}</title>
     </Head>
@@ -90,7 +90,10 @@ const FAQ = () => (
             data.
           </Text.P>
           <Text.P>Individual Marvel and DC characters were populated from the Marvel API and DC website.</Text.P>
-          <Text.P>The actual issue data for the characters comes from multiple sources found on the web.</Text.P>
+          <Text.P>
+            The actual issue data for the characters comes from multiple sources and match closely with comicbookdb.com,
+            the Marvel Wikia, and comics.org.
+          </Text.P>
         </Box>
         <Title.Medium>
           <h1>What is your privacy policy?</h1>

@@ -37,6 +37,7 @@ const IconsContainer = styled('div')({
   margin: '10px auto',
   '& a': {
     padding: '8px',
+    verticalAlign: 'bottom',
   },
 });
 
@@ -80,8 +81,18 @@ const Footer = ({ showFooterText = true }) => (
                 <OutboundLink eventLabel="GitHub Link" to={github}>
                   <Github width="32" height="32" />
                 </OutboundLink>
-                <OutboundLink eventLabel="ProductHunt link" to="https://producthunt.com/posts/comiccruncher">
-                  <ProductHunt />
+                <OutboundLink
+                  eventLabel="ProductHunt Link"
+                  to="https://www.producthunt.com/posts/comic-cruncher?utm_source=badge-featured"
+                  target="_blank"
+                >
+                  <img
+                    src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=145862&theme=light"
+                    alt="Comic Cruncher - Visualize appearances per year of comic book characters | Product Hunt Embed"
+                    style={{ width: `150px`, height: `38px`, verticalAlign: 'bottom' }}
+                    width="150px"
+                    height="38px"
+                  />
                 </OutboundLink>
               </IconsContainer>
             </Fragment>

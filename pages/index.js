@@ -26,7 +26,12 @@ const Home = ({ meta, stats, characters }) => (
     {meta && meta.error ? (
       <Error status_code={meta.status_code} />
     ) : (
-      <Layout>
+      <Layout
+        canonical="/"
+        description={'Visualize appearances per year for Marvel and DC comic book characters 💥'}
+        image={'https://flash.comiccruncher.com/static/assets/cc-preview-fb1.jpg'}
+        socialTitle="Comic Cruncher | Visualize ranked and trending appearances per year for Marvel and DC comic book characters"
+      >
         <Head>
           <title>Home | All-Time Popular Characters | Comic Cruncher</title>
         </Head>
@@ -43,7 +48,7 @@ const Home = ({ meta, stats, characters }) => (
           <MainPageFlex>
             <Box width={[1]}>
               <Section.Title>
-                <h1>Popular Characters</h1>
+                <h1>Characters Ranked by Appearances</h1>
               </Section.Title>
             </Box>
           </MainPageFlex>

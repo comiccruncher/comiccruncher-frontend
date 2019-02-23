@@ -19,7 +19,12 @@ const Marvel = (props) => {
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
-        <Layout>
+        <Layout
+          canonical="/marvel"
+          description="Ranked and trending appearances per year for Marvel comic book characters 💥"
+          image="https://flash.comiccruncher.com/static/assets/marvel-preview-fb.jpg"
+          socialTitle="Marvel Comics | Trending Character Appearances | Comic Cruncher"
+        >
           <Head>
             <title>Marvel Comics | Popular Characters | Comic Cruncher</title>
           </Head>
@@ -34,11 +39,11 @@ const Marvel = (props) => {
             <MainPageFlex>
               <Box width={[1]}>
                 <Section.Title>
-                  <h1>Popular Marvel Characters</h1>
+                  <h1>Marvel Characters Ranked By Appearances</h1>
                 </Section.Title>
                 <Text.Default>
-                  This page shows most popular Marvel characters by <strong>main</strong> reality appearances only (no
-                  alternate realities)!
+                  This page shows Marvel characters ranked by number of <strong>main</strong> reality appearances (no
+                  alternate realities).
                 </Text.Default>
               </Box>
             </MainPageFlex>

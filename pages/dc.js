@@ -19,7 +19,12 @@ const DC = (props) => {
       {meta && meta.error ? (
         <Error status_code={meta.status_code} />
       ) : (
-        <Layout>
+        <Layout
+          canonical="/dc"
+          description={`Ranked and trending appearances per year for DC comic book characters 💥`}
+          image="https://flash.comiccruncher.com/static/assets/dc-preview-fb.jpg"
+          socialTitle="DC Comics | Trending Character Appearances | Comic Cruncher"
+        >
           <Head>
             <title>{`DC Comics | Popular Characters | Comic Cruncher`}</title>
           </Head>
@@ -34,11 +39,11 @@ const DC = (props) => {
             <MainPageFlex>
               <Box width={[1]}>
                 <Section.Title>
-                  <h1>Popular DC Characters</h1>
+                  <h1>DC Characters Ranked By Appearances</h1>
                 </Section.Title>
                 <Text.Default>
-                  This page shows most popular DC characters by <strong>main</strong> reality appearances only (no
-                  alternate realities)!
+                  This page shows DC characters ranked by number of <strong>main</strong> reality appearances (no
+                  alternate realities).
                 </Text.Default>
               </Box>
             </MainPageFlex>
