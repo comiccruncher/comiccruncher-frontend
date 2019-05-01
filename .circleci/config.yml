@@ -1,6 +1,7 @@
-version: 2
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@4.0.1
 workflows:
-  version: 2
   install_deps_build_and_deploy:
     jobs:
       - install_deps:
@@ -9,7 +10,7 @@ workflows:
               only: /.*/
             tags:
               ignore: /.*/
-      - build_and_deploy:
+      - build_publish_deploy:
           filters:
             tags:
               only: /^v.*/
@@ -31,7 +32,7 @@ jobs:
           key: node_modules-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-  build_and_deploy:
+  build_publish_deploy:
     machine: true
     steps:
       - checkout
@@ -39,17 +40,20 @@ jobs:
           keys: 
             - node_modules-{{ checksum "yarn.lock" }}
             - node_modules
-      - run:
-          name: Login to docker.
-          command: docker login -u $CC_DOCKER_USER -p $CC_DOCKER_PASSWORD > /dev/null
       - add_ssh_keys:
           fingerprints:
             - "c8:9c:22:02:8e:c5:4b:8e:3b:80:70:a1:3d:59:cf:ca"
             - "4f:14:ed:5a:08:98:d9:79:07:58:bd:23:5a:45:07:e2"
             - "4d:5f:1b:f6:81:d2:89:21:cf:ed:2f:29:eb:4a:1c:d3"
+      - aws-ecr/ecr-login
+      - run:
+          name: Build the Docker image
+          command: make docker-build-production
+      - run:
+          name: Publish the Docker image
+          command: |
+            docker tag comiccruncher/frontend:latest 570480763436.dkr.ecr.us-east-1.amazonaws.com/comiccruncher/frontend:latest
+            docker push 570480763436.dkr.ecr.us-east-1.amazonaws.com/comiccruncher/frontend:latest
       - run:
           name: Deploy
-          command: make deploy-steps
-      - run:
-          name: Reload nginx
-          command: make docker-reload-nginx
+          command: make remote-deploy-all

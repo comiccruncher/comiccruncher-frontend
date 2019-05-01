@@ -1,5 +1,3 @@
-CC_AWS_BUCKET = appearances-us-east-1
-
 NEXT_STATIC_DIR = _next/static
 
 NGINX_SERVER = aimee@68.183.27.114
@@ -12,23 +10,9 @@ DOCKER_COMPOSE_PM2_UP_CMD = docker-compose up -d --build
 
 PM2_IMAGE = comiccruncher/frontend:latest
 
+# Retired
 PM2_SERVER1 = aimee@167.99.157.206
 PM2_SERVER2 = aimee@68.183.143.225
-
-S3_UPLOAD_STATIC = s3 cp ./static s3://${CC_AWS_BUCKET}/static --recursive --cache-control "public, max-age=2592000"
-
-S3_UPLOAD_NEXT_BUILD = s3 cp ./.next/static/$(shell cat ./.next/BUILD_ID) s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/$(shell cat ./.next/BUILD_ID) \
-		--recursive \
-		--content-type "application/json" \
-		--cache-control "public, max-age=2592000"
-S3_UPLOAD_NEXT_CHUNKS = s3 cp ./.next/static/chunks s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/chunks \
-		--recursive \
-		--content-type "application/json" \
-		--cache-control "public, max-age=2592000"
-S3_UPLOAD_NEXT_RUNTIME = s3 cp ./.next/static/runtime s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/runtime \
-		--recursive \
-		--content-type "application/json" \
-		--cache-control "public, max-age=2592000"
 
 DOCKER_COMPOSE_DEV = docker-compose -f docker-compose.yml 
 
@@ -55,30 +39,6 @@ docker-yarn-install-circleci:
 .PHONY: docker-yarn-build
 docker-yarn-build:
 	${DOCKER_COMPOSE_BUILD_RUN} yarn build
-
-# Uploads the static assets to s3. Should be run manually.
-.PHONY: docker-upload-static
-docker-upload-static:
-	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_STATIC}
-
-# Uploads the next build to s3.
-.PHONY: docker-upload-next-build
-docker-upload-next-build:
-	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_BUILD}
-
-# Uploads the next chunks to s3.
-.PHONY: docker-upload-next-chunks
-docker-upload-next-chunks:
-	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_CHUNKS}
-
-# Uploads the next runtime to s3.
-.PHONY: docker-upload-next-runtime
-docker-upload-next-runtime:
-	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_RUNTIME}
-
-# Uploads next statics to s3.
-.PHONY: docker-upload-s3
-docker-upload-s3: docker-upload-next-build docker-upload-next-chunks docker-upload-next-runtime
 
 # Builds the Docker image for PM2.
 # Make sure to build the yarn build first..
@@ -108,7 +68,6 @@ remote-deploy-pm2-cmd:
 	ssh ${PM2_SERVER} "sh deploy.sh"
 
 remote-deploy-pm2:
-	PM2_SERVER=${PM2_SERVER1} make remote-deploy-pm2-cmd
 	PM2_SERVER=${PM2_SERVER2} make remote-deploy-pm2-cmd
 	make remote-clear-redis
 
@@ -124,4 +83,24 @@ docker-reload-nginx:
 .PHONY: remote-deploy
 remote-deploy-all: remote-deploy-pm2 docker-reload-nginx
 
-deploy-steps: docker-yarn-build docker-upload-s3 docker-build-pm2 docker-push-pm2 remote-deploy-pm2
+s3_upload_static:
+	aws s3 cp ./static s3://${CC_AWS_BUCKET}/static \
+	--recursive \
+	--cache-control "public, max-age=2592000"
+
+s3_upload_next_build:
+	aws s3 cp ./.next/static s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR} \
+		--recursive \
+		--content-type "application/json" \
+		--cache-control "public, max-age=2592000"
+
+s3_upload_all: s3_upload_static s3_upload_next_build
+
+docker-build-production:
+	docker build -t comiccruncher/frontend:latest \
+	--build-arg CC_AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID} \
+	--build-arg CC_AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY} \
+	--build-arg ENVIRONMENT=${CC_ENVIRONMENT} \
+	--build-arg CC_AWS_BUCKET=${CC_AWS_BUCKET} \
+	--build-arg CC_AWS_DEFAULT_REGION=us-east-1 \
+	.
