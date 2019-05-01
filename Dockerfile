@@ -32,8 +32,6 @@ COPY --from=builder /comiccruncher/.next/ ./.next
 
 COPY --from=builder /comiccruncher/static/ ./static
 
-RUN ls -a .next
-
 RUN make s3_upload_all
 
 FROM node:11.4-alpine AS app
