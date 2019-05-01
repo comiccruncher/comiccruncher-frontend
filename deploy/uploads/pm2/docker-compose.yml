@@ -6,7 +6,7 @@ services:
       - telegraf
     container_name: pm2
     restart: always
-    image: comiccruncher/frontend:latest
+    image: 570480763436.dkr.ecr.us-east-1.amazonaws.com/comiccruncher/frontend:latest
     ports:
       - "3000:3000"
     environment:

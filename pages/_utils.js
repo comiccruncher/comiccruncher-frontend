@@ -26,14 +26,6 @@ const isomorphicGetHeaders = (req, res) => {
     const cookie = new Cookies(req.headers.cookie);
     return getCookieHeaders(cookie);
   }
-  // Check for server-side render if no cookie found in request above...
-  if (res && res._headers && res._headers['set-cookie']) {
-    const parsed = res._headers['set-cookie'].map((item) => cookieParser.parse(item));
-    // const session = parsed.filter(sessionFilt);
-    // session ? session[0].cc_session_id : 'UNDEFINED',
-    const visitor = parsed.filter(visitorFilt);
-    return getRequestHeaders(visitor ? visitor[0].cc_visitor_id : 0);
-  }
   // This would be a client-side request.
   const cookie = new Cookies();
   return getCookieHeaders(cookie);
