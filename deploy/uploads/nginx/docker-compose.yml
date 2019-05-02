@@ -38,28 +38,6 @@ services:
         max-file: "3"
     environment:
       HOSTNAME: "${HOSTNAME}"
-  telegraf:
-    container_name: telegraf
-    restart: always
-    depends_on:
-      - nginx
-    image: telegraf:1.9-alpine
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
-      - type: bind
-        source: /run/utmp
-        target: /host/var/run/utmp
-    networks:
-      log:
-        ipv4_address: 172.25.0.102
-    logging:
-      options:
-        max-size: "25M"
-        max-file: "3"
-    environment:
-      HOSTNAME: "${HOSTNAME}"
-      HOST_VAR: "/host/var"
   filebeat:
     command: ["--strict.perms=false"]
     restart: always
