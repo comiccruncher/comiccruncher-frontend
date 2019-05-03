@@ -1,5 +1,5 @@
 #!/usr/local/bin/bash
-$(aws ecr get-login --no-include-email)
+eval $(aws ecr get-login --no-include-email)
 docker-compose pull
-HOSTNAME=${HOSTNAME} docker-compose up -d --build
+HOSTNAME=${HOSTNAME} docker-compose up -d --build --remove-orphans
 docker system prune -af
