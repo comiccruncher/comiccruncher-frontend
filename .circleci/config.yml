@@ -48,14 +48,13 @@ jobs:
       - aws-ecr/ecr-login
       - run:
           name: Build the Docker image
-          command: 	|
-          docker build -t comiccruncher/frontend:latest \
-          --build-arg CC_AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID} \
-          --build-arg CC_AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY} \
-          --build-arg ENVIRONMENT=${CC_ENVIRONMENT} \
-          --build-arg CC_AWS_BUCKET=${CC_AWS_BUCKET} \
-          --build-arg CC_AWS_DEFAULT_REGION=us-east-1 \
-	        .
+          command: |
+            docker build -t comiccruncher/frontend:latest \
+            --build-arg CC_AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID} \
+            --build-arg CC_AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY} \
+            --build-arg ENVIRONMENT=${CC_ENVIRONMENT} \
+            --build-arg CC_AWS_BUCKET=${CC_AWS_BUCKET} \
+            --build-arg CC_AWS_DEFAULT_REGION=us-east-1 .
       - run:
           name: Publish the Docker image
           command: |
