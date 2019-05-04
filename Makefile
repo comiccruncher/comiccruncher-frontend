@@ -96,3 +96,10 @@ s3_upload_next_build:
 
 s3_upload_all: s3_upload_static s3_upload_next_build
 
+docker-build-production:
+	docker build -t comiccruncher/frontend:latest \
+	--build-arg CC_AWS_ACCESS_KEY_ID \
+	--build-arg CC_AWS_SECRET_ACCESS_KEY \
+	--build-arg ENVIRONMENT=${CC_ENVIRONMENT} \
+	--build-arg CC_AWS_BUCKET \
+	--build-arg CC_AWS_DEFAULT_REGION=us-east-1 .
