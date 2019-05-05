@@ -1,4 +1,3 @@
-deploy/*
 .circleci
 .idea
 .gitignore
