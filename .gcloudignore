@@ -1,0 +1,21 @@
+.gcloudignore
+.git
+.gitignore
+node_modules/
+*.hot-update.js*
+README.md
+.eslintignore
+.eslintrc
+.babelrc
+.prettierrc
+.prettierignore
+.dockerignore
+
+# Source code
+/pages/
+/components/
+/deploy/
+.storybook/
+.idea/
+.circleci/
+comiccruncher-*.json

@@ -42,6 +42,8 @@ ENV NODE_ENV ${ENVIRONMENT}
 
 ENV APPDIR /srv/www/comiccruncher
 
+ENV PORT 8008
+
 WORKDIR ${APPDIR}
 
 COPY --from=builder /comiccruncher/next.config.js /comiccruncher/package.json /comiccruncher/yarn.lock /comiccruncher/server.js ./
@@ -54,4 +56,4 @@ RUN yarn install --production --frozen-lockfile
 
 CMD pm2-runtime start ./deploy/uploads/pm2/config.json
 
-EXPOSE 3000
+EXPOSE 8008

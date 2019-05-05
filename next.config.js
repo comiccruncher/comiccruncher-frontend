@@ -4,7 +4,7 @@ const CDN = 'https://flash.comiccruncher.com';
 
 const API = 'https://api.comiccruncher.com';
 
-const SITE = isProd ? 'https://comiccruncher.com' : 'localhost:3000';
+const SITE = isProd ? 'https://comiccruncher.com' : 'http://localhost:3000';
 
 module.exports = {
   resolve: {

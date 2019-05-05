@@ -2,45 +2,16 @@ const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
 const winston = require('winston');
-const redis = require('redis');
 const uuidv4 = require('uuid/v4');
+const Firestore = require('@google-cloud/firestore');
+const slugify = require('slugify');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const DEV_USE_CACHE = process.env.CC_DEV_USE_CACHE || false;
-const CC_REDIS_HOST = process.env.CC_REDIS_HOST || 'localhost';
-const CC_REDIS_PORT = process.env.CC_REDIS_PORT || 6379;
-const CC_REDIS_PASSWORD = process.env.CC_REDIS_PASSWORD || '';
 const USE_CACHE = !IS_DEV || DEV_USE_CACHE;
+const PORT = process.env.PORT ? process.env.PORT : 3000;
 
-const redisClient = USE_CACHE
-  ? new redis.createClient({
-      host: CC_REDIS_HOST,
-      port: CC_REDIS_PORT,
-      password: CC_REDIS_PASSWORD,
-      retry_strategy: (opts) => {
-        logger.error(opts);
-        if (opts.error && opts.error.code === 'ECONNREFUSED') {
-          throw new Error('The redis server refused the connection');
-        }
-        if (opts.total_retry_time > 3000) {
-          // End reconnecting after a specific timeout.
-          throw new Error('Retry time exhausted');
-        }
-        if (opts.attempt > 3) {
-          // Attempts exhausted.
-          throw new Error(`attempts to connect to ${CC_REDIS_HOST}:${CC_REDIS_PORT} greater than 3. Quit.`);
-        }
-        return Math.min(opts.attempt * 100, 3000);
-      },
-    })
-  : null;
-
-if (USE_CACHE) {
-  redisClient.on('error', (err) => {
-    logger.error(err.toString());
-  });
-}
-
+const firestore = new Firestore();
 const app = next({ dev: IS_DEV });
 const handle = app.getRequestHandler();
 const logger = winston.createLogger({
@@ -55,29 +26,6 @@ const secureCookieOpts = {
   secure: !IS_DEV,
   sameSite: 'strict',
 };
-
-/*
-const apiURL = app.nextConfig.publicRuntimeConfig.apiURL;
-const secureCookieOpts = {
-  secure: !IS_DEV,
-  sameSite: 'strict',
-};
-const getToken = async () => {
-  return await axios
-    .post(`${apiURL}/authenticate`, null, {
-      headers: {
-        Authorization: `Bearer ${CC_JWT_AUTH_SECRET}`,
-      },
-    })
-    .then((resp) => {
-      return resp.data.data.token;
-    })
-    .catch((err) => {
-      logger.error(err.toString());
-      return 0;
-    });
-};
-*/
 
 const UUIDMiddleware = (req, res, next) => {
   if (!req.cookies.cc_visitor_id) {
@@ -143,9 +91,9 @@ app
       return handle(req, res);
     });
 
-    server.listen(3000, (err) => {
+    server.listen(PORT, (err) => {
       if (err) throw err;
-      logger.info('> Ready on http://localhost:3000');
+      logger.info(`> Ready on http://localhost:${PORT}`);
     });
   })
   .catch((ex) => {
@@ -155,31 +103,29 @@ app
 
 const getCacheKey = (req) => {
   // use path, so cache query strings, too.
-  return `frontend:${req.path}`;
+  return `frontend/${req.path === '/' ? 'home' : slugify(req.path)}`;
 };
 
 const renderAndCache = async (req, res, pagePath, queryParams) => {
   const key = getCacheKey(req);
-  redisClient.get(key, async (err, data) => {
-    if (err) {
-      return handleRedisError(req, res, pagePath, queryParams, err);
-    }
-    if (data === null) {
-      cacheAndSend(key, req, res, pagePath, queryParams);
-    } else {
-      res.setHeader('X-CACHE', 'HIT');
-      res.send(data);
-    }
-  });
+  const doc = firestore.doc(key);
+  doc
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists) {
+        res.setHeader('X-CACHE', 'HIT');
+        res.send(snapshot.data().value);
+      } else {
+        cacheAndSend(key, req, res, pagePath, queryParams, doc);
+      }
+    })
+    .catch((err) => {
+      logger.error(err);
+      app.renderError(err, req, res, pagePath, queryParams);
+    });
 };
 
-const handleRedisError = (req, res, pagePath, query, err) => {
-  logger.error(err);
-  res.setHeader('X-CACHE', 'MISS');
-  app.render(req, res, pagePath, query);
-};
-
-const cacheAndSend = async (key, req, res, pagePath, query) => {
+const cacheAndSend = async (key, req, res, pagePath, query, doc) => {
   try {
     // Render the page into HTML
     const html = await app.renderToHTML(req, res, pagePath, query);
@@ -189,12 +135,14 @@ const cacheAndSend = async (key, req, res, pagePath, query) => {
       return;
     }
     // Cache this page
-    redisClient.set(key, html);
+    doc.set({
+      value: html,
+    });
     res.setHeader('X-CACHE', 'MISS');
     res.status(200);
     res.send(html);
   } catch (err) {
     logger.error(err);
-    app.renderError(err, req, res, pagePath, queryParams);
+    app.renderError(err, req, res, pagePath, query);
   }
 };

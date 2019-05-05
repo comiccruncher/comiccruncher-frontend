@@ -1,0 +1,11 @@
+deploy/*
+.circleci
+.idea
+.gitignore
+.prettierignore
+.gcloudignore
+*.hot-update.js*
+README.md
+.eslint*
+.babelrc
+.prettierrc
