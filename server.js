@@ -43,10 +43,9 @@ app
     const server = express();
 
     server.use(cookieParser());
-
     server.disable('x-powered-by');
-
     server.use(UUIDMiddleware);
+    server.set('trust proxy', true);
 
     server.use((req, res, next) => {
       res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -92,7 +91,16 @@ app
     });
 
     server.listen(PORT, (err) => {
+      const GAE_DEPLOYMENT_ID = process.env.GAE_DEPLOYMENT_ID;
+      const GAE_INSTANCE = process.env.GAE_INSTANCE;
+      const GAE_MEMORY_MB = process.env.GAE_MEMORY_MB;
       if (err) throw err;
+      if (GAE_DEPLOYMENT_ID) {
+        logger.info(
+          `started application for ` +
+            `GAE_DEPLOYMENT_ID: ${GAE_DEPLOYMENT_ID}, GAE_INSTANCE: ${GAE_INSTANCE}, GAE_MEMORY_MB: ${GAE_MEMORY_MB}`
+        );
+      }
       logger.info(`> Ready on http://localhost:${PORT}`);
     });
   })

@@ -22,6 +22,23 @@ DOCKER_COMPOSE_BUILD_RUN = ${DOCKER_COMPOSE_BUILD} run --rm build
 
 DOCKER_COMPOSE_AWSCLI_RUN = ${DOCKER_COMPOSE_BUILD} run --rm awscli
 
+DIST_DIR = ./build
+
+S3_UPLOAD_STATIC = s3 cp ./static s3://${CC_AWS_BUCKET}/static --recursive --cache-control "public, max-age=2592000"
+
+S3_UPLOAD_NEXT_BUILD = s3 cp ${DIST_DIR}/static/$(shell cat ${DIST_DIR}/BUILD_ID) s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/$(shell cat ${DIST_DIR}/BUILD_ID) \
+		--recursive \
+		--content-type "application/json" \
+		--cache-control "public, max-age=2592000"
+S3_UPLOAD_NEXT_CHUNKS = s3 cp ${DIST_DIR}/static/chunks s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/chunks \
+		--recursive \
+		--content-type "application/json" \
+		--cache-control "public, max-age=2592000"
+S3_UPLOAD_NEXT_RUNTIME = s3 cp ${DIST_DIR}/static/runtime s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR}/runtime \
+		--recursive \
+		--content-type "application/json" \
+		--cache-control "public, max-age=2592000"
+
 # Runs the dev environment.
 .PHONY: docker-yarn-dev
 docker-yarn-dev:
@@ -49,6 +66,30 @@ docker-build-pm2:
 .PHONY: docker-push-pm2
 docker-push-pm2:
 	docker push ${PM2_IMAGE}
+
+# Uploads the static assets to s3. Should be run manually.
+.PHONY: docker-upload-static
+docker-upload-static:
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_STATIC}
+
+# Uploads the next build to s3.
+.PHONY: docker-upload-next-build
+docker-upload-next-build:
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_BUILD}
+
+# Uploads the next chunks to s3.
+.PHONY: docker-upload-next-chunks
+docker-upload-next-chunks:
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_CHUNKS}
+
+# Uploads the next runtime to s3.
+.PHONY: docker-upload-next-runtime
+docker-upload-next-runtime:
+	${DOCKER_COMPOSE_AWSCLI_RUN} ${S3_UPLOAD_NEXT_RUNTIME}
+
+# Uploads next statics to s3.
+.PHONY: docker-upload-s3
+docker-upload-s3: docker-upload-next-build docker-upload-next-chunks docker-upload-next-runtime
 
 .PHONY: docker-pull-pm2
 docker-pull-pm2:
@@ -89,7 +130,7 @@ s3_upload_static:
 	--cache-control "public, max-age=2592000"
 
 s3_upload_next_build:
-	aws s3 cp ./.next/static s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR} \
+	aws s3 cp ${DIST_DIR}/static s3://${CC_AWS_BUCKET}/${NEXT_STATIC_DIR} \
 		--recursive \
 		--content-type "application/json" \
 		--cache-control "public, max-age=2592000"
@@ -109,4 +150,4 @@ docker-tag-and-push:
 	docker push us.gcr.io/${GOOGLE_PROJECT_ID}/frontend:latest
 
 gcloud-deploy:
-	gcloud app deploy --stop-previous-version --image=comiccruncher/frontend:latest
+	gcloud app deploy --verbosity=debug --stop-previous-version --quiet

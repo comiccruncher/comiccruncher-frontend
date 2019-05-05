@@ -15,7 +15,10 @@ README.md
 /pages/
 /components/
 /deploy/
-.storybook/
-.idea/
-.circleci/
+/static/
 comiccruncher-*.json
+Makefile
+Dockerfile
+docker*
+yarn-error.log
+.idea/

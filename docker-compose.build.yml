@@ -9,7 +9,7 @@ services:
     image: mesosphere/aws-cli
     working_dir: /project
     volumes:
-      - .next/:/project/.next
+      - ./build/:/project/build
       - ./static/:/project/static
     environment:
       - "AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID}"

@@ -1,0 +1,7 @@
+runtime: nodejs10
+service: default
+env: standard
+handlers:
+- url: /build/server/.*
+  script: auto
+  secure: always

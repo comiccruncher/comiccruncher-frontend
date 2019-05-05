@@ -13,6 +13,7 @@ module.exports = {
   useFileSystemPublicRoutes: false,
   poweredByHeader: false,
   assetPrefix: isProd ? CDN : '',
+  distDir: 'build',
   publicRuntimeConfig: {
     siteURL: SITE,
     apiURL: API,
