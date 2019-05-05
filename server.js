@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 const winston = require('winston');
 const uuidv4 = require('uuid/v4');
 const Firestore = require('@google-cloud/firestore');
-const slugify = require('slugify');
+const slug = require('slug');
+const pattern = /\//gi;
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const DEV_USE_CACHE = process.env.CC_DEV_USE_CACHE || false;
@@ -110,8 +111,9 @@ app
   });
 
 const getCacheKey = (req) => {
+  const s = slug(req.path.toString().replace(pattern, '-'));
   // use path, so cache query strings, too.
-  return `frontend/${req.path === '/' ? 'home' : slugify(req.path)}`;
+  return `frontend/${req.path === '/' ? 'home' : s}`;
 };
 
 const renderAndCache = async (req, res, pagePath, queryParams) => {
