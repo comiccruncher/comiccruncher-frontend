@@ -105,8 +105,8 @@ docker-build-production:
 	--build-arg CC_AWS_DEFAULT_REGION=us-east-1 .
 
 docker-tag-and-push:
-	docker tag comiccruncher/frontend:latest us.gcr.io/comiccruncher/frontend:latest
-	docker push us.gcr.io/comiccruncher/frontend:latest
+	docker tag comiccruncher/frontend:latest us.gcr.io/${GOOGLE_PROJECT_ID}/frontend:latest
+	docker push us.gcr.io/${GOOGLE_PROJECT_ID}/frontend:latest
 
 gcloud-deploy:
 	gcloud app deploy --stop-previous-version --image=comiccruncher/frontend:latest
