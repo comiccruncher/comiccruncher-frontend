@@ -2,6 +2,27 @@ runtime: nodejs10
 service: default
 env: standard
 handlers:
-- url: /build/server/.*
-  script: auto
-  secure: always
+  - url: /build/server/.*
+    script: auto
+    secure: always
+skip_files:
+  - .gcloudignore
+  - .git
+  - .gitignore
+  - README.md
+  - .eslint*
+  - .babelrc
+  - .prettier*
+  - .dockerignore
+  - .idea
+  - .circleci
+  - node_modules
+  - pages
+  - components
+  - deploy
+  - static
+  - comiccruncher-*.json
+  - Makefile
+  - Dockerfile
+  - docker*
+  - yarn-error.log
