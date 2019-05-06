@@ -27,6 +27,12 @@ jobs:
       - run:
           name: GCP Version
           command: gcloud version
+      - run:
+          name: GCP Updates
+          command: gcloud components update --quiet
+      - run:
+          name: GCP Version
+          command: gcloud version
       - restore_cache:
           keys: 
             - node_modules-{{ checksum "yarn.lock" }}
