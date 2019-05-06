@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  gcp-cli: circleci/gcp-cli@1.0.0
+  gcp-cli: circleci/gcp-cli@1.3.0
 workflows:
   install_deps_build_and_deploy:
     jobs:
@@ -55,4 +55,4 @@ jobs:
       - gcp-cli/initialize
       - run:
           name: Deploy the app to GCP.
-          command: gcloud beta app deploy --verbosity=debug --stop-previous-version --quiet
+          command: gcloud app deploy --verbosity=debug --stop-previous-version --quiet
