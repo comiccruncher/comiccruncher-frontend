@@ -55,4 +55,4 @@ jobs:
       - gcp-cli/initialize
       - run:
           name: Deploy the app to GCP.
-          command: gcloud app deploy --verbosity=debug --stop-previous-version --quiet
+          command: gcloud beta app deploy --verbosity=debug --stop-previous-version --quiet

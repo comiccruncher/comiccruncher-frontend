@@ -150,4 +150,4 @@ docker-tag-and-push:
 	docker push us.gcr.io/${GOOGLE_PROJECT_ID}/frontend:latest
 
 gcloud-deploy:
-	gcloud app deploy --verbosity=debug --stop-previous-version --quiet
+	gcloud app deploy --verbosity=info --stop-previous-version --quiet --bucket gs://comiccruncher-239623.appspot.com

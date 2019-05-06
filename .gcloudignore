@@ -11,9 +11,7 @@ README.md
 .dockerignore
 
 # Source code
-/node_modules/
-/home/circleci/project/node_modules/
-**/*node_modules*
+node_modules
 /pages/
 /components/
 /deploy/
