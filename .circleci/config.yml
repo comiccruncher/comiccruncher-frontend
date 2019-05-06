@@ -25,8 +25,8 @@ jobs:
       - checkout
       - gcp-cli/initialize
       - run:
-        name: GCP Version
-        command: gcloud version
+          name: GCP Version
+          command: gcloud version
       - restore_cache:
           keys: 
             - node_modules-{{ checksum "yarn.lock" }}
