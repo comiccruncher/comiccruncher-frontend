@@ -23,16 +23,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - gcp-cli/initialize
-      - run:
-          name: GCP Version
-          command: gcloud version
-      - run:
-          name: GCP Updates
-          command: gcloud components update --quiet
-      - run:
-          name: GCP Version
-          command: gcloud version
       - restore_cache:
           keys: 
             - node_modules-{{ checksum "yarn.lock" }}
@@ -64,6 +54,9 @@ jobs:
           name: Upload the files.
           command: make docker-upload-s3
       - gcp-cli/initialize
+      - run:
+          name: Show gcloud version
+          command: gcloud version
       - run:
           name: Deploy the app to GCP.
           command: gcloud app deploy --verbosity=debug --stop-previous-version --quiet
