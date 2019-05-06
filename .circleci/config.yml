@@ -5,6 +5,7 @@ workflows:
   install_deps_build_and_deploy:
     jobs:
       - install_deps:
+          context: GCP
           filters:
             branches:
               only: /.*/
@@ -22,6 +23,10 @@ jobs:
     machine: true
     steps:
       - checkout
+      - gcp-cli/initialize
+      - run:
+        name: GCP Version
+        command: gcloud version
       - restore_cache:
           keys: 
             - node_modules-{{ checksum "yarn.lock" }}
