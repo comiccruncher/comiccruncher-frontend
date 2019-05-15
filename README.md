@@ -32,3 +32,7 @@ We're using the most millennial styling library for react.
 **[Emotion](https://emotion.sh/)**
 
 Make sure to add `import styled, { css } from 'react-emotion'` at the top of each component or view file.
+
+## Deployment
+
+The production application is deployed to GCP's App Engine via a CircleCI configuration. 

@@ -2,9 +2,14 @@ runtime: nodejs10
 service: default
 env: standard
 handlers:
+  - url: /.*
+    script: auto
+    secure: always
+    redirect_http_response_code: 301
   - url: /build/server/.*
     script: auto
     secure: always
+    redirect_http_response_code: 301
 skip_files:
   - .gcloudignore
   - .git
@@ -26,3 +31,6 @@ skip_files:
   - Dockerfile
   - docker*
   - yarn-error.log
+  - build/static
+  - build/build-manifest.json
+  - build/react-loadable-manifest.json
