@@ -2,10 +2,6 @@ runtime: nodejs10
 service: default
 env: standard
 handlers:
-  - url: /.*
-    script: auto
-    secure: always
-    redirect_http_response_code: 301
   - url: /build/server/.*
     script: auto
     secure: always
