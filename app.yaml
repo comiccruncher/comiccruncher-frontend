@@ -27,4 +27,5 @@ skip_files:
   - Dockerfile
   - docker*
   - yarn-error.log
-  - build/static
+env_variables:
+  NODE_ENV: production
