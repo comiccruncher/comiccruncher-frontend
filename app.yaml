@@ -28,5 +28,3 @@ skip_files:
   - docker*
   - yarn-error.log
   - build/static
-  - build/build-manifest.json
-  - build/react-loadable-manifest.json
