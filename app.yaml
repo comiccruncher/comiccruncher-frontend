@@ -2,7 +2,7 @@ runtime: nodejs10
 service: default
 env: standard
 handlers:
-  - url: /build/server/.*
+  - url: /build/.*
     script: auto
     secure: always
     redirect_http_response_code: 301
@@ -27,5 +27,7 @@ skip_files:
   - Dockerfile
   - docker*
   - yarn-error.log
+  - build/server
+  - build/static
 env_variables:
   NODE_ENV: production
