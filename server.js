@@ -3,16 +3,10 @@ const next = require('next');
 const cookieParser = require('cookie-parser');
 const winston = require('winston');
 const uuidv4 = require('uuid/v4');
-const Firestore = require('@google-cloud/firestore');
-const slug = require('slug');
-const pattern = /\//gi;
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
-const DEV_USE_CACHE = process.env.CC_DEV_USE_CACHE || false;
-const USE_CACHE = !IS_DEV || DEV_USE_CACHE;
 const PORT = process.env.PORT ? process.env.PORT : 3000;
 
-const firestore = new Firestore();
 const app = next({ dev: IS_DEV });
 const handle = app.getRequestHandler();
 const logger = winston.createLogger({
@@ -30,9 +24,25 @@ const secureCookieOpts = {
 
 const UUIDMiddleware = (req, res, next) => {
   if (!req.cookies.cc_visitor_id) {
-    //res.cookie('cc_session_id', token, secureCookieOpts);
     res.cookie('cc_visitor_id', uuidv4(), secureCookieOpts);
     next();
+  } else {
+    next();
+  }
+};
+
+const HTTPSRedirect = (req, res, next) => {
+  if (!IS_DEV && !req.secure) {
+    res.redirect('https://' + req.hostname + req.originalUrl);
+  } else {
+    next();
+  }
+};
+
+const NonWWWRedirect = (req, res, next) => {
+  const host = req.header('host');
+  if (host.slice(0, 4) === 'www.') {
+    return res.redirect(301, req.protocol + '://' + host.slice(4) + req.originalUrl);
   } else {
     next();
   }
@@ -42,7 +52,10 @@ app
   .prepare()
   .then(() => {
     const server = express();
-
+    // Redirect http to https if not secure since we are using GAE standard plan.
+    server.use(HTTPSRedirect);
+    // Redirect www to non-www since we are using GAE standard.
+    server.use(NonWWWRedirect);
     server.use(cookieParser());
     server.disable('x-powered-by');
     server.use(UUIDMiddleware);
@@ -65,26 +78,26 @@ app
       // `/marvel` is the filename of `/pages/marvel.js
       // * must pass in req.params for back button to work:
       // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
-      USE_CACHE ? renderAndCache(req, res, '/marvel', req.params) : app.render(req, res, '/marvel', req.params);
+      app.render(req, res, '/marvel', req.params);
     });
 
     server.get('/dc', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/dc', req.params) : app.render(req, res, '/dc', req.params);
+      app.render(req, res, '/dc', req.params);
     });
 
     server.get('/characters/:slug', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/characters', req.params) : app.render(req, res, '/characters', req.params);
+      app.render(req, res, '/characters', req.params);
     });
 
     server.get('/faq', (req, res) => {
-      USE_CACHE ? renderAndCache(req, res, '/faq', req.params) : app.render(req, res, '/faq', req.params);
+      app.render(req, res, '/faq', req.params);
     });
 
     server.get('/', (req, res) => {
       // `/index` is the filename of `/pages/index.js
       // * must pass in req.params for back button to work:
       // https://github.com/zeit/next.js/issues/3065#issuecomment-423035872
-      USE_CACHE ? renderAndCache(req, res, '/', req.params) : app.render(req, res, '/', req.params);
+      app.render(req, res, '/', req.params);
     });
 
     server.get('*', (req, res) => {
@@ -111,50 +124,3 @@ app
     logger.error(ex.stack);
     process.exit(1);
   });
-
-const getCacheKey = (req) => {
-  const s = slug(req.path.toString().replace(pattern, '-'));
-  // use path, so cache query strings, too.
-  return `frontend/${req.path === '/' ? 'home' : s}`;
-};
-
-const renderAndCache = async (req, res, pagePath, queryParams) => {
-  const key = getCacheKey(req);
-  const doc = firestore.doc(key);
-  doc
-    .get()
-    .then((snapshot) => {
-      if (snapshot.exists) {
-        res.setHeader('X-CACHE', 'HIT');
-        res.send(snapshot.data().value);
-      } else {
-        cacheAndSend(key, req, res, pagePath, queryParams, doc);
-      }
-    })
-    .catch((err) => {
-      logger.error(err);
-      app.renderError(err, req, res, pagePath, queryParams);
-    });
-};
-
-const cacheAndSend = async (key, req, res, pagePath, query, doc) => {
-  try {
-    // Render the page into HTML
-    const html = await app.renderToHTML(req, res, pagePath, query);
-    // Skip the cache
-    if (res.statusCode !== 200 && res.statusCode !== 304) {
-      res.send(html);
-      return;
-    }
-    // Cache this page
-    doc.set({
-      value: html,
-    });
-    res.setHeader('X-CACHE', 'MISS');
-    res.status(200);
-    res.send(html);
-  } catch (err) {
-    logger.error(err);
-    app.renderError(err, req, res, pagePath, query);
-  }
-};

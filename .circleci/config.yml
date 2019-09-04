@@ -53,4 +53,4 @@ jobs:
           command: gcloud version
       - run:
           name: Deploy the app to GCP.
-          command: gcloud app deploy --verbosity=debug --stop-previous-version --quiet
+          command: gcloud app deploy --stop-previous-version --quiet

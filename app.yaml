@@ -17,6 +17,7 @@ skip_files:
   - .dockerignore
   - .idea
   - .circleci
+  - .storybook
   - node_modules
   - pages
   - components
@@ -26,6 +27,7 @@ skip_files:
   - Makefile
   - Dockerfile
   - docker*
+  - Makefile
   - yarn-error.log
   - build/static
 env_variables:
