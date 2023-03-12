@@ -3,33 +3,9 @@
  */
 import getConfig from 'next/config';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
-import cookieParser from 'cookie';
 
-const { charactersURL, statsURL, publishersURL, trendingURL } = getConfig().publicRuntimeConfig.API;
+const { charactersURL, publishersURL, trendingURL } = getConfig().publicRuntimeConfig.API;
 
-const visitorFilt = (item) => item.hasOwnProperty('cc_visitor_id');
-// const sessionFilt = (item) => item.hasOwnProperty('cc_session_id');
-
-/**
- * Gets the cc_session_id cookie from the request if set.
- * If not, it reads the cookie from the response of the server.
- * Or reads the browser's client cookies.
- *
- * @param {*} req The client's request
- * @param {*} res The server's response
- * @returns string
- */
-const isomorphicGetHeaders = (req, res) => {
-  // Check for server-side render if the cookies are set in the request.
-  if (req && req.headers && req.headers.cookie) {
-    const cookie = new Cookies(req.headers.cookie);
-    return getCookieHeaders(cookie);
-  }
-  // This would be a client-side request.
-  const cookie = new Cookies();
-  return getCookieHeaders(cookie);
-};
 
 const getRequestHeaders = (cc_visitor_id) => {
   const opts = {
@@ -86,26 +62,12 @@ const handleError = (req, res, err) => {
 };
 
 export const getHomeProps = async (req, res) => {
-  const opts = isomorphicGetHeaders(req, res);
+  const url = charactersURL + "/pages/1"
   return axios
-    .get(charactersURL, opts)
+    .get(url)
     .then((characters) => {
       // Hard-code stats for now. Can remove later.
       return {
-        stats: {
-          meta: {
-            status_code: 200,
-            error: null,
-            pagination: null,
-          },
-          data: {
-            total_characters: 444,
-            total_appearances: 260340,
-            min_year: 1938,
-            max_year: 2019,
-            total_issues: 63751,
-          },
-        },
         characters: characters.data,
         meta: {
           status_code: 200,
@@ -118,70 +80,35 @@ export const getHomeProps = async (req, res) => {
     });
 };
 
-export const getMarvelProps = async (req, res) => {
-  if (typeof sessionStorage !== 'undefined') {
-    const val = sessionStorage.getItem('comiccruncher.marvel');
-    if (val === 'trending') {
-      return await getTrendingProps(req, res, 'marvel');
-    }
-  }
-  const opts = isomorphicGetHeaders(req, res);
-  return await axios
-    .get(`${publishersURL}/marvel`, opts)
-    .then((result) => {
-      return result.data;
-    })
-    .catch((err) => {
-      return handleError(req, res, err);
-    });
-};
+export const requestAPIProps = async(req, res, url) => {
+  return axios.get(url).then(resp => resp.data).catch(err => handleError(err))
+}
 
-export const getDCProps = async (req, res, query) => {
+export const getPublisherProps = async(req, res, publisher) => {
   if (typeof sessionStorage !== 'undefined') {
-    const val = sessionStorage.getItem('comiccruncher.dc');
+    const val = sessionStorage.getItem(`comiccruncher.${publisher}`);
     if (val === 'trending') {
-      return await getTrendingProps(req, res, 'dc');
+      return await getTrendingProps(req, res, publisher);
     }
   }
-  const opts = isomorphicGetHeaders(req, res);
-  return await axios
-    .get(`${publishersURL}/dc`, opts)
-    .then((result) => {
-      return result.data;
-    })
-    .catch((err) => {
-      return handleError(req, res, err);
-    });
+  return requestAPIProps(req, res, `${publishersURL}/${publisher}/pages/1`)
+}
+
+export const getMarvelProps = async (req, res, _) => {
+  return getPublisherProps(req, res, "marvel")
+};
+    
+export const getDCProps = async (req, res, _) => {
+  return getPublisherProps(req, res, "dc")
 };
 
 export const getTrendingProps = async (req, res, publisherSlug) => {
-  const opts = isomorphicGetHeaders(req, res);
-  return await axios
-    .get(`${trendingURL}/${encodeURIComponent(publisherSlug)}`, opts)
-    .then((result) => {
-      return result.data;
-    })
-    .catch((err) => {
-      return handleError(req, res, err);
-    });
+  return requestAPIProps(req, res, `${trendingURL}/${publisherSlug}/pages/1`)
 };
 
 export const getCharacterProps = async (req, res, query) => {
-  const opts = isomorphicGetHeaders(req, res);
   // need to check req first, then the query params for client-side
   // fetch. fixed forward-button bug on mobile.
-  let slug = null;
-  if (req && req.params.slug) {
-    slug = req.params.slug;
-  } else {
-    slug = query.slug;
-  }
-  return await axios
-    .get(`${charactersURL}/${encodeURIComponent(slug)}`, opts)
-    .then((result) => {
-      return result.data;
-    })
-    .catch((err) => {
-      return handleError(req, res, err);
-    });
+  const slug = req && req.params && req.params.slug ? req.params.slug : query.slug;
+  return requestAPIProps(req, res, charactersURL, "/" + slug)
 };

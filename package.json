@@ -7,7 +7,7 @@
         "yarn": "^1.9.0"
     },
     "scripts": {
-        "dev": "NODE_ENV=development node server.js",
+        "dev": "PORT=3001 NODE_ENV=development node server.js",
         "build": "next build",
         "start": "node server.js"
     },
