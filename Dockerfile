@@ -1,4 +1,4 @@
-FROM node:11.4-alpine AS builder
+FROM node:19-alpine AS builder
 
 LABEL maintainer="Aimee LaPlant <aimee@aimeelaplant.com>"
 
@@ -34,7 +34,7 @@ COPY --from=builder /comiccruncher/static/ ./static
 
 RUN make s3_upload_all
 
-FROM node:11.4-alpine AS app
+FROM node:19-alpine AS app
 
 RUN npm install pm2 -g
 

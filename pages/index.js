@@ -21,7 +21,7 @@ const InnerHeader = styled(Box)({
   paddingTop: Spacing.xxLarge,
 });
 
-const Home = ({ meta, stats, characters }) => (
+const Home = ({ meta, characters }) => (
   <Fragment>
     {meta && meta.error ? (
       <Error status_code={meta.status_code} />
@@ -40,7 +40,7 @@ const Home = ({ meta, stats, characters }) => (
             <InnerHeader alignSelf="center">
               <Title.Large>Comic Book Appearances</Title.Large>
               <Title.Byline>See popular character appearances</Title.Byline>
-              {stats && <Stats {...stats.data} />}
+              <Stats total_characters={444} total_appearances={260340} min_year={1938} max_year={2019} total_issues={63751} />
             </InnerHeader>
           </Flex>
         </MainHeader>
