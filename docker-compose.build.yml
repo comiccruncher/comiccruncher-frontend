@@ -3,6 +3,8 @@ services:
   build:
     image: node:19-alpine
     working_dir: /app
+    environment:
+      - "NODE_OPTIONS=--openssl-legacy-provider"
     volumes:
       - .:/app
   awscli:

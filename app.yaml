@@ -32,3 +32,4 @@ skip_files:
   - build/static
 env_variables:
   NODE_ENV: production
+  NODE_OPTIONS: --openssl-legacy-provider

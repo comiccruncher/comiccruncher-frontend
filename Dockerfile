@@ -4,6 +4,8 @@ LABEL maintainer="Aimee LaPlant <aimee@aimeelaplant.com>"
 
 WORKDIR /comiccruncher
 
+ENV NODE_OPTIONS='--openssl-legacy-provider'
+
 COPY . .
 
 RUN yarn install --frozen-lockfile
@@ -11,6 +13,8 @@ RUN yarn install --frozen-lockfile
 RUN yarn build
 
 FROM mesosphere/aws-cli AS uploader
+
+ENV NODE_OPTIONS='--openssl-legacy-provider'
 
 WORKDIR /app
 

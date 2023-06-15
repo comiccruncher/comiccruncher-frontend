@@ -8,5 +8,6 @@ services:
     volumes:
       - .:/app
     environment:
+      - "NODE_OPTIONS=--openssl-legacy-provider"
       - "NODE_ENV=${CC_NODE_ENV:-development}"
     command: yarn dev
