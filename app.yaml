@@ -6,30 +6,6 @@ handlers:
     script: auto
     secure: always
     redirect_http_response_code: 301
-skip_files:
-  - .gcloudignore
-  - .git
-  - .gitignore
-  - README.md
-  - .eslint*
-  - .babelrc
-  - .prettier*
-  - .dockerignore
-  - .idea
-  - .circleci
-  - .storybook
-  - node_modules
-  - pages
-  - components
-  - deploy
-  - static
-  - comiccruncher-*.json
-  - Makefile
-  - Dockerfile
-  - docker*
-  - Makefile
-  - yarn-error.log
-  - build/static
 env_variables:
   NODE_ENV: production
   NODE_OPTIONS: --openssl-legacy-provider
