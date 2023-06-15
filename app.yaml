@@ -1,4 +1,4 @@
-runtime: nodejs19
+runtime: nodejs18
 service: default
 env: standard
 handlers:
