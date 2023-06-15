@@ -26,7 +26,7 @@ module.exports = {
       charactersURL: API + '/characters',
       publishersURL: API + '/publishers',
       trendingURL: API + '/trending',
-      searchCharactersURL: API + '/search/characters',
+      searchCharactersURL: SITE + '/search',
     },
   },
 };

@@ -109,6 +109,6 @@ export const getTrendingProps = async (req, res, publisherSlug) => {
 export const getCharacterProps = async (req, res, query) => {
   // need to check req first, then the query params for client-side
   // fetch. fixed forward-button bug on mobile.
-  const slug = req && req.params && req.params.slug ? req.params.slug : query.slug;
-  return requestAPIProps(req, res, charactersURL, "/" + slug)
+  const slug = req?.query?.slug ?? query.slug;
+  return requestAPIProps(req, res, `${charactersURL}/${slug}`)
 };
