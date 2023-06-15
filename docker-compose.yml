@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   comiccruncher:
-    image: node:19-alpine
+    image: node:18-alpine
     ports:
       - "3000:3000"
     working_dir: /app
