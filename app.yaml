@@ -2,10 +2,9 @@ runtime: nodejs18
 service: default
 env: standard
 handlers:
-  - url: /build/.*
-    script: auto
+  - url: /.*
+    script: server.js
     secure: always
-    redirect_http_response_code: 301
 env_variables:
   NODE_ENV: production
   NODE_OPTIONS: --openssl-legacy-provider
