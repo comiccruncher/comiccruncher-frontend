@@ -5,6 +5,7 @@ workflows:
   install_deps_build_and_deploy:
     jobs:
       - install_deps:
+          context: GCP
           filters:
             branches:
               only: /.*/
