@@ -9,3 +9,5 @@ handlers:
 env_variables:
   NODE_ENV: production
   NODE_OPTIONS: --openssl-legacy-provider
+  ACCESS_CONTROL: https://comiccruncher.com
+  PORT: 8080

@@ -28,7 +28,7 @@ jobs:
             - node_modules
       - run:
           name: Install dependencies.
-          command: make docker-yarn-install-circleci
+          command: NODE_ENV=production make install
       - save_cache:
           key: node_modules-{{ checksum "yarn.lock" }}
           paths:
@@ -43,10 +43,10 @@ jobs:
             - node_modules
       - run:
           name: Build the files.
-          command: make docker-yarn-build
+          command: NODE_ENV=production make build
       - run:
           name: Upload the files.
-          command: make docker-upload-s3
+          command: make s3
       - gcp-cli/initialize
       - run:
           name: Show gcloud version

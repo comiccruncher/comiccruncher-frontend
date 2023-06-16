@@ -20,6 +20,6 @@ Dockerfile
 docker*
 Makefile
 yarn-error.log
-build/static
+build
 docker*
-
+.env
