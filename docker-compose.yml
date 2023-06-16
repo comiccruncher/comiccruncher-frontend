@@ -1,13 +1,20 @@
 version: "3.2"
 services:
-  comiccruncher:
+  node:
     image: node:18-alpine
-    ports:
-      - "3000:3000"
     working_dir: /app
-    volumes:
-      - .:/app
     environment:
       - "NODE_OPTIONS=--openssl-legacy-provider"
-      - "NODE_ENV=${CC_NODE_ENV:-development}"
-    command: yarn dev
+      - "NODE_ENV=${NODE_ENV:-production}"
+    volumes:
+      - .:/app
+  aws:
+    image: mesosphere/aws-cli
+    working_dir: /project
+    volumes:
+      - ./build/:/project/build
+      - ./static/:/project/static
+    environment:
+      - "AWS_ACCESS_KEY_ID=${CC_AWS_ACCESS_KEY_ID}"
+      - "AWS_SECRET_ACCESS_KEY=${CC_AWS_SECRET_ACCESS_KEY}"
+      - "AWS_DEFAULT_REGION=us-east-1"
