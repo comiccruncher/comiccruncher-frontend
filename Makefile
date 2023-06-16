@@ -2,6 +2,10 @@
 install:
 	docker-compose run -e NODE_ENV=development --rm node yarn install --frozen-lockfile
 
+.PHONY: install-production
+install-production:
+	docker-compose run -e NODE_ENV=production --rm node yarn install --frozen-lockfile --production=true
+
 # Builds the prodution build.
 .PHONY: build
 build:

@@ -24,6 +24,16 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
+            - prod-deps-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install production dependencies.
+          command: make install-production
+      - save_cache:
+          key: prod-deps-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+      - restore_cache:
+          keys: 
             - deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies.
@@ -35,16 +45,17 @@ jobs:
           key: deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
+     - save_cache:
+        key: build-{{ .CIRCLE_WORKFLOW_ID }}
+        paths:
+          - "build"
   build_publish_deploy:
     machine: true
     steps:
       - checkout
       - restore_cache:
           keys:
-            - deps-{{ checksum "yarn.lock" }}
-      - run:
-          name: Build the files.
-          command: NODE_ENV=production make build
+            - build-{{ .CIRCLE_WORKFLOW_ID }}
       - run:
           name: Upload the files.
           command: make s3
