@@ -24,13 +24,16 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - node_modules-{{ checksum "yarn.lock" }}
+            - deps-{{ checksum "yarn.lock" }}
             - node_modules
       - run:
           name: Install dependencies.
           command: NODE_ENV=production make install
+      - run:
+          name: Build app.
+          command: NODE_ENV=production make build
       - save_cache:
-          key: node_modules-{{ checksum "yarn.lock" }}
+          key: deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
   build_publish_deploy:
@@ -39,7 +42,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node_modules-{{ checksum "yarn.lock" }}
+            - deps-{{ checksum "yarn.lock" }}
             - node_modules
       - run:
           name: Build the files.
