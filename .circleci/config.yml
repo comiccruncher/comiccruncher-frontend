@@ -5,6 +5,7 @@ workflows:
   install_deps_build_and_deploy:
     jobs:
       - install_deps:
+          context: GCP
           filters:
             branches:
               only: /.*/
@@ -35,16 +36,10 @@ jobs:
           key: deps-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-  build_publish_deploy:
-    machine: true
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - deps-{{ checksum "yarn.lock" }}
-      - run:
-          name: Build the files.
-          command: NODE_ENV=production make build
+      - save_cache:
+          key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+          paths:
+            - "build"
       - run:
           name: Upload the files.
           command: make s3
@@ -54,4 +49,8 @@ jobs:
           command: gcloud version
       - run:
           name: Deploy the app to GCP.
-          command: gcloud app deploy --stop-previous-version --quiet
+          command: gcloud app deploy --stop-previous-version
+  build_publish_deploy:
+    machine: true 
+    steps:
+      - checkout

@@ -5,14 +5,13 @@ README.md
 .eslint*
 .babelrc
 .prettier*
-.dockerignore
+.docker*
 .idea
 .circleci
 .storybook
 node_modules
 pages
 components
-deploy
 static
 comiccruncher-*.json
 Makefile
@@ -20,6 +19,4 @@ Dockerfile
 docker*
 Makefile
 yarn-error.log
-build
-docker*
 .env
