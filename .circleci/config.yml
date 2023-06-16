@@ -4,7 +4,7 @@ orbs:
 workflows:
   install_deps_build_and_deploy:
     jobs:
-      - install_deps:
+      - install_and_build:
           filters:
             branches:
               only: /.*/
@@ -18,22 +18,12 @@ workflows:
             branches:
               ignore: /.*/
 jobs:
-  install_deps:
+  install_and_build:
     machine: true
     steps:
       - checkout
       - restore_cache:
-          keys: 
-            - prod-deps-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install production dependencies.
-          command: make install-production
-      - save_cache:
-          key: prod-deps-{{ checksum "yarn.lock" }}
-          paths:
-            - "node_modules"
-      - restore_cache:
-          keys: 
+          keys:
             - deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies.
@@ -46,9 +36,9 @@ jobs:
           paths:
             - "node_modules"
      - save_cache:
-        key: build-{{ .CIRCLE_WORKFLOW_ID }}
-        paths:
-          - "build"
+          key: build-{{ .CIRCLE_WORKFLOW_ID }}
+          paths:
+            - "build"
   build_publish_deploy:
     machine: true
     steps:
