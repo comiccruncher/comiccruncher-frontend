@@ -27,10 +27,10 @@ jobs:
             - deps-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies.
-          command: NODE_ENV=production make install
+          command: make install
       - run:
           name: Build app.
-          command: NODE_ENV=production make build
+          command: make build
       - save_cache:
           key: deps-{{ checksum "yarn.lock" }}
           paths:

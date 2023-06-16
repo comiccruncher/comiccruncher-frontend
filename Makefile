@@ -1,11 +1,11 @@
 .PHONY: install
 install:
-	docker-compose run --rm node yarn install --frozen-lockfile
+	docker-compose run --rm node NODE_ENV=development yarn install --frozen-lockfile
 
 # Builds the prodution build.
 .PHONY: build
 build:
-	docker-compose run --rm node yarn build
+	docker-compose run --rm NODE_ENV=production node yarn build
 
 # Uploads statics to s3.
 .PHONY: s3
