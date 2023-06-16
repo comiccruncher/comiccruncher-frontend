@@ -3,7 +3,7 @@ service: default
 env: standard
 handlers:
   - url: /.*
-    script: server.js
+    script: auto
     secure: always
 env_variables:
   NODE_ENV: production

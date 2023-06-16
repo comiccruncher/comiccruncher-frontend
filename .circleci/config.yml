@@ -49,7 +49,7 @@ jobs:
           command: gcloud version
       - run:
           name: Deploy the app to GCP.
-          command: gcloud app deploy --stop-previous-version --quiet
+          command: gcloud app deploy --stop-previous-version
   build_publish_deploy:
     machine: true 
     steps:
